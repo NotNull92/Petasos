@@ -2,9 +2,11 @@ import { URL, fileURLToPath } from 'node:url'
 import { execSync, spawn } from 'node:child_process'
 import type { ChildProcess } from 'node:child_process'
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
+import fs from 'node:fs'
 import net from 'node:net'
 import { resolve, dirname } from 'node:path'
 import os from 'node:os'
+
 
 // devtools removed
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
@@ -406,6 +408,12 @@ const config = defineConfig(({ mode, command }) => {
       // Force IPv4 — 'localhost' resolves to ::1 (IPv6) on Windows, breaking connectivity
       host: '0.0.0.0',
       port: 3002,
+      https: fs.existsSync(resolve('certs/admin-macbookpro.taile216db.ts.net.crt'))
+        ? {
+            key: fs.readFileSync(resolve('certs/admin-macbookpro.taile216db.ts.net.key')),
+            cert: fs.readFileSync(resolve('certs/admin-macbookpro.taile216db.ts.net.crt')),
+          }
+        : undefined,
       strictPort: false, // allow fallback if 3002 is taken, but log clearly
       allowedHosts: true,
       watch: {

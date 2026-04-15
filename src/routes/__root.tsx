@@ -194,25 +194,14 @@ export const Route = createRootRoute({
 const queryClient = new QueryClient()
 
 function RootLayout() {
-  // Unregister any existing service workers — they cause stale asset issues
-  // after Docker image updates and behind reverse proxies (Pangolin, Cloudflare, etc.)
   useEffect(() => {
     initializeSettingsAppearance()
 
+    // Register passthrough SW for PWA install eligibility
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (const registration of registrations) {
-          registration.unregister()
-        }
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // SW registration failed (e.g. HTTP without localhost) — non-critical
       })
-      // Also clear any stale caches
-      if ('caches' in window) {
-        caches.keys().then((names) => {
-          for (const name of names) {
-            caches.delete(name)
-          }
-        })
-      }
     }
   }, [])
 
@@ -260,6 +249,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             __html: `
           (function(){
             if (document.getElementById('splash-screen')) return;
+            // Skip splash entirely if this is a reload/background recovery —
+            // the user has already seen the app, showing splash again is jarring.
+            try {
+              var alreadyLoaded = sessionStorage.getItem('hermes-loaded');
+              if (alreadyLoaded) return;
+              sessionStorage.setItem('hermes-loaded', '1');
+            } catch(e) {}
             var bg = '#0A0E1A', txt = '#E6EAF2', muted = '#9AA5BD', accent = '#6366F1';
             try {
               var theme = localStorage.getItem('${THEME_STORAGE_KEY}') || '${DEFAULT_THEME}';
@@ -350,14 +346,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: `
           (function(){
-            var start = Date.now();
+            // Dismiss splash as soon as app content renders
             function check() {
               var el = document.querySelector('nav, aside, .workspace-shell, [data-testid]');
-              var elapsed = Date.now() - start;
-              if (el && elapsed > 2500) { window.__dismissSplash && window.__dismissSplash(); }
-              else { setTimeout(check, 200); }
+              if (el) { window.__dismissSplash && window.__dismissSplash(); }
+              else { setTimeout(check, 150); }
             }
-            setTimeout(check, 2500);
+            setTimeout(check, 100);
           })()
         `,
           }}
