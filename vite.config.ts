@@ -408,10 +408,10 @@ const config = defineConfig(({ mode, command }) => {
       // Force IPv4 — 'localhost' resolves to ::1 (IPv6) on Windows, breaking connectivity
       host: '0.0.0.0',
       port: 3002,
-      https: fs.existsSync(resolve('certs/admin-macbookpro.taile216db.ts.net.crt'))
+      https: fs.existsSync(resolve('certs/petasos.taile216db.ts.net.crt'))
         ? {
-            key: fs.readFileSync(resolve('certs/admin-macbookpro.taile216db.ts.net.key')),
-            cert: fs.readFileSync(resolve('certs/admin-macbookpro.taile216db.ts.net.crt')),
+            key: fs.readFileSync(resolve('certs/petasos.taile216db.ts.net.key')),
+            cert: fs.readFileSync(resolve('certs/petasos.taile216db.ts.net.crt')),
           }
         : undefined,
       strictPort: false, // allow fallback if 3002 is taken, but log clearly
