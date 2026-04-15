@@ -100,11 +100,11 @@ function CommandSessionDialog({
           onValueChange={setValue}
           mode="none"
         >
-          <CommandInput placeholder="Search sessions" />
+          <CommandInput placeholder="세션 검색" />
           <CommandPanel className="flex min-h-0 flex-1 flex-col">
             {isEmpty ? (
               <div className="h-72 min-h-0 flex items-center justify-center text-sm text-primary-600">
-                No sessions found.
+                세션이 없습니다.
               </div>
             ) : (
               <CommandList className="h-72 min-h-0">
@@ -150,20 +150,20 @@ function CommandSessionDialog({
                     strokeWidth={1.5}
                   />
                 </span>
-                <span>Navigate</span>
+                <span>탐색</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="rounded-md border border-primary-200 bg-surface px-2 py-1 text-[11px] font-medium text-primary-700">
                   Enter
                 </span>
-                <span>Open</span>
+                <span>열기</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-primary-700">
               <span className="rounded-md border border-primary-200 bg-surface px-2 py-1 text-[11px] font-medium text-primary-700">
                 Esc
               </span>
-              <span>Close</span>
+              <span>닫기</span>
             </div>
           </CommandFooter>
         </Command>

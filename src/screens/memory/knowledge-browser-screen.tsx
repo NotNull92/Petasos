@@ -462,7 +462,7 @@ export function KnowledgeBrowserScreen() {
           </button>
 
           <DialogRoot open={settingsOpen} onOpenChange={setSettingsOpen}>
-            <DialogTrigger asChild>
+            <DialogTrigger>
               <button
                 type="button"
                 className="inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors hover:bg-primary-100 dark:hover:bg-neutral-900"
@@ -479,11 +479,6 @@ export function KnowledgeBrowserScreen() {
             </DialogTrigger>
             <DialogContent
               className="sm:max-w-md"
-              style={{
-                backgroundColor: 'var(--theme-bg)',
-                color: 'var(--theme-text)',
-                border: '1px solid var(--theme-border)',
-              }}
             >
               <div className="space-y-4">
                 <div>
@@ -765,9 +760,9 @@ export function KnowledgeBrowserScreen() {
               </div>
               <div className="space-y-1">
                 {searchQuery.isLoading ? (
-                  <StateBox label="Searching knowledge..." />
+                  <StateBox label="지식 베이스 검색 중..." />
                 ) : searchResults.length === 0 ? (
-                  <StateBox label="No matches found" />
+                  <StateBox label="검색 결과 없음" />
                 ) : (
                   searchResults.map((result, index) => (
                     <button
@@ -835,7 +830,7 @@ export function KnowledgeBrowserScreen() {
 
                 <section className="rounded-xl border border-primary-200 bg-primary-50/80 p-1 dark:border-neutral-800 dark:bg-neutral-900/60">
                   {listQuery.isLoading ? (
-                    <StateBox label="Loading knowledge pages..." />
+                    <StateBox label="지식 페이지 불러오는 중..." />
                   ) : listQuery.error instanceof Error ? (
                     <StateBox label={listQuery.error.message} error />
                   ) : filteredPages.length === 0 ? (
@@ -889,19 +884,19 @@ export function KnowledgeBrowserScreen() {
 
           <div className="h-full overflow-auto p-2 md:p-3">
             {listQuery.isLoading ? (
-              <StateBox label="Loading knowledge base..." />
+              <StateBox label="지식 베이스 불러오는 중..." />
             ) : listQuery.error instanceof Error ? (
               <StateBox label={listQuery.error.message} error />
             ) : !knowledgeExists ? (
               <EmptyKnowledgeState knowledgeRoot={knowledgeRoot} />
             ) : !selectedPath ? (
-              <StateBox label="Select a page to start browsing" />
+              <StateBox label="페이지를 선택하면 탐색을 시작합니다" />
             ) : readQuery.isLoading ? (
-              <StateBox label="Loading page..." />
+              <StateBox label="페이지 불러오는 중..." />
             ) : readQuery.error instanceof Error ? (
               <StateBox label={readQuery.error.message} error />
             ) : !page ? (
-              <StateBox label="Page not found" error />
+              <StateBox label="페이지를 찾을 수 없습니다" error />
             ) : (
               <div
                 className="rounded-xl"
@@ -1007,18 +1002,18 @@ export function KnowledgeBrowserScreen() {
                   </div>
 
                   <aside className="space-y-3">
-                    <MetadataCard label="Type" value={page.type} />
-                    <MetadataCard label="Domain" value={page.domain} />
-                    <MetadataCard label="Status" value={page.status} />
+                    <MetadataCard label="유형" value={page.type} />
+                    <MetadataCard label="도메인" value={page.domain} />
+                    <MetadataCard label="상태" value={page.status} />
                     <MetadataCard
-                      label="Created"
+                      label="생성"
                       value={formatDate(page.created)}
                     />
                     <MetadataCard
-                      label="Updated"
+                      label="수정"
                       value={formatDate(page.updated || page.modified)}
                     />
-                    <MetadataCard label="Size" value={formatBytes(page.size)} />
+                    <MetadataCard label="크기" value={formatBytes(page.size)} />
                     <div className="rounded-xl border border-primary-200 bg-primary-50/70 p-3 dark:border-neutral-800 dark:bg-neutral-900/60">
                       <div className="text-xs font-semibold uppercase tracking-wide text-primary-500 dark:text-neutral-400">
                         Tags

@@ -39,7 +39,7 @@ export function ModeSelector({
   } = useModes()
 
   const appliedMode = getAppliedMode()
-  const buttonLabel = appliedMode ? appliedMode.name : 'Mode'
+  const buttonLabel = appliedMode ? appliedMode.name : '모드'
 
   // Close menu on outside click (skip if dialog is open)
   useEffect(() => {
@@ -138,17 +138,17 @@ export function ModeSelector({
           aria-haspopup="menu"
           aria-expanded={!disabled && isMenuOpen}
           aria-disabled={disabled}
-          aria-label="Mode selector"
+          aria-label="모드 선택기"
           disabled={disabled}
         >
           <span className="max-w-[8rem] truncate">{buttonLabel}</span>
           {showDrift && (
-            <span className="text-yellow-600" title="Settings changed">
+            <span className="text-yellow-600" title="설정 변경됨">
               ⚠️
             </span>
           )}
           {modelUnavailable && (
-            <span className="text-red-600" title="Model unavailable">
+            <span className="text-red-600" title="모델 사용 불가">
               ⚠️
             </span>
           )}
@@ -160,7 +160,7 @@ export function ModeSelector({
             <div className="max-h-[20rem] overflow-y-auto p-1">
               {modes.length === 0 ? (
                 <div className="p-4 text-center text-sm text-primary-500">
-                  No modes saved
+                  저장된 모드 없음
                 </div>
               ) : (
                 <>
@@ -184,13 +184,13 @@ export function ModeSelector({
                           isApplied && 'bg-primary-100 text-primary-900',
                         )}
                         role="menuitem"
-                        aria-label={`Apply mode ${mode.name}`}
+                        aria-label={`모드 적용 ${mode.name}`}
                       >
                         <span className="flex-1 truncate">{mode.name}</span>
                         {drift && (
                           <span
                             className="text-yellow-600 text-xs"
-                            title="Settings changed"
+                            title="설정 변경됨"
                           >
                             ⚠️
                           </span>
@@ -198,7 +198,7 @@ export function ModeSelector({
                         {unavailable && (
                           <span
                             className="text-red-600 text-xs"
-                            title="Model unavailable"
+                            title="모델 사용 불가"
                           >
                             ⚠️
                           </span>
@@ -206,7 +206,7 @@ export function ModeSelector({
                         {isApplied && !drift && (
                           <span
                             className="text-primary-900"
-                            aria-label="Currently active"
+                            aria-label="현재 활성"
                           >
                             ✓
                           </span>
@@ -228,9 +228,9 @@ export function ModeSelector({
                 }}
                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-primary-700 transition-colors hover:bg-primary-100"
                 role="menuitem"
-                aria-label="Save current settings as new mode"
+                aria-label="현재 설정을 새 모드로 저장"
               >
-                Save Current as New Mode...
+                현재 설정을 새 모드로 저장...
               </button>
 
               {modes.length > 0 && (

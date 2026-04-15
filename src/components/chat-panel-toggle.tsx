@@ -36,7 +36,7 @@ export function ChatPanelToggle() {
                   <Button
                     size="icon"
                     className="size-12 rounded-full bg-accent-500 text-white shadow-lg hover:bg-accent-600 active:scale-95 transition-all"
-                    aria-label="Open chat"
+                    aria-label="채팅 열기"
                   >
                     <HugeiconsIcon
                       icon={Chat01Icon}
@@ -48,7 +48,7 @@ export function ChatPanelToggle() {
               />
               <TooltipContent side="left">
                 <span>
-                  Chat <kbd className="ml-1 text-[10px] opacity-60">⌘J</kbd>
+                  채팅 <kbd className="ml-1 text-[10px] opacity-60">⌘J</kbd>
                 </span>
               </TooltipContent>
             </TooltipRoot>

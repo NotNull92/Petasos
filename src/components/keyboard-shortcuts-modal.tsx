@@ -11,28 +11,28 @@ const MOD = isMac ? '⌘' : 'Ctrl'
 
 const SHORTCUT_GROUPS = [
   {
-    title: 'Navigation',
+    title: '탐색',
     items: [
-      { keys: [`${MOD}+K`], label: 'Open Search' },
-      { keys: [`${MOD}+P`], label: 'Quick Open File' },
-      { keys: [`${MOD}+B`], label: 'Toggle Sidebar' },
-      { keys: [`${MOD}+J`], label: 'Toggle Chat Panel' },
-      { keys: [`${MOD}+Shift+L`], label: 'Activity Log' },
-      { keys: ['Ctrl+`'], label: 'Toggle Terminal' },
-      { keys: ['?'], label: 'Keyboard Shortcuts' },
+      { keys: [`${MOD}+K`], label: '검색 열기' },
+      { keys: [`${MOD}+P`], label: '빠른 파일 열기' },
+      { keys: [`${MOD}+B`], label: '사이드바 전환' },
+      { keys: [`${MOD}+J`], label: '채팅 패널 전환' },
+      { keys: [`${MOD}+Shift+L`], label: '활동 로그' },
+      { keys: ['Ctrl+`'], label: '터미널 전환' },
+      { keys: ['?'], label: '키보드 단축키' },
     ],
   },
   {
-    title: 'Chat',
+    title: '채팅',
     items: [
-      { keys: ['Enter'], label: 'Send Message' },
-      { keys: ['Shift+Enter'], label: 'New Line' },
-      { keys: ['Escape'], label: 'Close Modal / Cancel' },
+      { keys: ['Enter'], label: '메시지 전송' },
+      { keys: ['Shift+Enter'], label: '줄바꿈' },
+      { keys: ['Escape'], label: '모달 닫기 / 취소' },
     ],
   },
   {
-    title: 'Editor',
-    items: [{ keys: [`${MOD}+S`], label: 'Save File' }],
+    title: '편집기',
+    items: [{ keys: [`${MOD}+S`], label: '파일 저장' }],
   },
 ]
 
@@ -103,12 +103,12 @@ export function KeyboardShortcutsModal() {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-primary-200 px-5 py-3.5">
               <h2 className="text-sm font-semibold text-primary-900">
-                Keyboard Shortcuts
+                키보드 단축키
               </h2>
               <button
                 onClick={() => setIsOpen(false)}
                 className="rounded-lg p-1.5 text-primary-500 transition hover:bg-primary-100 hover:text-primary-900"
-                aria-label="Close"
+                aria-label="닫기"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path
@@ -156,15 +156,14 @@ export function KeyboardShortcutsModal() {
 
             {/* Footer */}
             <div className="border-t border-primary-200 px-5 py-2.5 text-center text-xs text-primary-500">
-              Press{' '}
               <kbd className="mx-0.5 rounded border border-primary-200 bg-primary-100/80 px-1 text-[10px] font-medium">
                 ?
               </kbd>{' '}
-              to toggle ·{' '}
+              누르면 전환 ·{' '}
               <kbd className="mx-0.5 rounded border border-primary-200 bg-primary-100/80 px-1 text-[10px] font-medium">
                 Esc
               </kbd>{' '}
-              to close
+              닫기
             </div>
           </motion.div>
         </motion.div>

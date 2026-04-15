@@ -70,7 +70,7 @@ function renderLoader(loaderStyle: LoaderStyle, iconClassName?: string) {
 function LoadingIndicator({
   className,
   iconClassName,
-  ariaLabel = 'Assistant is streaming',
+  ariaLabel = '어시스턴트 응답 중',
 }: LoadingIndicatorProps) {
   const loaderStyle = useChatSettingsStore(
     (state) => state.settings.loaderStyle,

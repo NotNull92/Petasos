@@ -82,39 +82,39 @@ export function TaskDialog({ open, onOpenChange, task, defaultColumn, assignees,
 
         <div className="p-5">
           <DialogTitle className="text-base font-semibold text-[var(--theme-text)] mb-1">
-            {isEdit ? 'Edit Task' : 'New Task'}
+            {isEdit ? '태스크 편집' : '새 태스크'}
           </DialogTitle>
           <DialogDescription className="text-xs text-[var(--theme-muted)] mb-4">
-            {isEdit ? 'Update the task details below.' : 'Fill in the details for your new task.'}
+            {isEdit ? '태스크 정보를 수정합니다.' : '새 태스크의 정보를 입력하세요.'}
           </DialogDescription>
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <label className={labelClass}>Title *</label>
+              <label className={labelClass}>제목 *</label>
               <input
                 className={inputClass}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
-                placeholder="What needs to be done?"
+                placeholder="무엇을 해야 하나요?"
                 required
                 autoFocus
               />
             </div>
 
             <div>
-              <label className={labelClass}>Description</label>
+              <label className={labelClass}>설명</label>
               <textarea
                 className={cn(inputClass, 'resize-none')}
                 rows={3}
                 value={description}
                 onChange={e => setDescription(e.target.value)}
-                placeholder="Optional details..."
+                placeholder="선택 사항..."
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className={labelClass}>Column</label>
+                <label className={labelClass}>컬럼</label>
                 <select
                   className={inputClass}
                   style={{ colorScheme: 'dark' }}
@@ -127,37 +127,37 @@ export function TaskDialog({ open, onOpenChange, task, defaultColumn, assignees,
                 </select>
               </div>
               <div>
-                <label className={labelClass}>Priority</label>
+                <label className={labelClass}>우선순위</label>
                 <select
                   className={inputClass}
                   style={{ colorScheme: 'dark' }}
                   value={priority}
                   onChange={e => setPriority(e.target.value as TaskPriority)}
                 >
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
+                  <option value="high">높음</option>
+                  <option value="medium">보통</option>
+                  <option value="low">낮음</option>
                 </select>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className={labelClass}>Assignee</label>
+                <label className={labelClass}>담당자</label>
                 <select
                   className={inputClass}
                   style={{ colorScheme: 'dark' }}
                   value={assignee}
                   onChange={e => setAssignee(e.target.value)}
                 >
-                  <option value="">Unassigned</option>
+                  <option value="">미배정</option>
                   {assignees.map(({ id, label }) => (
                     <option key={id} value={id}>{label}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className={labelClass}>Due Date</label>
+                <label className={labelClass}>마감일</label>
                 <input
                   type="date"
                   className={inputClass}
@@ -169,7 +169,7 @@ export function TaskDialog({ open, onOpenChange, task, defaultColumn, assignees,
             </div>
 
             <div>
-              <label className={labelClass}>Tags (comma-separated)</label>
+              <label className={labelClass}>태그 (쉼표로 구분)</label>
               <input
                 className={inputClass}
                 value={tags}
@@ -179,7 +179,7 @@ export function TaskDialog({ open, onOpenChange, task, defaultColumn, assignees,
             </div>
 
             <div className="flex items-center justify-between pt-2">
-              <p className="text-[10px] text-[var(--theme-muted)]">Press Esc to cancel</p>
+              <p className="text-[10px] text-[var(--theme-muted)]">Esc를 눌러 취소</p>
               <div className="flex gap-2">
                 <Button
                   type="button"
@@ -188,7 +188,7 @@ export function TaskDialog({ open, onOpenChange, task, defaultColumn, assignees,
                   onClick={() => onOpenChange(false)}
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  취소
                 </Button>
                 <Button
                   type="submit"
@@ -196,7 +196,7 @@ export function TaskDialog({ open, onOpenChange, task, defaultColumn, assignees,
                   disabled={isSubmitting || !title.trim()}
                   style={{ background: 'var(--theme-accent)', color: 'white' }}
                 >
-                  {isSubmitting ? 'Saving...' : isEdit ? 'Save Changes' : 'Create Task'}
+                  {isSubmitting ? '저장 중...' : isEdit ? '변경사항 저장' : '태스크 생성'}
                 </Button>
               </div>
             </div>

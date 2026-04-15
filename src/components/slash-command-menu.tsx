@@ -30,13 +30,13 @@ type SlashCommandMenuHandle = {
 }
 
 const SLASH_COMMANDS: Array<SlashCommandDefinition> = [
-  { command: '/new', description: 'Start new session' },
-  { command: '/clear', description: 'Clear screen and start fresh' },
-  { command: '/model', description: 'Show or change the current model' },
-  { command: '/save', description: 'Save the current conversation' },
-  { command: '/skills', description: 'Browse and manage skills' },
-  { command: '/skin', description: 'Change the display theme' },
-  { command: '/help', description: 'Show available commands' },
+  { command: '/new', description: '새 세션 시작' },
+  { command: '/clear', description: '화면 지우고 새로 시작' },
+  { command: '/model', description: '현재 모델 확인 또는 변경' },
+  { command: '/save', description: '현재 대화 저장' },
+  { command: '/skills', description: '스킬 탐색 및 관리' },
+  { command: '/skin', description: '표시 테마 변경' },
+  { command: '/help', description: '사용 가능한 명령어 보기' },
 ]
 
 const SlashCommandMenu = forwardRef(function SlashCommandMenu(
@@ -117,7 +117,7 @@ const SlashCommandMenu = forwardRef(function SlashCommandMenu(
         >
           {filteredCommands.length === 0 ? (
             <div className="px-3 py-2 text-sm text-primary-600">
-              No commands found
+              명령어를 찾을 수 없습니다
             </div>
           ) : (
             <CommandList className="max-h-60 min-h-0">

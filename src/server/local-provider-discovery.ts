@@ -109,7 +109,7 @@ async function probeProvider(
         : []
 
     const models: DiscoveredModel[] = rawModels
-      .map((entry: Record<string, unknown>) => {
+      .map((entry: Record<string, unknown>): DiscoveredModel | null => {
         const id =
           typeof entry.id === 'string'
             ? entry.id
@@ -131,7 +131,8 @@ async function probeProvider(
       .filter((m: DiscoveredModel | null): m is DiscoveredModel => m !== null)
 
     return { def, online: true, models, lastProbe: Date.now() }
-  } catch {
+  } catch (err) {
+    console.error('[local-provider-discovery] Failed to probe provider:', def.id, err)
     return { def, online: false, models: [], lastProbe: Date.now() }
   }
 }
@@ -259,7 +260,8 @@ export function isProviderConfigured(providerId: string): boolean {
     )
     if (!cpMatch) return false
     return cpMatch[0].includes(`name: ${providerId}`)
-  } catch {
+  } catch (err) {
+    console.error('[local-provider-discovery] Failed to check custom provider config:', err)
     return false
   }
 }

@@ -29,7 +29,7 @@ function ToolIndicator({ tools, defaultOpen = false }: ToolIndicatorProps) {
   }, [defaultOpen])
 
   const toolCount = tools.length
-  const toolLabel = toolCount === 1 ? '1 tool used' : `${toolCount} tools used`
+  const toolLabel = toolCount === 1 ? '도구 1개 사용됨' : `도구 ${toolCount}개 사용됨`
 
   return (
     <div className="inline-flex flex-col">

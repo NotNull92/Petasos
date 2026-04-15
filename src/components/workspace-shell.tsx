@@ -125,15 +125,15 @@ export function WorkspaceShell() {
 
   // Derive active session from URL
   const mobilePageTitle = (() => {
-    if (pathname.startsWith('/terminal')) return 'Terminal'
-    if (pathname.startsWith('/files')) return 'Files'
-    if (pathname.startsWith('/jobs')) return 'Jobs'
-    if (pathname.startsWith('/memory')) return 'Memory'
-    if (pathname.startsWith('/skills')) return 'Skills'
-    if (pathname.startsWith('/profiles')) return 'Profiles'
-    if (pathname.startsWith('/settings')) return 'Settings'
-    if (pathname.startsWith('/debug')) return 'Debug'
-    if (pathname.startsWith('/activity')) return 'Activity'
+    if (pathname.startsWith('/terminal')) return '터미널'
+    if (pathname.startsWith('/files')) return '파일'
+    if (pathname.startsWith('/jobs')) return '작업'
+    if (pathname.startsWith('/memory')) return '메모리'
+    if (pathname.startsWith('/skills')) return '스킬'
+    if (pathname.startsWith('/profiles')) return '프로필'
+    if (pathname.startsWith('/settings')) return '설정'
+    if (pathname.startsWith('/debug')) return '디버그'
+    if (pathname.startsWith('/activity')) return '활동'
     return null
   })()
 
@@ -345,7 +345,7 @@ export function WorkspaceShell() {
               }}
             >
               {isMobile && isOnTerminalRoute && (
-                <MobilePageHeader title="Terminal" />
+                <MobilePageHeader title="터미널" />
               )}
               <div className="flex-1 min-h-0 overflow-hidden">
                 <Suspense fallback={null}>
@@ -374,8 +374,8 @@ export function WorkspaceShell() {
                 mobilePageTitle && <MobilePageHeader title={mobilePageTitle} />}
               <ErrorBoundary
                 className="h-full min-h-0 flex-1"
-                title="Something went wrong"
-                description="This page failed to render. Reload to try again."
+                title="문제가 발생했습니다"
+                description="페이지 렌더링에 실패했습니다. 다시 로드해 보세요."
               >
                 <Outlet />
               </ErrorBoundary>
@@ -392,7 +392,7 @@ export function WorkspaceShell() {
         {showDesktopSidebarBackdrop ? (
           <button
             type="button"
-            aria-label="Collapse navigation sidebar"
+            aria-label="내비게이션 사이드바 접기"
             onClick={() => setSidebarCollapsed(true)}
             className={DESKTOP_SIDEBAR_BACKDROP_CLASS}
           />

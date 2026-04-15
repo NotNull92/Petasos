@@ -25,10 +25,10 @@ import { Moon02Icon, Sun02Icon } from '@hugeicons/core-free-icons'
 
 function timeAgo(ts: number): string {
   const diff = Date.now() / 1000 - ts
-  if (diff < 60) return 'just now'
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
-  return `${Math.floor(diff / 86400)}d ago`
+  if (diff < 60) return '방금'
+  if (diff < 3600) return `${Math.floor(diff / 60)}분 전`
+  if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`
+  return `${Math.floor(diff / 86400)}일 전`
 }
 
 function formatNumber(n: number): string {
@@ -148,10 +148,10 @@ function SystemGlance({
         <span className="text-muted">·</span>
         <span className="text-xs text-neutral-500">{provider}</span>
         <span className="text-muted">·</span>
-        <span className="text-xs text-neutral-500">{sessions} sessions</span>
+        <span className="text-xs text-neutral-500">{sessions} 세션</span>
         <span className="text-muted">·</span>
         <span className="text-xs font-bold tabular-nums text-ink">
-          {tokens} tokens
+          {tokens} 토큰
         </span>
         <span className="text-muted">·</span>
         <span className="text-xs text-neutral-400">{cost}</span>
@@ -238,8 +238,8 @@ function ActivityChart({ sessions }: { sessions: Array<HermesSession> }) {
 
   return (
     <GlassCard
-      title="Activity"
-      titleRight={<span className="text-[10px] text-muted">14 days</span>}
+      title="활동"
+      titleRight={<span className="text-[10px] text-muted">14일</span>}
       accentColor="#6366f1"
       className="h-full"
     >
@@ -319,11 +319,11 @@ function ActivityChart({ sessions }: { sessions: Array<HermesSession> }) {
       <div className="flex items-center gap-5 mt-2 text-[10px] text-neutral-500">
         <span className="flex items-center gap-1.5">
           <span className="size-2 rounded-full bg-[#6366f1]" />
-          Sessions
+          세션
         </span>
         <span className="flex items-center gap-1.5">
           <span className="size-2 rounded-full bg-[#22c55e]" />
-          Messages
+          메시지
         </span>
       </div>
     </GlassCard>
@@ -362,7 +362,7 @@ function ModelCard() {
   if (!configAvailable) {
     return (
       <UnavailableWidget
-        title="Model"
+        title="모델"
         description={getUnavailableReason('config')}
       />
     )
@@ -370,7 +370,7 @@ function ModelCard() {
 
   return (
     <GlassCard
-      title="Model"
+      title="모델"
       titleRight={
         <span
           className={cn(
@@ -386,7 +386,7 @@ function ModelCard() {
               connected ? 'bg-emerald-500' : 'bg-red-500',
             )}
           />
-          {connected ? 'Online' : 'Offline'}
+          {connected ? '온라인' : '오프라인'}
         </span>
       }
       accentColor={connected ? '#22c55e' : '#ef4444'}
@@ -450,7 +450,7 @@ function SkillsWidget() {
   if (!skillsAvailable) {
     return (
       <UnavailableWidget
-        title="Skills"
+        title="스킬"
         description={getUnavailableReason('skills')}
       />
     )
@@ -458,17 +458,17 @@ function SkillsWidget() {
 
   return (
     <GlassCard
-      title="Skills"
+      title="스킬"
       titleRight={
         <span className="text-[10px] text-muted">
-          {skills.length} installed
+          {skills.length}개 설치됨
         </span>
       }
       accentColor="#f59e0b"
     >
       {skills.length === 0 ? (
         <div className="text-xs text-neutral-400 py-4 text-center">
-          No skills installed
+          설치된 스킬이 없습니다
         </div>
       ) : (
         <div className="space-y-1.5">
@@ -479,7 +479,7 @@ function SkillsWidget() {
             >
               <span className="text-xs">📦</span>
               <span className="text-xs font-medium text-ink truncate flex-1">
-                {String(skill.name ?? 'Unnamed')}
+                {String(skill.name ?? '이름 없음')}
               </span>
               {skill.enabled !== false && (
                 <span className="size-1.5 rounded-full bg-emerald-500/60" />
@@ -585,9 +585,9 @@ function SessionRow({
             {session.model}
           </span>
         )}
-        <span>{msgs} msgs</span>
-        {tools > 0 && <span>{tools} tools</span>}
-        {tokens > 0 && <span>{formatNumber(tokens)} tok</span>}
+        <span>{msgs} 메시지</span>
+        {tools > 0 && <span>{tools} 도구</span>}
+        {tokens > 0 && <span>{formatNumber(tokens)} 토큰</span>}
       </div>
       <div className="h-[3px] rounded-full w-full bg-[var(--theme-border)] overflow-hidden">
         <div
@@ -687,7 +687,7 @@ export function DashboardScreen() {
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-2 h-12" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <button
           type="button"
-          aria-label="Open navigation menu"
+          aria-label="네비게이션 메뉴 열기"
           onClick={openHamburgerMenu}
           className="flex items-center justify-center w-11 h-11 rounded-xl active:bg-white/10 transition-colors touch-manipulation"
         >
@@ -697,7 +697,7 @@ export function DashboardScreen() {
         </button>
         <button
           type="button"
-          aria-label="Toggle theme"
+          aria-label="테마 전환"
           onClick={() => {
             const LIGHT_DARK_PAIRS: Record<string, string> = {
               'hermes-official': 'hermes-official-light',
@@ -736,7 +736,7 @@ export function DashboardScreen() {
         </h1>
         <div className="mt-1 grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-4">
           <QuickAction
-            label="New Chat"
+            label="새 대화"
             icon="💬"
             accentColor="#6366f1"
             onClick={() =>
@@ -747,13 +747,13 @@ export function DashboardScreen() {
             }
           />
           <QuickAction
-            label="Terminal"
+            label="터미널"
             icon="💻"
             accentColor="#22c55e"
             onClick={() => navigate({ to: '/terminal' })}
           />
           <QuickAction
-            label="Skills"
+            label="스킬"
             icon="🧩"
             accentColor="#f59e0b"
             onClick={() => navigate({ to: '/skills' })}
@@ -761,7 +761,7 @@ export function DashboardScreen() {
             badge={!skillsAvailable ? 'Enhanced' : undefined}
           />
           <QuickAction
-            label="Settings"
+            label="설정"
             icon="⚙️"
             accentColor="#a855f7"
             onClick={() => navigate({ to: '/settings' })}
@@ -773,25 +773,25 @@ export function DashboardScreen() {
       {sessionsAvailable ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <MetricTile
-            label="Sessions"
+            label="세션"
             value={formatNumber(stats.totalSessions)}
             icon="💬"
             accentColor="#6366f1"
           />
           <MetricTile
-            label="Messages"
+            label="메시지"
             value={formatNumber(stats.totalMessages)}
             icon="✉️"
             accentColor="#22c55e"
           />
           <MetricTile
-            label="Tool Calls"
+            label="도구 호출"
             value={formatNumber(stats.totalToolCalls)}
             icon="🔧"
             accentColor="#f59e0b"
           />
           <MetricTile
-            label="Tokens"
+            label="토큰"
             value={formatNumber(stats.totalTokens)}
             sub={costEstimate}
             icon="⚡"
@@ -800,7 +800,7 @@ export function DashboardScreen() {
         </div>
       ) : (
         <UnavailableWidget
-          title="Workspace Analytics"
+          title="워크스페이스 분석"
           description={getUnavailableReason('sessions')}
         />
       )}
@@ -812,7 +812,7 @@ export function DashboardScreen() {
             <ActivityChart sessions={sessions} />
           ) : (
             <UnavailableWidget
-              title="Activity"
+              title="활동"
               description={getUnavailableReason('sessions')}
             />
           )}
@@ -828,7 +828,7 @@ export function DashboardScreen() {
       {/* ── Recent Sessions (minimal) ── */}
       {sessionsAvailable ? (
         <GlassCard
-          title="Recent Sessions"
+          title="최근 세션"
           titleRight={
             <button
               type="button"
@@ -840,7 +840,7 @@ export function DashboardScreen() {
                 })
               }
             >
-              View all →
+              전체 보기 →
             </button>
           }
           accentColor="#6366f1"
@@ -849,7 +849,7 @@ export function DashboardScreen() {
           <div className="py-1">
             {recentSessions.length === 0 ? (
               <div className="text-xs text-neutral-400 py-8 text-center">
-                No sessions yet — start a chat!
+                아직 세션이 없습니다 — 대화를 시작해 보세요!
               </div>
             ) : (
               recentSessions.map((s) => (
@@ -870,7 +870,7 @@ export function DashboardScreen() {
         </GlassCard>
       ) : (
         <UnavailableWidget
-          title="Recent Sessions"
+          title="최근 세션"
           description={getUnavailableReason('sessions')}
         />
       )}

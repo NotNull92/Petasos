@@ -435,24 +435,24 @@ function DiffModal({
           <div className="flex shrink-0 items-center justify-between gap-3 border-b border-primary-200 dark:border-neutral-800 px-5 py-3">
             <div className="min-w-0">
               <DialogTitle className="text-sm font-semibold text-primary-900 dark:text-neutral-100 truncate">
-                Review changes — {fileName}
+                변경사항 검토 — {fileName}
               </DialogTitle>
               <DialogDescription className="mt-0.5 text-xs text-primary-500 dark:text-neutral-400">
                 <span className="text-emerald-600 font-medium">
-                  +{addedCount} added
+                  +{addedCount} 추가됨
                 </span>
                 {' · '}
                 <span className="text-red-600 font-medium">
-                  −{removedCount} removed
+                  −{removedCount} 삭제됨
                 </span>
               </DialogDescription>
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <Button variant="outline" size="sm" onClick={onCancel}>
-                Cancel
+                취소
               </Button>
               <Button size="sm" onClick={onSave}>
-                Save anyway
+                그래도 저장
               </Button>
             </div>
           </div>
@@ -462,7 +462,7 @@ function DiffModal({
             {/* Left — original */}
             <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
               <div className="shrink-0 px-3 py-1.5 text-[11px] font-semibold text-primary-500 dark:text-neutral-400 bg-primary-100/60 dark:bg-neutral-900/60 border-b border-primary-200 dark:border-neutral-800 uppercase tracking-wide">
-                Original
+                원본
               </div>
               <div className="flex-1 overflow-auto">
                 <div className="font-mono text-[11px] leading-relaxed">
@@ -508,7 +508,7 @@ function DiffModal({
             {/* Right — new */}
             <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
               <div className="shrink-0 px-3 py-1.5 text-[11px] font-semibold text-primary-500 dark:text-neutral-400 bg-primary-100/60 dark:bg-neutral-900/60 border-b border-primary-200 dark:border-neutral-800 uppercase tracking-wide">
-                New
+                새 항목
               </div>
               <div className="flex-1 overflow-auto">
                 <div className="font-mono text-[11px] leading-relaxed">
@@ -653,7 +653,7 @@ function Breadcrumb({ path }: { path: string }) {
   const parts = path ? path.split('/').filter(Boolean) : []
   return (
     <div className="flex items-center gap-1 truncate text-xs text-primary-500 dark:text-neutral-400 min-w-0">
-      <span className="shrink-0">workspace</span>
+      <span className="shrink-0">워크스페이스</span>
       {parts.map((part, i) => (
         <span key={i} className="flex items-center gap-1 min-w-0">
           <span className="shrink-0 text-primary-300 dark:text-neutral-600">
@@ -806,7 +806,7 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
         <div className="flex h-full items-center justify-center text-center text-primary-400 dark:text-neutral-600">
           <div>
             <div className="text-5xl mb-3 opacity-40">📂</div>
-            <p className="text-sm">Select a file to preview or edit</p>
+            <p className="text-sm">미리볼 파일을 선택하세요</p>
           </div>
         </div>
       </>
@@ -822,7 +822,7 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
             <div className="text-5xl mb-3 opacity-40">📁</div>
             <p className="text-sm font-medium">{selectedEntry.name}</p>
             <p className="text-xs mt-1 opacity-70">
-              Select a file inside to preview
+              미리볼 파일을 선택하세요
             </p>
           </div>
         </div>
@@ -847,7 +847,7 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
             variant="outline"
             onClick={() => setRawMode((v) => !v)}
           >
-            {rawMode ? 'Preview' : 'Raw'}
+            {rawMode ? '미리보기' : '원본'}
           </Button>
         )}
         {isEditable && (
@@ -857,7 +857,7 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
             disabled={!dirty || saving}
             onClick={handleSave}
           >
-            {saving ? 'Saving…' : savedOk ? '✓ Saved' : 'Save'}
+            {saving ? '저장 중…' : savedOk ? '✓ 저장됨' : '저장'}
           </Button>
         )}
       </div>
@@ -870,10 +870,10 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
         <span>{formatBytes(selectedEntry.size)}</span>
       )}
       {selectedEntry.modifiedAt && (
-        <span>Modified {formatDate(selectedEntry.modifiedAt)}</span>
+        <span>수정됨 {formatDate(selectedEntry.modifiedAt)}</span>
       )}
       {dirty && (
-        <span className="text-accent-500 font-medium">Unsaved changes</span>
+        <span className="text-accent-500 font-medium">저장하지 않은 변경사항</span>
       )}
     </div>
   )
@@ -887,7 +887,7 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
         <div className="flex h-full flex-col">
           {header}
           <div className="flex flex-1 items-center justify-center text-sm text-primary-400 dark:text-neutral-500">
-            Loading…
+            불러오는 중…
           </div>
           {footer}
         </div>
@@ -926,7 +926,7 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
                 className="max-h-full max-w-full rounded-lg border border-primary-200 dark:border-neutral-800 shadow-sm object-contain"
               />
             ) : (
-              <div className="text-sm text-primary-400">No preview</div>
+              <div className="text-sm text-primary-400">미리보기 없음</div>
             )}
           </div>
           {footer}
@@ -1027,7 +1027,7 @@ function FilePanel({ selectedEntry }: FilePanelProps) {
 // ──────────────────────────────────────────────────────────────────────────────
 
 export function FilesScreen() {
-  usePageTitle('Files')
+  usePageTitle('파일')
 
   const [entries, setEntries] = useState<Array<FileEntry>>([])
   const [treeLoading, setTreeLoading] = useState(false)
@@ -1210,7 +1210,7 @@ export function FilesScreen() {
             <button
               type="button"
               onClick={openNewFolderPrompt}
-              title="New folder"
+              title="새 폴더"
               className="rounded p-1 text-sm text-primary-400 hover:bg-primary-200 dark:hover:bg-neutral-800 hover:text-primary-600 dark:hover:text-neutral-300 transition-colors leading-none"
             >
               📁+
@@ -1218,7 +1218,7 @@ export function FilesScreen() {
             <button
               type="button"
               onClick={() => void loadTree()}
-              title="Refresh"
+              title="새로고침"
               className="rounded p-1 text-lg text-primary-400 hover:bg-primary-200 dark:hover:bg-neutral-800 hover:text-primary-600 dark:hover:text-neutral-300 transition-colors leading-none"
             >
               ↺
@@ -1231,13 +1231,13 @@ export function FilesScreen() {
           <ScrollAreaViewport className="px-1 py-1">
             {treeLoading ? (
               <div className="px-3 py-2 text-xs text-primary-400 dark:text-neutral-500">
-                Loading…
+                불러오는 중…
               </div>
             ) : treeError ? (
               <div className="px-3 py-2 text-xs text-red-500">{treeError}</div>
             ) : entries.length === 0 ? (
               <div className="px-3 py-2 text-xs text-primary-400 dark:text-neutral-500">
-                Workspace is empty
+                워크스페이스가 비어 있습니다
               </div>
             ) : (
               entries
@@ -1289,7 +1289,7 @@ export function FilesScreen() {
               setContextMenu(null)
             }}
           >
-            ✏️ Rename
+            ✏️ 이름 변경
           </button>
           {contextMenu.entry.type === 'folder' ? (
             <button
@@ -1303,7 +1303,7 @@ export function FilesScreen() {
                 setContextMenu(null)
               }}
             >
-              📁 New folder inside
+              📁 새 폴더 만들기
             </button>
           ) : (
             <button
@@ -1313,7 +1313,7 @@ export function FilesScreen() {
                 setContextMenu(null)
               }}
             >
-              ⬇️ Download
+              ⬇️ 다운로드
             </button>
           )}
           <button
@@ -1323,7 +1323,7 @@ export function FilesScreen() {
               setContextMenu(null)
             }}
           >
-            🗑️ Delete
+            🗑️ 삭제
           </button>
         </div>
       ) : null}
@@ -1338,12 +1338,12 @@ export function FilesScreen() {
         <DialogContent>
           <div className="p-5 space-y-3">
             <DialogTitle>
-              {promptState?.mode === 'rename' ? 'Rename' : 'New Folder'}
+              {promptState?.mode === 'rename' ? '이름 변경' : '새 폴더'}
             </DialogTitle>
             <DialogDescription>
               {promptState?.mode === 'rename'
-                ? 'Enter a new name.'
-                : 'Enter a folder name to create.'}
+                ? '새 이름을 입력하세요.'
+                : '생성할 폴더 이름을 입력하세요.'}
             </DialogDescription>
             <input
               value={promptValue}
@@ -1355,8 +1355,8 @@ export function FilesScreen() {
               autoFocus
             />
             <div className="flex justify-end gap-2 pt-2">
-              <DialogClose render={<Button variant="outline">Cancel</Button>} />
-              <Button onClick={() => void handlePromptSubmit()}>Save</Button>
+              <DialogClose render={<Button variant="outline">취소</Button>} />
+              <Button onClick={() => void handlePromptSubmit()}>저장</Button>
             </div>
           </div>
         </DialogContent>
@@ -1372,22 +1372,22 @@ export function FilesScreen() {
         <DialogContent>
           <div className="p-5 space-y-3">
             <DialogTitle>
-              Delete {deleteConfirm?.type === 'folder' ? 'Folder' : 'File'}
+              {deleteConfirm?.type === 'folder' ? '폴더 삭제' : '파일 삭제'}
             </DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete{' '}
+              정말 삭제하시겠습니까{' '}
               <strong>{deleteConfirm?.name}</strong>?
               {deleteConfirm?.type === 'folder' &&
-                ' This will delete all contents inside.'}{' '}
-              This action cannot be undone.
+                ' 내부의 모든 콘텐츠가 삭제됩니다.'}{' '}
+              이 작업은 되돌릴 수 없습니다.
             </DialogDescription>
             <div className="flex justify-end gap-2 pt-2">
-              <DialogClose render={<Button variant="outline">Cancel</Button>} />
+              <DialogClose render={<Button variant="outline">취소</Button>} />
               <Button
                 variant="destructive"
                 onClick={() => void handleDeleteConfirmed()}
               >
-                Delete
+                삭제
               </Button>
             </div>
           </div>

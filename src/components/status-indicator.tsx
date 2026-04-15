@@ -23,7 +23,7 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
     return {
       status: 'disconnected',
       label: 'Disconnected',
-      detail: 'No compatible backend detected.',
+      detail: '호환되는 백엔드가 감지되지 않았습니다.',
       health: false,
       chatReady: false,
       modelConfigured: false,
@@ -44,23 +44,23 @@ function statusToColors(
     return {
       dot: 'bg-yellow-400',
       pulse: 'bg-yellow-400/40',
-      label: 'Checking...',
+      label: '확인 중...',
     }
   }
   switch (status) {
     case 'enhanced':
-      return { dot: 'bg-cyan-400', pulse: 'bg-cyan-400/40', label: 'Enhanced' }
+      return { dot: 'bg-cyan-400', pulse: 'bg-cyan-400/40', label: '고급' }
     case 'connected':
       return {
         dot: 'bg-emerald-400',
         pulse: 'bg-emerald-400/40',
-        label: 'Connected',
+        label: '연결됨',
       }
     case 'partial':
       return {
         dot: 'bg-yellow-400',
         pulse: 'bg-yellow-400/40',
-        label: 'Partial',
+        label: '부분',
       }
     case 'disconnected':
     default:
@@ -77,16 +77,16 @@ function buildTooltip(
   label: string,
 ): string {
   if (!data) return `Backend: ${label}`
-  const parts: Array<string> = [`Backend: ${label}`]
+  const parts: Array<string> = [`백엔드: ${label}`]
   if (data.detail) parts.push(data.detail)
   if (data.status === 'partial') {
-    if (!data.chatReady) parts.push('Missing /v1/chat/completions')
-    if (!data.modelConfigured) parts.push('No model selected')
+    if (!data.chatReady) parts.push('/v1/chat/completions 없음')
+    if (!data.modelConfigured) parts.push('선택된 모델 없음')
   }
   if (data.status === 'enhanced') {
-    parts.push('Hermes gateway enhancements detected')
+    parts.push('Hermes 게이트웨이 고급 기능 감지됨')
   }
-  if (data.activeModel) parts.push(`Model: ${data.activeModel}`)
+  if (data.activeModel) parts.push(`모델: ${data.activeModel}`)
   return parts.join(' · ')
 }
 

@@ -17,8 +17,6 @@ import {
 const _authHeaders = (): Record<string, string> =>
   BEARER_TOKEN ? { Authorization: `Bearer ${BEARER_TOKEN}` } : {}
 
-console.log(`[hermes-api] Configured API: ${HERMES_API}`)
-
 // ── Types ─────────────────────────────────────────────────────────
 
 export type HermesSession = {
@@ -94,15 +92,24 @@ async function hermesPatch<T>(path: string, body: unknown): Promise<T> {
   return res.json() as Promise<T>
 }
 
-async function hermesDeleteReq(path: string): Promise<void> {
+async function hermesDeleteReq<T = void>(
+  path: string,
+  body?: unknown,
+): Promise<T> {
   const res = await fetch(`${HERMES_API}${path}`, {
     method: 'DELETE',
-    headers: _authHeaders(),
+    headers: {
+      ..._authHeaders(),
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
   })
   if (!res.ok) {
     const text = await res.text().catch(() => '')
     throw new Error(`Hermes API DELETE ${path}: ${res.status} ${text}`)
   }
+  if (res.status === 204) return undefined as T
+  return res.json() as Promise<T>
 }
 
 // ── Health ────────────────────────────────────────────────────────
@@ -386,6 +393,28 @@ export async function sendChat(
 
 export async function getMemory(): Promise<unknown> {
   return hermesGet('/api/memory')
+}
+
+export async function addMemory(
+  target: string,
+  content: string,
+): Promise<unknown> {
+  return hermesPost('/api/memory', { target, content })
+}
+
+export async function replaceMemory(
+  target: string,
+  old_text: string,
+  content: string,
+): Promise<unknown> {
+  return hermesPatch('/api/memory', { target, old_text, content })
+}
+
+export async function removeMemory(
+  target: string,
+  old_text: string,
+): Promise<unknown> {
+  return hermesDeleteReq('/api/memory', { target, old_text })
 }
 
 // ── Skills ───────────────────────────────────────────────────────

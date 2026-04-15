@@ -99,7 +99,7 @@ function ThemeToggleMini() {
       }}
       className="shrink-0 rounded-lg p-1.5 transition-colors hover:opacity-80"
       style={{ color: 'var(--theme-muted)' }}
-      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
     >
       <HugeiconsIcon icon={isDark ? Sun02Icon : Moon02Icon} size={16} strokeWidth={1.5} />
     </button>
@@ -376,7 +376,7 @@ function SectionLabel({
           type="button"
           onClick={onToggle}
           className="ml-auto p-0.5 rounded hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors"
-          aria-label={expanded ? `Collapse ${label}` : `Expand ${label}`}
+          aria-label={expanded ? `${label} 접기` : `${label} 펼치기`}
         >
           <HugeiconsIcon
             icon={ArrowDown01Icon}
@@ -743,7 +743,7 @@ function ChatSidebarComponent({
   const searchItem: NavItemDef = {
     kind: 'button',
     icon: Search01Icon,
-    label: 'Search',
+    label: '검색',
     active: isSearchModalOpen,
     onClick: openSearchModal,
   }
@@ -879,7 +879,7 @@ function ChatSidebarComponent({
                 <Button
                   size="icon-sm"
                   variant="ghost"
-                  aria-label={isVisuallyCollapsed ? 'Open Sidebar' : 'Close Sidebar'}
+                  aria-label={isVisuallyCollapsed ? '사이드바 열기' : '사이드바 닫기'}
                   className="absolute right-2 top-1/2 shrink-0 -translate-y-1/2 opacity-80 hover:opacity-100"
                   data-tour="sidebar-collapse-toggle"
                 >
@@ -900,7 +900,7 @@ function ChatSidebarComponent({
               }
             />
             <TooltipContent side="right">
-              {isVisuallyCollapsed ? 'Open Sidebar' : 'Close Sidebar'}
+              {isVisuallyCollapsed ? '사이드바 열기' : '사이드바 닫기'}
             </TooltipContent>
           </TooltipRoot>
         </TooltipProvider>
@@ -945,7 +945,7 @@ function ChatSidebarComponent({
               strokeWidth={1.5}
               className="size-5 shrink-0"
             />
-            <span>New Session</span>
+            <span>새 세션</span>
           </Link>
         </div>
       )}
@@ -955,7 +955,7 @@ function ChatSidebarComponent({
         {/* Navigation sections */}
         <div className={cn('shrink-0 space-y-0.5 px-2', isMobile && 'order-2')}>
           <SectionLabel
-            label="Main"
+            label="메인"
             isCollapsed={isVisuallyCollapsed}
             transition={transition}
             collapsible
@@ -972,7 +972,7 @@ function ChatSidebarComponent({
           />
 
           <SectionLabel
-            label="Knowledge"
+            label="지식"
             isCollapsed={isVisuallyCollapsed}
             transition={transition}
             collapsible
@@ -1086,7 +1086,7 @@ function ChatSidebarComponent({
                     size={20}
                     strokeWidth={1.5}
                   />
-                  Settings
+                  설정
                 </span>
               </MenuItem>
             </MenuContent>
@@ -1099,7 +1099,7 @@ function ChatSidebarComponent({
                 type="button"
                 onClick={() => handleOpenSettings('hermes')}
                 className="shrink-0 rounded-lg p-1.5 text-primary-400 hover:bg-primary-200 dark:hover:bg-neutral-800 hover:text-primary-600 dark:hover:text-neutral-300 transition-colors"
-                aria-label="Settings"
+                aria-label="설정"
               >
                 <HugeiconsIcon icon={Settings01Icon} size={16} strokeWidth={1.5} />
               </button>

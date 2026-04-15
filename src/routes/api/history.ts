@@ -64,7 +64,7 @@ export const Route = createFileRoute('/api/history')({
               return json({ sessionKey: 'new', sessionId: 'new', messages: [] })
             }
           }
-          let messages
+          let messages: Array<import('../../server/hermes-api').HermesMessage> = []
           try {
             messages = await getMessages(sessionKey)
           } catch {

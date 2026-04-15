@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils'
 import { writeTextToClipboard } from '@/lib/clipboard'
 import { toast } from '@/components/ui/toast'
 
-type SkillsTab = 'installed' | 'marketplace'
+type SkillsTab = 'installed' | 'marketplace' | 'featured'
 type SkillsSort = 'name' | 'category'
 
 type SecurityRisk = {
@@ -88,20 +88,20 @@ type HubSearchResponse = {
 const PAGE_LIMIT = 30
 
 const DEFAULT_CATEGORIES = [
-  'All',
-  'Web & Frontend',
-  'Coding Agents',
+  '전체',
+  '웹 & 프론트엔드',
+  '코딩 에이전트',
   'Git & GitHub',
-  'DevOps & Cloud',
-  'Browser & Automation',
-  'Image & Video',
-  'Search & Research',
-  'AI & LLMs',
-  'Productivity',
-  'Marketing & Sales',
-  'Communication',
-  'Data & Analytics',
-  'Finance & Crypto',
+  'DevOps & 클라우드',
+  '브라우저 & 자동화',
+  '이미지 & 비디오',
+  '검색 & 리서치',
+  'AI & LLM',
+  '생산성',
+  '마케팅 & 세일즈',
+  '커뮤니케이션',
+  '데이터 & 분석',
+  '금융 & 크립토',
 ]
 
 function resolveSkillSearchTier(
@@ -132,11 +132,13 @@ export function SkillsScreen() {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedMarketplaceSearch, setDebouncedMarketplaceSearch] =
     useState('')
-  const [category, setCategory] = useState('All')
+  const [category, setCategory] = useState('전체')
   const [sort, setSort] = useState<SkillsSort>('name')
   const [page, setPage] = useState(1)
   const [actionSkillId, setActionSkillId] = useState<string | null>(null)
   const [selectedSkill, setSelectedSkill] = useState<SkillSummary | null>(null)
+  const [skillDetail, setSkillDetail] = useState<Record<string, unknown> | null>(null)
+  const [skillDetailLoading, setSkillDetailLoading] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -157,7 +159,7 @@ export function SkillsScreen() {
       const params = new URLSearchParams()
       params.set('tab', tab)
       params.set('search', searchInput)
-      params.set('category', category)
+      params.set('category', category === '전체' ? 'All' : category)
       params.set('page', String(page))
       params.set('limit', String(PAGE_LIMIT))
       params.set('sort', sort)
@@ -193,15 +195,36 @@ export function SkillsScreen() {
     },
   })
 
+  const categoriesQuery = useQuery({
+    queryKey: ['skills-categories'],
+    queryFn: async function fetchCategories(): Promise<Array<string>> {
+      const response = await fetch('/api/skills/categories')
+      const payload = (await response.json()) as {
+        categories?: Array<string>
+        error?: string
+      }
+      if (!response.ok) {
+        throw new Error(payload.error || '카테고리를 불러오지 못했습니다')
+      }
+      const cats = payload.categories || []
+      return cats.length > 0 ? ['전체', ...cats] : []
+    },
+    staleTime: 5 * 60 * 1000,
+  })
+
   const categories = useMemo(
     function resolveCategories() {
-      const fromApi = skillsQuery.data?.categories
-      if (Array.isArray(fromApi) && fromApi.length > 0) {
+      const fromApi = categoriesQuery.data
+      if (Array.isArray(fromApi) && fromApi.length > 1) {
         return fromApi
+      }
+      const fromSkillsApi = skillsQuery.data?.categories
+      if (Array.isArray(fromSkillsApi) && fromSkillsApi.length > 0) {
+        return ['전체', ...fromSkillsApi]
       }
       return DEFAULT_CATEGORIES
     },
-    [skillsQuery.data?.categories],
+    [categoriesQuery.data, skillsQuery.data?.categories],
   )
 
   const totalPages = Math.max(
@@ -298,7 +321,7 @@ export function SkillsScreen() {
                 ? 'safe'
                 : skill.trust_level === 'trusted'
                   ? 'safe'
-                  : 'review',
+                  : 'medium',
             flags: [],
             score: 0,
           },
@@ -307,6 +330,28 @@ export function SkillsScreen() {
     },
     [hubQuery.data?.results],
   )
+
+  async function openSkillDetail(skill: SkillSummary) {
+    setSelectedSkill(skill)
+    setSkillDetail(null)
+    setSkillDetailLoading(true)
+    try {
+      const params = new URLSearchParams()
+      params.set('name', skill.name)
+      if (skill.sourcePath) {
+        params.set('file_path', skill.sourcePath)
+      }
+      const response = await fetch(`/api/skills/detail?${params.toString()}`)
+      const data = (await response.json()) as Record<string, unknown>
+      if (response.ok) {
+        setSkillDetail(data)
+      }
+    } catch {
+      // 세부 정보 로딩 실패 시 기본 정보만 표시
+    } finally {
+      setSkillDetailLoading(false)
+    }
+  }
 
   async function copyCommandAndToast(command: string, message: string) {
     try {
@@ -424,7 +469,7 @@ export function SkillsScreen() {
     setTab(parsedTab)
     setPage(1)
     if (parsedTab !== 'marketplace') {
-      setCategory('All')
+      setCategory('전체')
       setSort('name')
     }
   }
@@ -451,14 +496,13 @@ export function SkillsScreen() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-1.5">
               <p className="text-xs font-medium uppercase text-primary-500 tabular-nums">
-                Petasos Marketplace
+                Petasos 스토어
               </p>
               <h1 className="text-2xl font-medium text-ink text-balance sm:text-3xl">
-                Skills Browser
+                스킬 브라우저
               </h1>
               <p className="text-sm text-primary-500 text-pretty sm:text-base">
-                Discover, install, and manage skills across your local workspace
-                and Skills Hub.
+                로컬 워크스페이스와 스킬 허브에서 스킬을 검색, 설치, 관리하세요.
               </p>
             </div>
           </div>
@@ -471,14 +515,17 @@ export function SkillsScreen() {
                 className="w-full rounded-xl border border-primary-200 bg-primary-100/60 p-1 sm:w-auto"
                 variant="default"
               >
-                <TabsTab value="installed" className="flex-1 sm:min-w-[132px]">
-                  Installed
+                <TabsTab
+                  value="installed"
+                  className="flex-1 rounded-lg px-4 py-1.5 text-sm transition-colors data-[state=active]:bg-accent-500 data-[state=active]:text-black data-[state=active]:font-semibold data-[state=active]:shadow-sm text-primary-500 hover:text-primary-700 sm:min-w-[132px]"
+                >
+                  설치됨
                 </TabsTab>
                 <TabsTab
                   value="marketplace"
-                  className="flex-1 sm:min-w-[168px]"
+                  className="flex-1 rounded-lg px-4 py-1.5 text-sm transition-colors data-[state=active]:bg-accent-500 data-[state=active]:text-black data-[state=active]:font-semibold data-[state=active]:shadow-sm text-primary-500 hover:text-primary-700 sm:min-w-[168px]"
                 >
-                  Marketplace
+                  마켓플레이스
                 </TabsTab>
 
               </TabsList>
@@ -488,7 +535,7 @@ export function SkillsScreen() {
                   <input
                     value={searchInput}
                     onChange={(event) => handleSearchChange(event.target.value)}
-                    placeholder="Search by name, tags, or description"
+                    placeholder="이름, 태그, 설명으로 검색"
                     className="h-9 w-full min-w-0 rounded-lg border border-primary-200 bg-primary-100/60 px-3 text-sm text-ink outline-none transition-colors focus:border-primary sm:min-w-[220px]"
                   />
 
@@ -520,8 +567,8 @@ export function SkillsScreen() {
                       }
                       className="h-9 rounded-lg border border-primary-200 bg-primary-100/60 px-3 text-sm text-ink outline-none"
                     >
-                      <option value="name">Name A-Z</option>
-                      <option value="category">Category</option>
+                      <option value="name">이름순</option>
+                      <option value="category">카테고리순</option>
                     </select>
                   ) : null}
                 </div>
@@ -540,7 +587,7 @@ export function SkillsScreen() {
                 loading={skillsQuery.isPending}
                 actionSkillId={actionSkillId}
                 tab="installed"
-                onOpenDetails={setSelectedSkill}
+                onOpenDetails={openSkillDetail}
                 onInstall={(skillId) => runSkillAction('install', { skillId })}
                 onUninstall={(skillId) =>
                   runSkillAction('uninstall', { skillId })
@@ -556,11 +603,11 @@ export function SkillsScreen() {
                 <input
                   value={searchInput}
                   onChange={(event) => handleSearchChange(event.target.value)}
-                  placeholder="Search Skills Hub, GitHub, and local fallback"
+                  placeholder="스킬 허브, GitHub, 로컬 검색"
                   className="h-10 w-full rounded-lg border border-primary-200 bg-primary-100/60 px-3 text-sm text-ink outline-none transition-colors focus:border-primary"
                 />
                 <div className="text-xs text-primary-500 sm:text-right">
-                  Source: {hubQuery.data?.source || 'hub'}
+                  출처: {hubQuery.data?.source || 'hub'}
                 </div>
               </div>
 
@@ -568,14 +615,14 @@ export function SkillsScreen() {
                 <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                   {hubQuery.error instanceof Error
                     ? hubQuery.error.message
-                    : 'Failed to load marketplace skills.'}
+                    : '마켓플레이스 스킬을 불러오지 못했습니다.'}
                 </div>
               ) : hubQuery.data &&
                 (hubQuery.data.source === 'installed-fallback' ||
                   hubQuery.data.source === 'error') ? (
                 <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
-                  Skills Hub search unavailable — showing installed skills
-                  instead. Ensure the Hermes gateway is running.
+                  스킬 허브 검색을 사용할 수 없어 설치된 스킬을 대신 표시합니다.
+                  Hermes 게이트웨이가 실행 중인지 확인하세요.
                 </div>
               ) : null}
 
@@ -586,13 +633,13 @@ export function SkillsScreen() {
                 tab="marketplace"
                 emptyState={{
                   title: searchInput.trim()
-                    ? 'No hub skills found'
-                    : 'Search the Skills Hub',
+                    ? '허브 스킬을 찾을 수 없습니다'
+                    : '스킬 허브 검색',
                   description: searchInput.trim()
-                    ? 'Try a different search term. If Skills Hub is unavailable, local installed skills are used as fallback.'
-                    : 'Start typing to search Skills Hub and other skill sources.',
+                    ? '다른 검색어를 시도해 보세요. 스킬 허브를 사용할 수 없는 경우 로컬 설치 스킬이 대신 표시됩니다.'
+                    : '스킬 허브 및 다른 스킬 소스를 검색하려면 입력을 시작하세요.',
                 }}
-                onOpenDetails={setSelectedSkill}
+                onOpenDetails={openSkillDetail}
                 onInstall={(skillId) => {
                   const skill = hubQuery.data?.results.find(
                     (entry) => entry.id === skillId,
@@ -616,7 +663,7 @@ export function SkillsScreen() {
         {tab !== 'marketplace' ? (
           <footer className="flex items-center justify-between rounded-xl border border-primary-200 bg-primary-50/80 px-3 py-2.5 text-sm text-primary-500 tabular-nums">
             <span>
-              {(skillsQuery.data?.total || 0).toLocaleString()} total skills
+              {(skillsQuery.data?.total || 0).toLocaleString()}개 스킬
             </span>
             <div className="flex items-center gap-2">
               <Button
@@ -625,7 +672,7 @@ export function SkillsScreen() {
                 disabled={page <= 1 || skillsQuery.isPending}
                 onClick={() => setPage((current) => Math.max(1, current - 1))}
               >
-                Previous
+                이전
               </Button>
               <span className="min-w-[82px] text-center">
                 {page} / {totalPages}
@@ -638,7 +685,7 @@ export function SkillsScreen() {
                   setPage((current) => Math.min(totalPages, current + 1))
                 }
               >
-                Next
+                다음
               </Button>
             </div>
           </footer>
@@ -650,6 +697,7 @@ export function SkillsScreen() {
         onOpenChange={(open) => {
           if (!open) {
             setSelectedSkill(null)
+            setSkillDetail(null)
           }
         }}
       >
@@ -661,8 +709,8 @@ export function SkillsScreen() {
                   {selectedSkill.icon} {selectedSkill.name}
                 </DialogTitle>
                 <DialogDescription className="mt-1 text-pretty">
-                  by {selectedSkill.author} • {selectedSkill.category} •{' '}
-                  {selectedSkill.fileCount.toLocaleString()} files
+                  제작: {selectedSkill.author} • {selectedSkill.category} •{' '}
+                  {selectedSkill.fileCount.toLocaleString()}개 파일
                 </DialogDescription>
                 {selectedSkill.security && (
                   <div className="mt-3 rounded-xl border border-primary-200 bg-primary-50/80 overflow-hidden">
@@ -679,7 +727,7 @@ export function SkillsScreen() {
                   <div className="space-y-3">
                     {selectedSkill.homepage ? (
                       <p className="text-sm text-primary-500 text-pretty">
-                        Homepage:{' '}
+                        홈페이지:{' '}
                         <a
                           href={selectedSkill.homepage}
                           target="_blank"
@@ -689,6 +737,41 @@ export function SkillsScreen() {
                           {selectedSkill.homepage}
                         </a>
                       </p>
+                    ) : null}
+
+                    {skillDetailLoading ? (
+                      <div className="flex items-center gap-2 text-sm text-primary-500">
+                        <span className="animate-pulse">상세 정보를 불러오는 중...</span>
+                      </div>
+                    ) : null}
+
+                    {skillDetail && typeof skillDetail.description === 'string' && skillDetail.description !== selectedSkill.description ? (
+                      <div className="rounded-xl border border-primary-200 bg-primary-100/30 p-4 backdrop-blur-sm">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-primary-400 mb-2">
+                          상세 설명
+                        </p>
+                        <Markdown>
+                          {skillDetail.description as string}
+                        </Markdown>
+                      </div>
+                    ) : null}
+
+                    {skillDetail && Array.isArray(skillDetail.linked_files) && (skillDetail.linked_files as Array<unknown>).length > 0 ? (
+                      <div className="rounded-xl border border-primary-200 bg-primary-100/30 p-4 backdrop-blur-sm">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-primary-400 mb-2">
+                          연결된 파일 ({(skillDetail.linked_files as Array<unknown>).length}개)
+                        </p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {(skillDetail.linked_files as Array<string>).map((file) => (
+                            <span
+                              key={file}
+                              className="rounded-md border border-primary-200 bg-primary-100/50 px-2 py-0.5 text-xs text-primary-500"
+                            >
+                              {file}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     ) : null}
 
                     <div className="flex flex-wrap gap-1.5">
@@ -703,15 +786,20 @@ export function SkillsScreen() {
                         ))
                       ) : (
                         <span className="rounded-md border border-primary-200 bg-primary-100/50 px-2 py-0.5 text-xs text-primary-500">
-                          No triggers listed
+                          등록된 트리거 없음
                         </span>
                       )}
                     </div>
 
                     <article className="rounded-xl border border-primary-200 bg-primary-100/30 p-4 backdrop-blur-sm">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-primary-400 mb-2">
+                        SKILL.md
+                      </p>
                       <Markdown>
-                        {selectedSkill.content ||
-                          `# ${selectedSkill.name}\n\n${selectedSkill.description}`}
+                        {(skillDetail && typeof skillDetail.content === 'string')
+                          ? (skillDetail.content as string)
+                          : selectedSkill.content ||
+                            `# ${selectedSkill.name}\n\n${selectedSkill.description}`}
                       </Markdown>
                     </article>
                   </div>
@@ -723,7 +811,7 @@ export function SkillsScreen() {
 
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-primary-200 px-5 py-3">
                 <p className="text-sm text-primary-500 text-pretty">
-                  Source:{' '}
+                  출처:{' '}
                   <code className="inline-code">
                     {selectedSkill.sourcePath}
                   </code>
@@ -740,7 +828,7 @@ export function SkillsScreen() {
                         })
                       }}
                     >
-                      Uninstall
+                      제거
                     </Button>
                   ) : (
                     <Button
@@ -750,15 +838,18 @@ export function SkillsScreen() {
                         runSkillAction('install', { skillId: selectedSkill.id })
                       }
                     >
-                      Install
+                      설치
                     </Button>
                   )}
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setSelectedSkill(null)}
+                    onClick={() => {
+                      setSelectedSkill(null)
+                      setSkillDetail(null)
+                    }}
                   >
-                    Close
+                    닫기
                   </Button>
                 </div>
               </div>
@@ -955,11 +1046,11 @@ function SkillsGrid({
     return (
       <div className="rounded-xl border border-dashed border-primary-200 bg-primary-100/40 px-4 py-8 text-center">
         <p className="text-sm font-medium text-primary-700">
-          {emptyState?.title || 'No skills found'}
+          {emptyState?.title || '스킬을 찾을 수 없습니다'}
         </p>
         <p className="mt-1 text-xs text-primary-500 text-pretty max-w-sm mx-auto">
           {emptyState?.description ||
-            'Try adjusting your filters or search term'}
+            '필터나 검색어를 조정해 보세요'}
         </p>
       </div>
     )
@@ -986,7 +1077,7 @@ function SkillsGrid({
                     {skill.name}
                   </h3>
                   <p className="line-clamp-1 text-xs text-primary-500">
-                    by {skill.author}
+                    제작: {skill.author}
                   </p>
                 </div>
                 <span
@@ -997,7 +1088,7 @@ function SkillsGrid({
                       : 'border-primary-200 bg-primary-100/60 text-primary-500',
                   )}
                 >
-                  {skill.installed ? 'Installed' : 'Available'}
+                  {skill.installed ? '설치됨' : '사용 가능'}
                 </span>
               </div>
 
@@ -1026,7 +1117,7 @@ function SkillsGrid({
                   size="sm"
                   onClick={() => onOpenDetails(skill)}
                 >
-                  Details
+                  상세보기
                 </Button>
 
                 {tab === 'installed' ? (
@@ -1038,9 +1129,9 @@ function SkillsGrid({
                         onCheckedChange={(checked) =>
                           onToggle(skill.id, checked)
                         }
-                        aria-label={`Toggle ${skill.name}`}
+                        aria-label={`${skill.name} 토글`}
                       />
-                      {skill.enabled ? 'Enabled' : 'Disabled'}
+                      {skill.enabled ? '활성' : '비활성'}
                     </div>
                     <Button
                       variant="outline"
@@ -1048,7 +1139,7 @@ function SkillsGrid({
                       disabled={isActing}
                       onClick={() => onUninstall(skill.id)}
                     >
-                      Uninstall
+                      제거
                     </Button>
                   </div>
                 ) : skill.installed ? (
@@ -1058,7 +1149,7 @@ function SkillsGrid({
                     disabled={isActing}
                     onClick={() => onUninstall(skill.id)}
                   >
-                    Uninstall
+                    제거
                   </Button>
                 ) : (
                   <Button
@@ -1066,7 +1157,7 @@ function SkillsGrid({
                     disabled={isActing}
                     onClick={() => onInstall(skill.id)}
                   >
-                    Install
+                    설치
                   </Button>
                 )}
               </div>
@@ -1102,7 +1193,7 @@ function FeaturedGrid({
   if (skills.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-primary-200 bg-primary-100/40 px-4 py-10 text-center text-sm text-primary-500 text-pretty">
-        Featured picks are currently unavailable.
+        추천 스킬을 현재 사용할 수 없습니다.
       </div>
     )
   }
@@ -1119,12 +1210,12 @@ function FeaturedGrid({
             <div className="mb-3 flex items-start justify-between gap-2">
               <div className="space-y-1">
                 <p className="text-xs font-medium uppercase text-primary-500 tabular-nums">
-                  {skill.featuredGroup || 'Staff Pick'}
+                  {skill.featuredGroup || '추천 스킬'}
                 </p>
                 <h3 className="text-lg font-medium text-ink text-balance">
                   {skill.icon} {skill.name}
                 </h3>
-                <p className="text-sm text-primary-500">by {skill.author}</p>
+                <p className="text-sm text-primary-500">제작: {skill.author}</p>
               </div>
 
               <span
@@ -1135,7 +1226,7 @@ function FeaturedGrid({
                     : 'border-primary-200 bg-primary-100/60 text-primary-500',
                 )}
               >
-                {skill.installed ? 'Installed' : 'Staff Pick'}
+                {skill.installed ? '설치됨' : '추천'}
               </span>
             </div>
 
@@ -1149,7 +1240,7 @@ function FeaturedGrid({
                 size="sm"
                 onClick={() => onOpenDetails(skill)}
               >
-                Details
+                상세보기
               </Button>
               {skill.installed ? (
                 <Button
@@ -1158,7 +1249,7 @@ function FeaturedGrid({
                   disabled={isActing}
                   onClick={() => onUninstall(skill.id)}
                 >
-                  Uninstall
+                  제거
                 </Button>
               ) : (
                 <Button
@@ -1166,7 +1257,7 @@ function FeaturedGrid({
                   disabled={isActing}
                   onClick={() => onInstall(skill.id)}
                 >
-                  Install
+                  설치
                 </Button>
               )}
             </div>

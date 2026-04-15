@@ -1,10 +1,14 @@
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
+  Add01Icon,
   ArrowDown01Icon,
   ArrowUp01Icon,
   BrainIcon,
+  Cancel01Icon,
+  Delete02Icon,
   PencilEdit02Icon,
   Search01Icon,
+  Tick01Icon,
 } from '@hugeicons/core-free-icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
@@ -28,6 +32,17 @@ type ListResponse = { files?: Array<MemoryFileMeta> }
 type ReadResponse = { path?: string; content?: string }
 type SearchResponse = { results?: Array<MemorySearchMatch> }
 type WriteResponse = { success?: boolean; path?: string; error?: string }
+
+// Hermes memory items types
+type HermesMemoryTarget = {
+  target: string
+  entries: string[]
+  entry_count: number
+}
+
+type HermesMemoryResponse = {
+  targets?: HermesMemoryTarget[]
+}
 
 async function readJson<T>(url: string): Promise<T> {
   const response = await fetch(url)
@@ -117,6 +132,16 @@ export function MemoryBrowserScreen() {
   const queryClient = useQueryClient()
   const searchTerm = deferredSearch.trim()
 
+  // ── Memory items state (Hermes API) ──
+  const [addItemTarget, setAddItemTarget] = useState<'memory' | 'user'>('memory')
+  const [addItemContent, setAddItemContent] = useState('')
+  const [addItemOpen, setAddItemOpen] = useState(false)
+  const [editItemTarget, setEditItemTarget] = useState<string>('memory')
+  const [editItemOldText, setEditItemOldText] = useState('')
+  const [editItemContent, setEditItemContent] = useState('')
+  const [editItemOpen, setEditItemOpen] = useState(false)
+  const [itemBusy, setItemBusy] = useState(false)
+
   const filesQuery = useQuery({
     queryKey: ['memory', 'list'],
     queryFn: () => readJson<ListResponse>('/api/memory/list'),
@@ -124,6 +149,12 @@ export function MemoryBrowserScreen() {
 
   const files = filesQuery.data?.files ?? []
   const { rootMemory, memoryFiles } = useMemo(() => splitFiles(files), [files])
+
+  // Fetch Hermes memory items
+  const memoryItemsQuery = useQuery({
+    queryKey: ['memory', 'items'],
+    queryFn: () => readJson<HermesMemoryResponse>('/api/memory?target=all'),
+  })
 
   useEffect(() => {
     if (selectedPath) return
@@ -243,6 +274,96 @@ export function MemoryBrowserScreen() {
     }
   }
 
+  // ── Memory item CRUD handlers ──
+
+  async function handleAddItem() {
+    if (!addItemContent.trim() || itemBusy) return
+    setItemBusy(true)
+    try {
+      const res = await fetch('/api/memory/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target: addItemTarget, content: addItemContent.trim() }),
+      })
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string }
+        throw new Error(data.error || `추가 실패 (${res.status})`)
+      }
+      setAddItemOpen(false)
+      setAddItemContent('')
+      await queryClient.invalidateQueries({ queryKey: ['memory', 'items'] })
+      toast('항목이 추가되었습니다', { type: 'success' })
+    } catch (err) {
+      toast(err instanceof Error ? err.message : '항목 추가 실패', { type: 'warning' })
+    } finally {
+      setItemBusy(false)
+    }
+  }
+
+  function openEditItem(target: string, oldText: string) {
+    setEditItemTarget(target)
+    setEditItemOldText(oldText)
+    setEditItemContent(oldText)
+    setEditItemOpen(true)
+  }
+
+  async function handleReplaceItem() {
+    if (!editItemOldText.trim() || !editItemContent.trim() || itemBusy) return
+    setItemBusy(true)
+    try {
+      const res = await fetch('/api/memory/replace', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          target: editItemTarget,
+          old_text: editItemOldText,
+          content: editItemContent.trim(),
+        }),
+      })
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string }
+        throw new Error(data.error || `수정 실패 (${res.status})`)
+      }
+      setEditItemOpen(false)
+      setEditItemOldText('')
+      setEditItemContent('')
+      await queryClient.invalidateQueries({ queryKey: ['memory', 'items'] })
+      toast('항목이 수정되었습니다', { type: 'success' })
+    } catch (err) {
+      toast(err instanceof Error ? err.message : '항목 수정 실패', { type: 'warning' })
+    } finally {
+      setItemBusy(false)
+    }
+  }
+
+  async function handleRemoveItem(target: string, oldText: string) {
+    const confirmed = typeof window === 'undefined' ? true : window.confirm('이 항목을 삭제하시겠습니까?')
+    if (!confirmed) return
+    setItemBusy(true)
+    try {
+      const res = await fetch('/api/memory/remove', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target, old_text: oldText }),
+      })
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string }
+        throw new Error(data.error || `삭제 실패 (${res.status})`)
+      }
+      await queryClient.invalidateQueries({ queryKey: ['memory', 'items'] })
+      toast('항목이 삭제되었습니다', { type: 'success' })
+    } catch (err) {
+      toast(err instanceof Error ? err.message : '항목 삭제 실패', { type: 'warning' })
+    } finally {
+      setItemBusy(false)
+    }
+  }
+
+  // Extract memory items from Hermes API response
+  const targets = memoryItemsQuery.data?.targets ?? []
+  const memoryItems = targets.find(t => t.target === 'memory')?.entries ?? []
+  const userItems = targets.find(t => t.target === 'user')?.entries ?? []
+
   return (
     <div
       className="flex h-full min-h-0 flex-col"
@@ -291,7 +412,8 @@ export function MemoryBrowserScreen() {
         </div>
       </div>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 md:grid-cols-3 md:p-4">
+      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="grid grid-cols-1 gap-3 p-3 md:grid-cols-3 md:p-4">
         <aside className="flex min-h-0 flex-col rounded-2xl border border-primary-200 bg-primary-50 dark:border-neutral-800 dark:bg-neutral-950 md:col-span-1">
           <button
             type="button"
@@ -438,7 +560,7 @@ export function MemoryBrowserScreen() {
                     </button>
                     {hasUnsavedChanges ? (
                       <span
-                        title="Unsaved changes"
+                        title="저장하지 않은 변경사항"
                         className="inline-block size-2 rounded-full bg-amber-400"
                       />
                     ) : null}
@@ -471,13 +593,13 @@ export function MemoryBrowserScreen() {
             )}
           >
             {filesQuery.isLoading ? (
-              <StateBox label="Loading memory files..." />
+              <StateBox label="메모리 파일 불러오는 중..." />
             ) : filesQuery.error instanceof Error ? (
               <StateBox label={filesQuery.error.message} error />
             ) : !selectedPath ? (
-              <StateBox label="No memory files found" />
+              <StateBox label="메모리 파일이 없습니다" />
             ) : contentQuery.isLoading ? (
-              <StateBox label="Loading file..." />
+              <StateBox label="파일 불러오는 중..." />
             ) : contentQuery.error instanceof Error ? (
               <StateBox label={contentQuery.error.message} error />
             ) : isEditing ? (
@@ -546,6 +668,262 @@ export function MemoryBrowserScreen() {
             )}
           </div>
         </section>
+      </div>
+
+      {/* ── Memory Items Section (Hermes API) ── */}
+      <div
+        className="border-t px-3 py-3 md:px-4"
+        style={{ borderTop: '1px solid var(--theme-border)' }}
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <HugeiconsIcon icon={BrainIcon} size={18} strokeWidth={1.6} />
+            <span className="text-sm font-semibold">메모리 항목</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setAddItemTarget('memory')
+              setAddItemContent('')
+              setAddItemOpen(true)
+            }}
+            className="inline-flex items-center gap-1.5 rounded-md bg-accent-500 px-3 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-accent-400"
+          >
+            <HugeiconsIcon icon={Add01Icon} size={14} strokeWidth={1.7} />
+            항목 추가
+          </button>
+        </div>
+
+        {memoryItemsQuery.isLoading ? (
+          <div className="text-xs text-primary-400 dark:text-neutral-500">
+            메모리 항목 불러오는 중...
+          </div>
+        ) : memoryItemsQuery.error instanceof Error ? (
+          <div className="text-xs text-red-500">{memoryItemsQuery.error.message}</div>
+        ) : memoryItems.length === 0 && userItems.length === 0 ? (
+          <div className="text-xs text-primary-400 dark:text-neutral-500">
+            메모리 항목이 없습니다
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {memoryItems.length > 0 && (
+              <MemorySection
+                title="Memory"
+                target="memory"
+                items={memoryItems}
+                onEdit={(oldText) => openEditItem('memory', oldText)}
+                onRemove={(oldText) => handleRemoveItem('memory', oldText)}
+                disabled={itemBusy}
+              />
+            )}
+            {userItems.length > 0 && (
+              <MemorySection
+                title="User"
+                target="user"
+                items={userItems}
+                onEdit={(oldText) => openEditItem('user', oldText)}
+                onRemove={(oldText) => handleRemoveItem('user', oldText)}
+                disabled={itemBusy}
+              />
+            )}
+          </div>
+        )}
+      </div>
+      </div>
+
+      {/* ── Add Item Dialog ── */}
+      {addItemOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div
+            className="w-full max-w-md rounded-2xl border p-5"
+            style={{
+              borderColor: 'var(--theme-border)',
+              backgroundColor: 'var(--theme-card)',
+              color: 'var(--theme-text)',
+            }}
+          >
+            <h3 className="mb-4 text-base font-semibold">항목 추가</h3>
+            <div className="mb-3">
+              <label className="mb-1 block text-xs font-medium">대상</label>
+              <select
+                value={addItemTarget}
+                onChange={(e) => setAddItemTarget(e.target.value as 'memory' | 'user')}
+                className="w-full rounded-lg border px-3 py-2 text-sm outline-none"
+                style={{
+                  border: '1px solid var(--theme-border)',
+                  backgroundColor: 'var(--theme-bg)',
+                  color: 'var(--theme-text)',
+                }}
+              >
+                <option value="memory">memory</option>
+                <option value="user">user</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="mb-1 block text-xs font-medium">내용</label>
+              <textarea
+                value={addItemContent}
+                onChange={(e) => setAddItemContent(e.target.value)}
+                placeholder="추가할 메모리 내용을 입력하세요"
+                rows={4}
+                className="w-full rounded-lg border px-3 py-2 text-sm outline-none"
+                style={{
+                  border: '1px solid var(--theme-border)',
+                  backgroundColor: 'var(--theme-bg)',
+                  color: 'var(--theme-text)',
+                }}
+              />
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setAddItemOpen(false)}
+                className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-primary-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                style={{ border: '1px solid var(--theme-border)' }}
+              >
+                <HugeiconsIcon icon={Cancel01Icon} size={14} strokeWidth={1.7} />
+                취소
+              </button>
+              <button
+                type="button"
+                onClick={handleAddItem}
+                disabled={!addItemContent.trim() || itemBusy}
+                className="inline-flex items-center gap-1.5 rounded-md bg-accent-500 px-3 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-accent-400 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <HugeiconsIcon icon={Tick01Icon} size={14} strokeWidth={1.7} />
+                {itemBusy ? '추가 중...' : '추가'}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {/* ── Edit Item Dialog ── */}
+      {editItemOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div
+            className="w-full max-w-md rounded-2xl border p-5"
+            style={{
+              borderColor: 'var(--theme-border)',
+              backgroundColor: 'var(--theme-card)',
+              color: 'var(--theme-text)',
+            }}
+          >
+            <h3 className="mb-4 text-base font-semibold">항목 편집</h3>
+            <div className="mb-3">
+              <label className="mb-1 block text-xs font-medium">대상</label>
+              <div className="rounded-lg border px-3 py-2 text-sm opacity-60" style={{ border: '1px solid var(--theme-border)' }}>
+                {editItemTarget}
+              </div>
+            </div>
+            <div className="mb-2">
+              <label className="mb-1 block text-xs font-medium">기존 내용</label>
+              <div
+                className="rounded-lg border px-3 py-2 text-xs opacity-50"
+                style={{
+                  border: '1px solid var(--theme-border)',
+                  backgroundColor: 'var(--theme-bg)',
+                  maxHeight: 80,
+                  overflow: 'auto',
+                }}
+              >
+                {editItemOldText}
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="mb-1 block text-xs font-medium">새 내용</label>
+              <textarea
+                value={editItemContent}
+                onChange={(e) => setEditItemContent(e.target.value)}
+                rows={4}
+                className="w-full rounded-lg border px-3 py-2 text-sm outline-none"
+                style={{
+                  border: '1px solid var(--theme-border)',
+                  backgroundColor: 'var(--theme-bg)',
+                  color: 'var(--theme-text)',
+                }}
+              />
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setEditItemOpen(false)}
+                className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-primary-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                style={{ border: '1px solid var(--theme-border)' }}
+              >
+                <HugeiconsIcon icon={Cancel01Icon} size={14} strokeWidth={1.7} />
+                취소
+              </button>
+              <button
+                type="button"
+                onClick={handleReplaceItem}
+                disabled={!editItemContent.trim() || itemBusy}
+                className="inline-flex items-center gap-1.5 rounded-md bg-accent-500 px-3 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-accent-400 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <HugeiconsIcon icon={Tick01Icon} size={14} strokeWidth={1.7} />
+                {itemBusy ? '저장 중...' : '저장'}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+function MemorySection({
+  title,
+  target,
+  items,
+  onEdit,
+  onRemove,
+  disabled,
+}: {
+  title: string
+  target: string
+  items: Array<string>
+  onEdit: (oldText: string) => void
+  onRemove: (oldText: string) => void
+  disabled: boolean
+}) {
+  return (
+    <div>
+      <div className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-primary-400 dark:text-neutral-500">
+        {title} ({items.length})
+      </div>
+      <div className="space-y-1">
+        {items.map((item, index) => (
+          <div
+            key={`${target}:${index}`}
+            className="group flex items-start gap-2 rounded-lg border border-primary-200 bg-primary-50/80 px-2.5 py-2 dark:border-neutral-800 dark:bg-neutral-900/60"
+          >
+            <div className="min-w-0 flex-1">
+              <pre className="whitespace-pre-wrap break-words text-xs text-primary-700 dark:text-neutral-200">
+                {item}
+              </pre>
+            </div>
+            <div className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+              <button
+                type="button"
+                title="편집"
+                disabled={disabled}
+                onClick={() => onEdit(item)}
+                className="rounded p-1 text-primary-400 transition-colors hover:bg-primary-200 hover:text-primary-600 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300 disabled:opacity-50"
+              >
+                <HugeiconsIcon icon={PencilEdit02Icon} size={14} strokeWidth={1.7} />
+              </button>
+              <button
+                type="button"
+                title="삭제"
+                disabled={disabled}
+                onClick={() => onRemove(item)}
+                className="rounded p-1 text-red-400 transition-colors hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-300 disabled:opacity-50"
+              >
+                <HugeiconsIcon icon={Delete02Icon} size={14} strokeWidth={1.7} />
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )

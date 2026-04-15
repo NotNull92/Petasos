@@ -169,7 +169,9 @@ function checkAuthStore(providerId: string): {
           return { hasToken: true, source, maskedKey: maskKey(token) }
         }
       }
-    } catch {}
+    } catch (err) {
+      console.error('[hermes-config] Failed to read token from store:', storePath, err)
+    }
   }
   return { hasToken: false, source: '' }
 }

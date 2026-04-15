@@ -196,7 +196,7 @@ export function EditJobDialog({
                 onClick={() => onOpenChange(false)}
                 className="rounded-lg p-2 transition-colors"
                 style={{ color: 'var(--theme-muted)' }}
-                aria-label="Close edit job dialog"
+                aria-label="작업 편집 대화상자 닫기"
               >
                 <HugeiconsIcon icon={Cancel01Icon} size={18} />
               </button>
@@ -213,7 +213,7 @@ export function EditJobDialog({
                       name: event.target.value,
                     }))
                   }
-                  placeholder="Daily research summary"
+                  placeholder="매일 리서치 요약"
                   required
                   className="w-full rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-1"
                   style={{
@@ -296,7 +296,7 @@ export function EditJobDialog({
                       prompt: event.target.value,
                     }))
                   }
-                  placeholder="What should Hermes do?"
+                  placeholder="Hermes가 무엇을 해야 하나요?"
                   required
                   rows={5}
                   className="w-full resize-none rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-1"

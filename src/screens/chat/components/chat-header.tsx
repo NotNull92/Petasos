@@ -22,13 +22,13 @@ function toTitleCase(value: string): string {
 
 function formatMobileSessionTitle(rawTitle: string): string {
   const title = rawTitle.trim()
-  if (!title) return 'New Chat'
+  if (!title) return '새 대화'
 
   const normalized = title.toLowerCase()
 
   // Agent session patterns
   if (normalized === 'agent:main:main' || normalized === 'agent:main') {
-    return 'Main Chat'
+    return '메인 대화'
   }
   const parts = title
     .split(':')
@@ -40,14 +40,14 @@ function formatMobileSessionTitle(rawTitle: string): string {
     parts[1].length > 0
   ) {
     const candidate = parts[parts.length - 1]
-    if (candidate.toLowerCase() === 'main') return 'Main Chat'
-    return `${toTitleCase(candidate)} Chat`
+    if (candidate.toLowerCase() === 'main') return '메인 대화'
+    return `${toTitleCase(candidate)} 대화`
   }
 
   // Common system prompts → friendly names
-  if (normalized.startsWith('read heartbeat')) return 'Main Chat'
-  if (normalized.startsWith('generate daily')) return 'Daily Brief'
-  if (normalized.startsWith('morning check')) return 'Morning Check-in'
+  if (normalized.startsWith('read heartbeat')) return '메인 대화'
+  if (normalized.startsWith('generate daily')) return '데일리 브리핑'
+  if (normalized.startsWith('morning check')) return '모닝 체크인'
 
   // If it looks like a command/prompt (starts with a verb + long), summarize it
   const MAX_LEN = 20
@@ -254,7 +254,7 @@ function ChatHeaderComponent({
             type="button"
             onClick={openHamburgerMenu}
             className="shrink-0 flex items-center justify-center w-11 h-11 -ml-1 rounded-xl active:bg-white/10 transition-colors z-10"
-            aria-label="Open navigation menu"
+            aria-label="네비게이션 메뉴 열기"
           >
             <svg
               width="20"
@@ -277,10 +277,10 @@ function ChatHeaderComponent({
             type="button"
             onClick={onOpenSessions}
             className="flex items-center gap-1 min-w-0 max-w-[55vw] px-3 py-1.5 rounded-full bg-primary-100/70 hover:bg-primary-200/80 dark:bg-neutral-700/80 dark:hover:bg-neutral-600/80 transition-colors"
-            aria-label="Switch session"
+            aria-label="세션 전환"
           >
             <span className="truncate text-[13px] font-medium text-primary-600 dark:text-primary-300">
-              {mobileTitle === 'new' ? 'New Chat' : mobileTitle}
+              {mobileTitle === 'new' ? '새 대화' : mobileTitle}
             </span>
             <svg
               width="8"
@@ -323,7 +323,7 @@ function ChatHeaderComponent({
                     variant="ghost"
                     className="mr-2 text-primary-800 hover:bg-primary-100 dark:hover:bg-primary-800"
                     aria-label={
-                      fileExplorerCollapsed ? 'Show files' : 'Hide files'
+                      fileExplorerCollapsed ? '파일 탐색기 보기' : '파일 탐색기 숨기기'
                     }
                   >
                     <HugeiconsIcon
@@ -335,7 +335,7 @@ function ChatHeaderComponent({
                 }
               />
               <TooltipContent side="bottom">
-                {fileExplorerCollapsed ? 'Show files' : 'Hide files'}
+                {fileExplorerCollapsed ? '파일 탐색기 보기' : '파일 탐색기 숨기기'}
               </TooltipContent>
             </TooltipRoot>
           </TooltipProvider>
@@ -362,7 +362,7 @@ function ChatHeaderComponent({
                 }
               }}
               className="h-7 w-full min-w-0 border-b border-transparent bg-transparent px-0 text-sm font-medium text-balance text-ink outline-none transition-colors focus:border-primary-300"
-              aria-label="Session name"
+              aria-label="세션 이름"
             />
           ) : (
             <div

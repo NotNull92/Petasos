@@ -50,7 +50,8 @@ function readTaskFile(): TaskFile {
     if (!raw) return { tasks: [] }
     const parsed = JSON.parse(raw) as Partial<TaskFile>
     return { tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [] }
-  } catch {
+  } catch (err) {
+    console.error('[tasks-store] Failed to read tasks file:', err)
     return { tasks: [] }
   }
 }

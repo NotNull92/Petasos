@@ -82,7 +82,9 @@ function getAuthStoreModels(): Array<ModelEntry> {
         if (models) extra.push(...models)
       }
       if (extra.length > 0) break // Use first store that has data
-    } catch {}
+    } catch (err) {
+      console.error('[models] Failed to read auth store for model discovery:', err)
+    }
   }
   return extra
 }

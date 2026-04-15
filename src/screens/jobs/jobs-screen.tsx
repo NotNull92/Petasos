@@ -40,10 +40,10 @@ function formatNextRun(nextRun?: string | null): string {
     const d = new Date(nextRun)
     const now = new Date()
     const diffMs = d.getTime() - now.getTime()
-    if (diffMs < 0) return 'overdue'
-    if (diffMs < 60_000) return 'in < 1m'
-    if (diffMs < 3_600_000) return `in ${Math.round(diffMs / 60_000)}m`
-    if (diffMs < 86_400_000) return `in ${Math.round(diffMs / 3_600_000)}h`
+    if (diffMs < 0) return '지연'
+    if (diffMs < 60_000) return '1분 미만'
+    if (diffMs < 3_600_000) return `${Math.round(diffMs / 60_000)}분 후`
+    if (diffMs < 86_400_000) return `${Math.round(diffMs / 3_600_000)}시간 후`
     return d.toLocaleDateString()
   } catch {
     return nextRun
@@ -51,7 +51,7 @@ function formatNextRun(nextRun?: string | null): string {
 }
 
 function formatRunTimestamp(value?: string | null): string {
-  if (!value) return 'Never run'
+  if (!value) return '실행 기록 없음'
   try {
     return new Date(value).toLocaleString()
   } catch {
@@ -71,24 +71,24 @@ function getLastRunStatus(job: HermesJob): {
 } {
   if (!job.last_run_at) {
     return {
-      label: 'Never run',
+      label: '실행 기록 없음',
       color: 'var(--theme-muted)',
     }
   }
   if (job.last_run_success === true) {
     return {
-      label: 'Last run succeeded',
+      label: '마지막 실행 성공',
       color: 'var(--theme-success)',
     }
   }
   if (job.last_run_success === false) {
     return {
-      label: 'Last run failed',
+      label: '마지막 실행 실패',
       color: 'var(--theme-danger)',
     }
   }
   return {
-    label: 'Last run unknown',
+    label: '실행 결과 알 수 없음',
     color: 'var(--theme-muted)',
   }
 }
@@ -146,6 +146,7 @@ function JobCard({
             />
             <h3 className="truncate text-sm font-medium text-[var(--theme-text)]">
               {job.name || '(unnamed)'}
+            {job.name || '(이름 없음)'}
             </h3>
           </div>
           <p className="mb-2 line-clamp-2 text-xs text-[var(--theme-muted)]">
@@ -154,14 +155,14 @@ function JobCard({
           <div className="mb-2 flex flex-wrap items-center gap-3 text-[10px] text-[var(--theme-muted)]">
             <span>{job.schedule_display || 'custom'}</span>
             <span>·</span>
-            <span>Next: {formatNextRun(job.next_run_at)}</span>
+            <span>다음: {formatNextRun(job.next_run_at)}</span>
             <span>·</span>
-            <span>Last: {formatRunTimestamp(job.last_run_at)}</span>
+            <span>마지막: {formatRunTimestamp(job.last_run_at)}</span>
             {job.skills && job.skills.length > 0 && (
               <>
                 <span>·</span>
                 <span>
-                  {job.skills.length} skill{job.skills.length !== 1 ? 's' : ''}
+                  {job.skills.length}개 스킬
                 </span>
               </>
             )}
@@ -178,7 +179,7 @@ function JobCard({
           <button
             onClick={() => onTrigger(job.id)}
             className="rounded-lg p-1.5 transition-colors hover:bg-[var(--theme-hover)]"
-            title="Run now"
+            title="지금 실행"
           >
             <HugeiconsIcon
               icon={PlayIcon}
@@ -189,7 +190,7 @@ function JobCard({
           <button
             onClick={() => (isPaused ? onResume(job.id) : onPause(job.id))}
             className="rounded-lg p-1.5 transition-colors hover:bg-[var(--theme-hover)]"
-            title={isPaused ? 'Resume' : 'Pause'}
+            title={isPaused ? '재개' : '일시정지'}
           >
             <HugeiconsIcon
               icon={isPaused ? PlayIcon : PauseIcon}
@@ -200,7 +201,7 @@ function JobCard({
           <button
             onClick={() => onEdit(job)}
             className="rounded-lg p-1.5 transition-colors hover:bg-[var(--theme-hover)]"
-            title="Edit"
+            title="편집"
           >
             <HugeiconsIcon
               icon={PencilEdit02Icon}
@@ -211,7 +212,7 @@ function JobCard({
           <button
             onClick={() => setExpanded((current) => !current)}
             className="rounded-lg p-1.5 transition-colors hover:bg-[var(--theme-hover)]"
-            title={expanded ? 'Hide run history' : 'Show run history'}
+            title={expanded ? '실행 기록 숨기기' : '실행 기록 보기'}
           >
             <HugeiconsIcon
               icon={expanded ? ArrowUp01Icon : ArrowDown01Icon}
@@ -222,7 +223,7 @@ function JobCard({
           <button
             onClick={() => onDelete(job.id)}
             className="rounded-lg p-1.5 transition-colors hover:bg-[var(--theme-hover)]"
-            title="Delete"
+            title="삭제"
           >
             <HugeiconsIcon
               icon={Delete01Icon}
@@ -246,18 +247,22 @@ function JobCard({
               <div className="mb-2 flex items-center justify-between">
                 <p className="text-xs font-medium text-[var(--theme-text)]">
                   Run history
+                  실행 기록
                 </p>
                 <p className="text-[10px] text-[var(--theme-muted)]">
                   Showing recent outputs
+                  최근 출력 표시 중
                 </p>
               </div>
               {outputQuery.isLoading ? (
                 <div className="rounded-lg border border-[var(--theme-border)] bg-[var(--theme-bg)] px-3 py-3 text-xs text-[var(--theme-muted)]">
                   Loading outputs...
+                  출력 불러오는 중...
                 </div>
               ) : outputQuery.isError ? (
                 <div className="rounded-lg border border-[var(--theme-border)] bg-[var(--theme-bg)] px-3 py-3 text-xs text-[var(--theme-muted)]">
                   Failed to load outputs.
+                  출력을 불러오지 못했습니다.
                 </div>
               ) : outputQuery.data && outputQuery.data.length > 0 ? (
                 <div className="space-y-2">
@@ -272,7 +277,7 @@ function JobCard({
                       </div>
                       <p className="text-xs leading-5 text-[var(--theme-text)]">
                         {getOutputPreview(output.content) ||
-                          'No output content'}
+                          '출력 내용 없음'}
                       </p>
                     </div>
                   ))}
@@ -280,6 +285,7 @@ function JobCard({
               ) : (
                 <div className="rounded-lg border border-[var(--theme-border)] bg-[var(--theme-bg)] px-3 py-3 text-xs text-[var(--theme-muted)]">
                   No run outputs yet.
+                  아직 실행 출력이 없습니다.
                 </div>
               )}
             </div>
@@ -307,6 +313,7 @@ export function JobsScreen() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: QUERY_KEY })
       toast('Job paused')
+      toast('작업이 일시정지되었습니다')
     },
   })
   const resumeMutation = useMutation({
@@ -314,6 +321,7 @@ export function JobsScreen() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: QUERY_KEY })
       toast('Job resumed')
+      toast('작업이 재개되었습니다')
     },
   })
   const triggerMutation = useMutation({
@@ -321,6 +329,7 @@ export function JobsScreen() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: QUERY_KEY })
       toast('Job triggered')
+      toast('작업이 실행되었습니다')
     },
   })
   const deleteMutation = useMutation({
@@ -328,6 +337,7 @@ export function JobsScreen() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: QUERY_KEY })
       toast('Job deleted')
+      toast('작업이 삭제되었습니다')
     },
   })
   const createMutation = useMutation({
@@ -335,10 +345,11 @@ export function JobsScreen() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: QUERY_KEY })
       toast('Job created')
+      toast('작업이 만들어졌습니다')
       setShowCreate(false)
     },
     onError: (error) => {
-      toast(error instanceof Error ? error.message : 'Failed to create job', {
+      toast(error instanceof Error ? error.message : '작업 만들기에 실패했습니다', {
         type: 'error',
       })
     },
@@ -358,10 +369,11 @@ export function JobsScreen() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: QUERY_KEY })
       toast('Job updated')
+      toast('작업이 업데이트되었습니다')
       setEditingJob(null)
     },
     onError: (error) => {
-      toast(error instanceof Error ? error.message : 'Failed to update job', {
+      toast(error instanceof Error ? error.message : '작업 업데이트에 실패했습니다', {
         type: 'error',
       })
     },
@@ -404,7 +416,7 @@ export function JobsScreen() {
             className="text-[var(--theme-accent)]"
           />
           <h1 className="text-base font-semibold text-[var(--theme-text)]">
-            Jobs
+            작업
           </h1>
           {jobsQuery.data && (
             <span className="ml-1 text-xs text-[var(--theme-muted)]">
@@ -418,7 +430,7 @@ export function JobsScreen() {
               void queryClient.invalidateQueries({ queryKey: QUERY_KEY })
             }
             className="rounded-lg p-1.5 transition-colors hover:bg-[var(--theme-hover)]"
-            title="Refresh"
+            title="새로고침"
           >
             <HugeiconsIcon
               icon={RefreshIcon}
@@ -432,7 +444,7 @@ export function JobsScreen() {
             style={{ background: 'var(--theme-accent)' }}
           >
             <HugeiconsIcon icon={Add01Icon} size={14} />
-            New Job
+            새 작업
           </button>
         </div>
       </div>
@@ -447,7 +459,7 @@ export function JobsScreen() {
           />
           <input
             type="text"
-            placeholder="Search jobs..."
+            placeholder="작업 검색..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-lg border border-[var(--theme-border)] bg-[var(--theme-input)] py-1.5 pl-8 pr-3 text-xs text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--theme-accent)]"
@@ -459,16 +471,17 @@ export function JobsScreen() {
         {jobsQuery.isLoading ? (
           <div className="flex items-center justify-center py-12 text-sm text-[var(--theme-muted)]">
             Loading jobs...
+            작업 불러오는 중...
           </div>
         ) : jobsQuery.isError ? (
           <div
             className="flex items-center justify-center py-12 text-sm"
             style={{ color: 'var(--theme-danger)' }}
           >
-            Failed to load jobs:{' '}
+            작업을 불러오지 못했습니다:{' '}
             {jobsQuery.error instanceof Error
               ? jobsQuery.error.message
-              : 'Unknown error'}
+              : '알 수 없는 오류'}
           </div>
         ) : filteredJobs.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-[var(--theme-muted)]">
@@ -478,7 +491,8 @@ export function JobsScreen() {
               className="mb-3 opacity-40"
             />
             <p className="text-sm font-medium">No scheduled jobs</p>
-            <p className="mt-1 text-xs">Create one to get started</p>
+            <p className="text-sm font-medium">예약된 작업 없음</p>
+            <p className="mt-1 text-xs">시작하려면 하나 만드세요</p>
           </div>
         ) : (
           <AnimatePresence mode="popLayout">
@@ -491,7 +505,7 @@ export function JobsScreen() {
                 onTrigger={(id) => triggerMutation.mutate(id)}
                 onEdit={(job) => setEditingJob(job)}
                 onDelete={(id) => {
-                  if (confirm(`Delete job "${job.name}"?`)) {
+                  if (confirm(`"${job.name}" 작업을 삭제하시겠습니까?`)) {
                     deleteMutation.mutate(id)
                   }
                 }}

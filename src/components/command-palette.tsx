@@ -42,7 +42,7 @@ type CommandPaletteProps = {
 
 type CommandAction = {
   id: string
-  group: 'Screens' | 'Recent Sessions' | 'Slash Commands'
+  group: '화면' | '최근 세션' | '슬래시 명령어'
   label: string
   keywords: string
   shortcut?: string
@@ -57,9 +57,9 @@ type ScoredAction = CommandAction & {
 }
 
 const SCREEN_GROUP_ORDER = [
-  'Screens',
-  'Recent Sessions',
-  'Slash Commands',
+  '화면',
+  '최근 세션',
+  '슬래시 명령어',
 ] as const
 
 function getSessionLabel(session: SessionMeta) {
@@ -161,8 +161,8 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
     () => [
       {
         id: 'screen-chat',
-        group: 'Screens',
-        label: 'Chat',
+        group: '화면',
+        label: '채팅',
         keywords: 'conversation new session home',
         shortcut: 'Go',
         icon: Chat01Icon,
@@ -170,8 +170,8 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'screen-files',
-        group: 'Screens',
-        label: 'Files',
+        group: '화면',
+        label: '파일',
         keywords: 'workspace editor browser',
         shortcut: 'Go',
         icon: File01Icon,
@@ -179,8 +179,8 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'screen-terminal',
-        group: 'Screens',
-        label: 'Terminal',
+        group: '화면',
+        label: '터미널',
         keywords: 'console shell command line',
         shortcut: 'Go',
         icon: CommandLineIcon,
@@ -188,8 +188,8 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'screen-memory',
-        group: 'Screens',
-        label: 'Memory',
+        group: '화면',
+        label: '메모리',
         keywords: 'knowledge durable memory notes',
         shortcut: 'Go',
         icon: BrainIcon,
@@ -197,8 +197,8 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'screen-skills',
-        group: 'Screens',
-        label: 'Skills',
+        group: '화면',
+        label: '스킬',
         keywords: 'install tools capabilities',
         shortcut: 'Go',
         icon: PuzzleIcon,
@@ -206,8 +206,8 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'screen-settings',
-        group: 'Screens',
-        label: 'Settings',
+        group: '화면',
+        label: '설정',
         keywords: 'preferences configuration',
         shortcut: 'Go',
         icon: Settings01Icon,
@@ -224,7 +224,7 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
         .slice(0, 5)
         .map((session) => ({
           id: `session-${session.key}`,
-          group: 'Recent Sessions',
+          group: '최근 세션',
           label: getSessionLabel(session),
           keywords: `${session.key} ${session.friendlyId} ${session.title ?? ''} ${session.derivedTitle ?? ''}`,
           shortcut: 'Open',
@@ -242,7 +242,7 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
     () => [
       {
         id: 'slash-new',
-        group: 'Slash Commands',
+        group: '슬래시 명령어',
         label: '/new',
         keywords: 'start new session conversation',
         shortcut: 'Run',
@@ -251,7 +251,7 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'slash-clear',
-        group: 'Slash Commands',
+        group: '슬래시 명령어',
         label: '/clear',
         keywords: 'clear current chat history conversation',
         shortcut: 'Run',
@@ -260,7 +260,7 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'slash-model',
-        group: 'Slash Commands',
+        group: '슬래시 명령어',
         label: '/model',
         keywords: 'open model picker settings hermes provider',
         shortcut: 'Run',
@@ -269,7 +269,7 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'slash-skills',
-        group: 'Slash Commands',
+        group: '슬래시 명령어',
         label: '/skills',
         keywords: 'browse manage skills page',
         shortcut: 'Run',
@@ -278,7 +278,7 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'slash-skin',
-        group: 'Slash Commands',
+        group: '슬래시 명령어',
         label: '/skin',
         keywords: 'open appearance settings theme',
         shortcut: 'Run',
@@ -287,7 +287,7 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
       },
       {
         id: 'slash-save',
-        group: 'Slash Commands',
+        group: '슬래시 명령어',
         label: '/save',
         keywords: 'export current conversation transcript',
         shortcut: 'Run',
@@ -423,11 +423,11 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
           onValueChange={setQuery}
           mode="none"
         >
-          <CommandInput placeholder="Search screens, sessions, and commands" />
+          <CommandInput placeholder="화면, 세션, 명령어 검색" />
           <CommandPanel className="flex min-h-0 flex-1 flex-col">
             {groupedActions.length === 0 ? (
               <div className="flex h-72 items-center justify-center text-sm text-primary-600">
-                No results for “{query.trim()}”.
+                결과 없음: "{query.trim()}"
               </div>
             ) : (
               <CommandList className="h-72 min-h-0">
@@ -496,20 +496,20 @@ export function CommandPalette({ pathname, sessions }: CommandPaletteProps) {
                     strokeWidth={1.5}
                   />
                 </span>
-                <span>Navigate</span>
+                <span>이동</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="rounded-md border border-primary-200 bg-surface px-2 py-1 text-[11px] font-medium text-primary-700">
                   Enter
                 </span>
-                <span>Select</span>
+                <span>선택</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-primary-700">
               <span className="rounded-md border border-primary-200 bg-surface px-2 py-1 text-[11px] font-medium text-primary-700">
                 {isMacPlatform ? '⌘K' : 'Ctrl K'}
               </span>
-              <span>Toggle</span>
+              <span>전환</span>
             </div>
           </CommandFooter>
         </Command>

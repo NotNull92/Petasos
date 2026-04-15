@@ -361,15 +361,15 @@ export function ProfilesScreen() {
 
               {/* Stats ring */}
               <div className="mx-4 mt-4 grid grid-cols-4 divide-x divide-primary-200 rounded-xl border border-primary-200 bg-primary-100/50 dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900/50">
-                <ProfileStat label="Skills" value={profile.skillCount} />
-                <ProfileStat label="Sessions" value={profile.sessionCount} />
+                <ProfileStat label="스킬" value={profile.skillCount} />
+                <ProfileStat label="세션" value={profile.sessionCount} />
                 <ProfileStat
-                  label="Model"
+                  label="모델"
                   value={profile.model || '\u2014'}
                   truncate
                 />
                 <ProfileStat
-                  label="Env"
+                  label="환경"
                   value={profile.hasEnv ? '\u2713' : '\u2014'}
                 />
               </div>
@@ -657,13 +657,13 @@ export function ProfilesScreen() {
                     Profile summary
                   </h3>
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <SummaryField label="Name" value={newProfileName.trim()} />
+                    <SummaryField label="이름" value={newProfileName.trim()} />
                     <SummaryField
-                      label="Template"
+                      label="템플릿"
                       value={cloneFrom || 'Fresh start'}
                     />
                     <SummaryField
-                      label="Model"
+                      label="모델"
                       value={
                         wizardModel
                           ? `${wizardModel}${wizardProvider ? ` (${wizardProvider})` : ''}`
@@ -851,35 +851,35 @@ export function ProfilesScreen() {
               <div className="space-y-4 text-sm">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <DetailField
-                    label="Name"
+                    label="이름"
                     value={detailQuery.data.profile.name}
                   />
                   <DetailField
-                    label="Active"
+                    label="활성"
                     value={detailQuery.data.profile.active ? 'Yes' : 'No'}
                     accent={detailQuery.data.profile.active}
                   />
                 </div>
                 <DetailField
-                  label="Path"
+                  label="경로"
                   value={detailQuery.data.profile.path}
                   mono
                 />
                 <div className="grid gap-3 sm:grid-cols-3">
                   <DetailField
-                    label="Env file"
+                    label="환경 파일"
                     value={detailQuery.data.profile.envPath || 'Not set'}
                     mono
                     muted={!detailQuery.data.profile.envPath}
                   />
                   <DetailField
-                    label="Sessions"
+                    label="세션"
                     value={detailQuery.data.profile.sessionsDir || 'Not set'}
                     mono
                     muted={!detailQuery.data.profile.sessionsDir}
                   />
                   <DetailField
-                    label="Skills"
+                    label="스킬"
                     value={detailQuery.data.profile.skillsDir || 'Not set'}
                     mono
                     muted={!detailQuery.data.profile.skillsDir}

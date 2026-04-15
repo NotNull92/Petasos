@@ -109,26 +109,26 @@ export function TasksScreen() {
 
   const createMutation = useMutation({
     mutationFn: createTask,
-    onSuccess: () => { invalidate(); toast('Task created'); setShowCreate(false) },
-    onError: (e) => toast(e instanceof Error ? e.message : 'Failed to create task', { type: 'error' }),
+    onSuccess: () => { invalidate(); toast('태스크가 생성되었습니다'); setShowCreate(false) },
+    onError: (e) => toast(e instanceof Error ? e.message : '태스크 생성에 실패했습니다', { type: 'error' }),
   })
 
   const updateMutation = useMutation({
     mutationFn: ({ id, input }: { id: string; input: CreateTaskInput }) => updateTask(id, input),
-    onSuccess: () => { invalidate(); toast('Task updated'); setEditingTask(null) },
-    onError: (e) => toast(e instanceof Error ? e.message : 'Failed to update task', { type: 'error' }),
+    onSuccess: () => { invalidate(); toast('태스크가 수정되었습니다'); setEditingTask(null) },
+    onError: (e) => toast(e instanceof Error ? e.message : '태스크 수정에 실패했습니다', { type: 'error' }),
   })
 
   const deleteMutation = useMutation({
     mutationFn: deleteTask,
-    onSuccess: () => { invalidate(); toast('Task deleted') },
-    onError: (e) => toast(e instanceof Error ? e.message : 'Failed to delete task', { type: 'error' }),
+    onSuccess: () => { invalidate(); toast('태스크가 삭제되었습니다') },
+    onError: (e) => toast(e instanceof Error ? e.message : '태스크 삭제에 실패했습니다', { type: 'error' }),
   })
 
   const moveMutation = useMutation({
     mutationFn: ({ id, column }: { id: string; column: TaskColumn }) => moveTask(id, column, 'user'),
     onSuccess: () => invalidate(),
-    onError: (e) => toast(e instanceof Error ? e.message : 'Failed to move task', { type: 'error' }),
+    onError: (e) => toast(e instanceof Error ? e.message : '태스크 이동에 실패했습니다', { type: 'error' }),
   })
 
   function handleDragStart(e: React.DragEvent, taskId: string) {
@@ -153,7 +153,7 @@ export function TasksScreen() {
     // Hybrid autonomy: if a human reviewer is configured, only they can move
     // tasks into the 'done' column — agents may move to 'review' at most.
     if (targetColumn === 'done' && humanReviewer) {
-      toast(`Only ${humanReviewer} can mark tasks as done`, { type: 'error' })
+      toast(`${humanReviewer}만 태스크를 완료 처리할 수 있습니다`, { type: 'error' })
       setDraggingId(null)
       setDragOverColumn(null)
       return
@@ -178,32 +178,32 @@ export function TasksScreen() {
       <header className="rounded-2xl border border-primary-200 bg-primary-50/85 p-4 backdrop-blur-xl">
         <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
-          <h1 className="text-2xl font-medium text-ink">Tasks</h1>
+          <h1 className="text-2xl font-medium text-ink">태스크</h1>
           {assigneeFilter && (
             <div className="flex items-center gap-2 text-xs text-[var(--theme-muted)]">
-              <span>Filtered by: <span className="capitalize" style={{ color: '#f59e0b' }}>{assigneeFilter}</span></span>
+              <span>필터: <span className="capitalize" style={{ color: '#f59e0b' }}>{assigneeFilter}</span></span>
               <button
                 type="button"
                 onClick={() => setAssigneeFilter(null)}
                 className="text-[var(--theme-muted)] hover:text-[var(--theme-text)] transition-colors"
               >
-                ✕ Clear
+                ✕ 초기화
               </button>
             </div>
           )}
           {/* Stats */}
           <div className="flex items-center gap-2 text-xs text-[var(--theme-muted)] flex-wrap">
-            <span>{stats.total} total</span>
+            <span>{stats.total} 전체</span>
             <span className="hidden sm:inline">·</span>
-            <span className="hidden sm:inline">{stats.inProgress} in progress</span>
+            <span className="hidden sm:inline">{stats.inProgress} 진행 중</span>
             {stats.overdue > 0 && (
               <>
                 <span>·</span>
-                <span className="text-red-400">{stats.overdue} overdue</span>
+                <span className="text-red-400">{stats.overdue} 지연</span>
               </>
             )}
             <span className="hidden sm:inline">·</span>
-            <span className="hidden sm:inline">{stats.completion}% done</span>
+            <span className="hidden sm:inline">{stats.completion}% 완료</span>
           </div>
         </div>
 
@@ -217,12 +217,12 @@ export function TasksScreen() {
                 : 'border-[var(--theme-border)] text-[var(--theme-muted)] hover:text-[var(--theme-text)] hover:border-[var(--theme-accent)]',
             )}
           >
-            {showDone ? 'Hide Done' : 'Show Done'}
+            {showDone ? '완료 숨기기' : '완료 보기'}
           </button>
           <button
             onClick={invalidate}
             className="rounded-lg p-1.5 transition-colors hover:bg-[var(--theme-hover)]"
-            title="Refresh"
+            title="새로고침"
           >
             <HugeiconsIcon icon={RefreshIcon} size={16} className="text-[var(--theme-muted)]" />
           </button>
@@ -232,7 +232,7 @@ export function TasksScreen() {
             style={{ background: 'var(--theme-accent)' }}
           >
             <HugeiconsIcon icon={Add01Icon} size={14} />
-            New Task
+            새 태스크
           </button>
         </div>
       </div>
@@ -279,7 +279,7 @@ export function TasksScreen() {
                 <button
                   onClick={() => { setCreateColumn(col); setShowCreate(true) }}
                   className="rounded p-0.5 hover:bg-[var(--theme-hover)] transition-colors"
-                  title={`Add to ${COLUMN_LABELS[col]}`}
+                  title={`${COLUMN_LABELS[col]}에 추가`}
                 >
                   <HugeiconsIcon icon={Add01Icon} size={14} className="text-[var(--theme-muted)]" />
                 </button>
@@ -294,12 +294,12 @@ export function TasksScreen() {
                     animate={{ opacity: 1 }}
                     className="flex flex-col items-center justify-center py-8 gap-2 text-red-400"
                   >
-                    <p className="text-xs font-medium">Failed to load tasks</p>
+                    <p className="text-xs font-medium">태스크를 불러오지 못했습니다</p>
                     <button
                       onClick={() => tasksQuery.refetch()}
                       className="text-xs text-[var(--theme-accent)] hover:underline"
                     >
-                      Retry
+                      재시도
                     </button>
                   </motion.div>
                 ) : tasksQuery.isLoading ? (
@@ -319,8 +319,8 @@ export function TasksScreen() {
                         className="flex flex-col items-center justify-center py-8 gap-2 text-[var(--theme-muted)] opacity-60"
                       >
                         <HugeiconsIcon icon={CheckListIcon} size={22} />
-                        <p className="text-xs font-medium">No tasks</p>
-                        <p className="text-[10px]">Drop here or click + to add</p>
+                        <p className="text-xs font-medium">태스크 없음</p>
+                        <p className="text-[10px]">여기에 놓거나 +를 클릭하세요</p>
                       </motion.div>
                     ) : (
                       colTasks.map(task => (

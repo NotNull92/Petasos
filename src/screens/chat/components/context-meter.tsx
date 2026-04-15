@@ -29,7 +29,7 @@ function ContextMeterComponent({ usedTokens, maxTokens }: ContextMeterProps) {
       n >= 1000 ? `${(n / 1000).toFixed(0)}K` : String(n)
     return {
       percentage: pct,
-      usedLabel: `${fmt(usedTokens)} / ${fmt(maxTokens)} tokens used`,
+      usedLabel: `${fmt(usedTokens)} / ${fmt(maxTokens)} 토큰 사용`,
       leftPercentage: Math.max(0, 100 - pct),
     }
   }, [usedTokens, maxTokens])
@@ -75,9 +75,9 @@ function ContextMeterComponent({ usedTokens, maxTokens }: ContextMeterProps) {
       </PreviewCardTrigger>
       <PreviewCardPopup align="end" sideOffset={8} className="w-52 px-2 py-1">
         <div className="space-y-0.5 text-xs text-primary-900">
-          <div className="text-primary-950 font-[450]">Context window:</div>
+          <div className="text-primary-950 font-[450]">컨텍스트 윈도우:</div>
           <div className="tabular-nums text-primary-700">
-            {percentage.toFixed(0)}% used ({leftPercentage.toFixed(0)}% left)
+            {percentage.toFixed(0)}% 사용 ({leftPercentage.toFixed(0)}% 남음)
           </div>
           <div className="tabular-nums text-primary-700">{usedLabel}</div>
         </div>

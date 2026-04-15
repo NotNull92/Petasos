@@ -181,7 +181,9 @@ export function HermesOnboarding() {
       if (data.activeProvider) {
         setSelectedProvider((current) => current || data.activeProvider || null)
       }
-    } catch {}
+    } catch (err) {
+      console.error('[onboarding] Failed to load current config:', err)
+    }
   }, [])
 
   const loadModels = useCallback(async () => {
@@ -428,7 +430,9 @@ export function HermesOnboarding() {
             setOauthError(pollData.message || 'Authentication failed')
             setOauthStep('error')
           }
-        } catch {}
+        } catch (err) {
+          console.error('[onboarding] OAuth poll error:', err)
+        }
       }, intervalMs)
     } catch (err) {
       setOauthError(

@@ -70,15 +70,15 @@ type SectionId =
   | 'language'
 
 const SECTIONS: Array<{ id: SectionId; label: string; icon: any }> = [
-  { id: 'hermes', label: 'Model & Provider', icon: CloudIcon },
-  { id: 'agent', label: 'Agent', icon: Settings02Icon },
-  { id: 'routing', label: 'Smart Routing', icon: SparklesIcon },
-  { id: 'voice', label: 'Voice', icon: VolumeHighIcon },
-  { id: 'display', label: 'Display', icon: PaintBoardIcon },
-  { id: 'appearance', label: 'Theme', icon: PaintBoardIcon },
-  { id: 'chat', label: 'Chat', icon: MessageMultiple01Icon },
-  { id: 'notifications', label: 'Alerts', icon: Notification03Icon },
-  { id: 'language', label: 'Language', icon: MessageMultiple01Icon },
+  { id: 'hermes', label: '모델 & 프로바이더', icon: CloudIcon },
+  { id: 'agent', label: '에이전트', icon: Settings02Icon },
+  { id: 'routing', label: '스마트 라우팅', icon: SparklesIcon },
+  { id: 'voice', label: '음성', icon: VolumeHighIcon },
+  { id: 'display', label: '표시', icon: PaintBoardIcon },
+  { id: 'appearance', label: '테마', icon: PaintBoardIcon },
+  { id: 'chat', label: '채팅', icon: MessageMultiple01Icon },
+  { id: 'notifications', label: '알림', icon: Notification03Icon },
+  { id: 'language', label: '언어', icon: MessageMultiple01Icon },
 ]
 
 const DARK_ENTERPRISE_THEMES = new Set<ThemeId>([
@@ -106,7 +106,7 @@ function SectionHeader({
   return (
     <div className="mb-2">
       <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-500">
-        Settings
+        설정
       </p>
       <h3 className="text-base font-semibold text-primary-900 dark:text-neutral-100">
         {title}
@@ -356,7 +356,7 @@ function HermesContent() {
   if (!configAvailable) {
     return (
       <BackendUnavailableState
-        feature="Hermes Agent Settings"
+        feature="Hermes 에이전트 설정"
         description={getUnavailableReason('config')}
       />
     )
@@ -390,10 +390,10 @@ function HermesContent() {
           className="mb-1 text-xs font-semibold uppercase tracking-wider"
           style={mutedStyle}
         >
-          Provider
+          프로바이더
         </p>
         <p className="mb-3 text-[11px]" style={mutedStyle}>
-          Select your AI provider. OAuth providers authenticate via browser.
+          AI 프로바이더를 선택하세요. OAuth 프로바이더는 브라우저로 인증합니다.
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {PROVIDER_CARDS.map((p) => {
@@ -437,7 +437,7 @@ function HermesContent() {
                     if (disc?.online) return '🟢 Detected'
                     if (p.authType === 'oauth') return 'OAuth'
                     if (p.authType === 'none') return 'Local'
-                    return hasKey ? 'Key set' : 'Key required'
+                    return hasKey ? '키 설정됨' : '키 필요'
                   })()}
                 </span>
               </button>
@@ -453,7 +453,7 @@ function HermesContent() {
             className="mb-1 text-xs font-semibold uppercase tracking-wider"
             style={mutedStyle}
           >
-            Model
+            모델
           </p>
           <div className="flex flex-wrap gap-2">
             {(() => {
@@ -489,7 +489,7 @@ function HermesContent() {
         if (!disc || !disc.needsRestart) return null
         return (
           <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 text-xs text-yellow-200">
-            ⚠️ Gateway restart needed to use {disc.name}. Run <code className="rounded bg-black/30 px-1">hermes gateway restart</code> in your terminal.
+            ⚠️ {disc.name}을(를) 사용하려면 게이트웨이 재시작이 필요합니다. 터미널에서 <code className="rounded bg-black/30 px-1">hermes gateway restart</code>을 실행하세요.
           </div>
         )
       })()}
@@ -500,7 +500,7 @@ function HermesContent() {
           className="mb-1 text-xs font-semibold uppercase tracking-wider"
           style={mutedStyle}
         >
-          API Keys
+          API 키
         </p>
         <div className="space-y-1.5">
           {PROVIDER_CARDS.filter((p) => p.envKey).map((p) => {
@@ -545,7 +545,7 @@ function HermesContent() {
                     ) : hasKey ? (
                       configuredKeys[key]
                     ) : (
-                      'Not configured'
+                      '미설정'
                     )}
                   </div>
                 </div>
@@ -569,7 +569,7 @@ function HermesContent() {
                         }}
                         className="rounded-lg px-2 py-1 text-[11px] font-medium bg-accent-500 text-white"
                       >
-                        Save
+                        저장
                       </button>
                       <button
                         type="button"
@@ -580,7 +580,7 @@ function HermesContent() {
                         className="rounded-lg px-2 py-1 text-[11px] font-medium"
                         style={{ color: 'var(--theme-muted)' }}
                       >
-                        Cancel
+                        취소
                       </button>
                     </>
                   ) : (
@@ -595,7 +595,7 @@ function HermesContent() {
                         color: 'var(--theme-accent, var(--theme-text))',
                       }}
                     >
-                      {hasKey ? 'Update' : 'Add'}
+                      {hasKey ? '변경' : '추가'}
                     </button>
                   )}
                 </div>
@@ -611,7 +611,7 @@ function HermesContent() {
           className="mb-1 text-xs font-semibold uppercase tracking-wider"
           style={mutedStyle}
         >
-          Memory
+          메모리
         </p>
         <div className="space-y-1.5">
           <div
@@ -619,9 +619,9 @@ function HermesContent() {
             style={cardStyle}
           >
             <div>
-              <div className="text-sm font-medium">Memory</div>
+              <div className="text-sm font-medium">메모리</div>
               <div className="text-[11px]" style={mutedStyle}>
-                Store & recall memories across sessions
+                세션 간 메모리 저장 및 회상
               </div>
             </div>
             <Switch
@@ -637,9 +637,9 @@ function HermesContent() {
             style={cardStyle}
           >
             <div>
-              <div className="text-sm font-medium">User Profile</div>
+              <div className="text-sm font-medium">사용자 프로필</div>
               <div className="text-[11px]" style={mutedStyle}>
-                Remember preferences & context
+                환경설정 및 컨텍스트 기억
               </div>
             </div>
             <Switch
@@ -661,19 +661,19 @@ function HermesContent() {
             className="text-xs font-semibold uppercase tracking-wider"
             style={mutedStyle}
           >
-            Runtime
+            런타임
           </span>
         </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px]">
-          <span style={mutedStyle}>Model</span>
+          <span style={mutedStyle}>모델</span>
           <span className="font-mono font-medium">{activeModel || '—'}</span>
-          <span style={mutedStyle}>Provider</span>
+          <span style={mutedStyle}>프로바이더</span>
           <span className="font-mono font-medium">
             {PROVIDER_CARDS.find((p) => p.id === activeProvider)?.name ||
               activeProvider ||
               '—'}
           </span>
-          <span style={mutedStyle}>Config</span>
+          <span style={mutedStyle}>설정 파일</span>
           <span className="font-mono font-medium">~/.hermes/config.yaml</span>
         </div>
       </div>
@@ -748,8 +748,8 @@ function _ProfileContent() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Profile"
-        description="Your display identity in chat."
+        title="프로필"
+        description="채팅에서의 표시 정보입니다."
       />
       <div className={SETTINGS_CARD_CLASS}>
         <div className="flex items-center gap-3">
@@ -759,13 +759,13 @@ function _ProfileContent() {
               {displayName}
             </p>
             <p className="text-xs text-primary-500 dark:text-neutral-400">
-              No email connected
+              연결된 이메일 없음
             </p>
           </div>
         </div>
       </div>
       <div className={SETTINGS_CARD_CLASS}>
-        <Row label="Display name" description="Shown in chat and sidebar">
+        <Row label="표시 이름" description="채팅 및 사이드바에 표시">
           <div className="w-full max-w-xs">
             <Input
               value={cs.displayName}
@@ -773,7 +773,7 @@ function _ProfileContent() {
               placeholder="User"
               className="h-8 w-full rounded-lg border-primary-200 text-sm"
               maxLength={50}
-              aria-label="Display name"
+              aria-label="표시 이름"
               aria-invalid={!!nameError}
               aria-describedby={nameError ? errorId : undefined}
             />
@@ -788,7 +788,7 @@ function _ProfileContent() {
             )}
           </div>
         </Row>
-        <Row label="Avatar">
+        <Row label="아바타">
           <div className="flex items-center gap-2">
             <label className="block">
               <input
@@ -796,7 +796,7 @@ function _ProfileContent() {
                 accept="image/*"
                 onChange={handleAvatarUpload}
                 disabled={processing}
-                aria-label="Upload profile picture"
+                aria-label="프로필 사진 업로드"
                 className="block max-w-[13rem] cursor-pointer text-xs text-primary-700 dark:text-neutral-300 file:mr-2 file:cursor-pointer file:rounded-lg file:border file:border-primary-200 file:bg-primary-100 file:px-2.5 file:py-1.5 file:text-xs file:font-medium file:text-primary-900 file:transition-colors hover:file:bg-primary-200 disabled:cursor-not-allowed disabled:opacity-50"
               />
             </label>
@@ -807,7 +807,7 @@ function _ProfileContent() {
               disabled={!cs.avatarDataUrl || processing}
               className="h-8 rounded-lg border-primary-200 px-3"
             >
-              Remove
+              제거
             </Button>
           </div>
           {profileError && (
@@ -850,18 +850,18 @@ function AppearanceContent() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Appearance"
-        description="Theme and color accents."
+        title="외관"
+        description="테마 및 색상 설정."
       />
       <div className={SETTINGS_CARD_CLASS}>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-500">
-          Theme Mode
+          테마 모드
         </p>
         <div className="inline-flex rounded-lg border border-primary-200 p-1">
           {[
-            { value: 'light', label: 'Light', icon: Sun01Icon },
-            { value: 'dark', label: 'Dark', icon: Moon01Icon },
-            { value: 'system', label: 'System', icon: ComputerIcon },
+            { value: 'light', label: '라이트', icon: Sun01Icon },
+            { value: 'dark', label: '다크', icon: Moon01Icon },
+            { value: 'system', label: '시스템', icon: ComputerIcon },
           ].map((option) => (
             <button
               key={option.value}
@@ -883,21 +883,21 @@ function AppearanceContent() {
       {/* Accent color removed — themes control accent */}
       <div className={SETTINGS_CARD_CLASS}>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-500">
-          Enterprise Theme
+          엔터프라이즈 테마
         </p>
         <EnterpriseThemePicker />
       </div>
       <div className={SETTINGS_CARD_CLASS}>
         <Row
-          label="System metrics footer"
-          description="Show a persistent footer with CPU, RAM, disk, and Hermes status."
+          label="시스템 메트릭 푸터"
+          description="CPU, RAM, 디스크, Hermes 상태를 푸터에 표시합니다."
         >
           <Switch
             checked={settings.showSystemMetricsFooter}
             onCheckedChange={(c) =>
               updateSettings({ showSystemMetricsFooter: c })
             }
-            aria-label="Show system metrics footer"
+            aria-label="시스템 메트릭 푸터 표시"
           />
         </Row>
 
@@ -1057,11 +1057,10 @@ function EnterpriseThemePicker() {
       <div className="flex items-center justify-between rounded-lg border border-primary-200 px-3 py-2">
         <div>
           <p className="text-xs font-semibold text-primary-900 dark:text-neutral-100">
-            {currentMode === 'dark' ? 'Dark mode' : 'Light mode'}
+            {currentMode === 'dark' ? '다크 모드' : '라이트 모드'}
           </p>
           <p className="text-[11px] text-primary-500 dark:text-neutral-400">
-            Toggle the current theme family between paired light and dark
-            variants.
+            현재 테마 패밀리의 라이트/다크 변형을 전환합니다.
           </p>
         </div>
         <button
@@ -1079,7 +1078,7 @@ function EnterpriseThemePicker() {
             size={16}
             strokeWidth={1.5}
           />
-          {currentMode === 'dark' ? 'Light' : 'Dark'}
+          {currentMode === 'dark' ? '라이트' : '다크'}
         </button>
       </div>
       <div className="grid w-full grid-cols-2 gap-2">
@@ -1105,7 +1104,7 @@ function EnterpriseThemePicker() {
                 </span>
                 {isActive && (
                   <span className="ml-auto text-[9px] font-bold text-accent-600 uppercase tracking-wide">
-                    Active
+                    활성
                   </span>
                 )}
               </div>
@@ -1194,28 +1193,28 @@ function ChatContent() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Chat"
-        description="Message visibility and response loader style."
+        title="채팅"
+        description="메시지 표시 설정."
       />
       <div className={SETTINGS_CARD_CLASS}>
         <Row
-          label="Show tool messages"
-          description="Display tool call details in assistant responses."
+          label="도구 메시지 표시"
+          description="어시스턴트 응답에 도구 호출 내용을 표시합니다."
         >
           <Switch
             checked={cs.showToolMessages}
             onCheckedChange={(c) => updateCS({ showToolMessages: c })}
-            aria-label="Show tool messages"
+            aria-label="도구 메시지 표시"
           />
         </Row>
         <Row
-          label="Show reasoning blocks"
-          description="Display model reasoning blocks when available."
+          label="추론 블록 표시"
+          description="사용 가능한 경우 모델 추론 블록을 표시합니다."
         >
           <Switch
             checked={cs.showReasoningBlocks}
             onCheckedChange={(c) => updateCS({ showReasoningBlocks: c })}
-            aria-label="Show reasoning blocks"
+            aria-label="추론 블록 표시"
           />
         </Row>
       </div>
@@ -1229,18 +1228,18 @@ function NotificationsContent() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Notifications"
-        description="Simple alerts and threshold controls."
+        title="알림"
+        description="알림 및 임계값 설정."
       />
       <div className={SETTINGS_CARD_CLASS}>
-        <Row label="Enable alerts">
+        <Row label="알림 활성화">
           <Switch
             checked={settings.notificationsEnabled}
             onCheckedChange={(c) => updateSettings({ notificationsEnabled: c })}
-            aria-label="Enable alerts"
+            aria-label="알림 활성화"
           />
         </Row>
-        <Row label="Usage threshold">
+        <Row label="사용량 임계값">
           <div className="flex w-full max-w-[14rem] items-center gap-2">
             <input
               type="range"
@@ -1280,7 +1279,7 @@ function _AdvancedContent() {
         new URL(value)
         setUrlError(null)
       } catch {
-        setUrlError('Invalid URL format')
+        setUrlError('잘못된 URL 형식')
       }
     } else {
       setUrlError(null)
@@ -1304,11 +1303,11 @@ function _AdvancedContent() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Advanced"
-        description="Hermes endpoint and connectivity."
+        title="고급"
+        description="Hermes 엔드포인트 및 연결 설정."
       />
       <div className={SETTINGS_CARD_CLASS}>
-        <Row label="Hermes URL" description="Used for API requests from Studio">
+        <Row label="Hermes URL" description="Studio에서 API 요청에 사용">
           <div className="w-full max-w-sm">
             <Input
               type="url"
@@ -1331,7 +1330,7 @@ function _AdvancedContent() {
             )}
           </div>
         </Row>
-        <Row label="Connection status">
+        <Row label="연결 상태">
           <span
             className={cn(
               'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium',
@@ -1346,12 +1345,12 @@ function _AdvancedContent() {
             )}
           >
             {connectionStatus === 'idle'
-              ? 'Not tested'
+              ? '미테스트'
               : connectionStatus === 'testing'
-                ? 'Testing...'
+                ? '테스트 중...'
                 : connectionStatus === 'connected'
-                  ? 'Connected'
-                  : 'Failed'}
+                  ? '연결됨'
+                  : '실패'}
           </span>
           <Button
             variant="outline"
@@ -1365,7 +1364,7 @@ function _AdvancedContent() {
               size={16}
               strokeWidth={1.5}
             />
-            Test
+            테스트
           </Button>
         </Row>
       </div>
@@ -1391,13 +1390,13 @@ class SettingsErrorBoundary extends Component<
         <div className="flex h-full items-center justify-center p-8 text-center">
           <div>
             <p className="mb-2 text-sm font-medium text-red-500">
-              Settings failed to load
+              설정을 불러오지 못했습니다
             </p>
             <button
               onClick={() => this.setState({ error: null })}
               className="text-xs text-primary-600 underline hover:text-primary-900"
             >
-              Try again
+              다시 시도
             </button>
           </div>
         </div>
@@ -1431,24 +1430,24 @@ function AgentBehaviorContent() {
         body: JSON.stringify({ config: { agent: { [key]: value } } }),
       })
       setConfig((prev) => ({ ...prev, [key]: value }))
-      setMsg('Saved')
+      setMsg('저장됨')
       setTimeout(() => setMsg(null), 2000)
     } catch {
-      setMsg('Failed')
+      setMsg('실패')
     }
   }
 
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Agent Behavior"
-        description="Execution limits and tool access."
+        title="에이전트 동작"
+        description="실행 제한 및 도구 접근 설정."
       />
       {msg && (
         <div
           className={cn(
             'rounded-lg px-3 py-1.5 text-xs font-medium',
-            msg === 'Saved'
+            msg === '저장됨'
               ? 'bg-green-500/15 text-green-400'
               : 'bg-red-500/15 text-red-400',
           )}
@@ -1458,8 +1457,8 @@ function AgentBehaviorContent() {
       )}
       <div className={SETTINGS_CARD_CLASS}>
         <Row
-          label="Max turns"
-          description="Maximum agent turns per request (1-100)"
+          label="최대 턴 수"
+          description="요청당 최대 에이전트 턴 수 (1-100)"
         >
           <input
             type="number"
@@ -1470,7 +1469,7 @@ function AgentBehaviorContent() {
             className="h-8 w-20 rounded-lg border border-primary-200 bg-primary-50 px-2 text-sm text-center text-primary-900 outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
           />
         </Row>
-        <Row label="Gateway timeout" description="Seconds before timeout">
+        <Row label="게이트웨이 타임아웃" description="타임아웃까지의 시간(초)">
           <input
             type="number"
             min={10}
@@ -1480,15 +1479,15 @@ function AgentBehaviorContent() {
             className="h-8 w-20 rounded-lg border border-primary-200 bg-primary-50 px-2 text-sm text-center text-primary-900 outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
           />
         </Row>
-        <Row label="Tool enforcement" description="When agent must use tools">
+        <Row label="도구 강제 적용" description="에이전트가 도구를 사용해야 하는 조건">
           <select
             value={String(config.tool_use_enforcement || 'auto')}
             onChange={(e) => save('tool_use_enforcement', e.target.value)}
             className="h-8 rounded-lg border border-primary-200 bg-primary-50 px-2 text-sm text-primary-900 outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
           >
-            <option value="auto">Auto</option>
-            <option value="required">Required</option>
-            <option value="none">None</option>
+            <option value="auto">자동</option>
+            <option value="required">필수</option>
+            <option value="none">없음</option>
           </select>
         </Row>
       </div>
@@ -1531,24 +1530,24 @@ function SmartRoutingContent() {
         }),
       })
       setConfig((prev) => ({ ...prev, [key]: value }))
-      setMsg('Saved')
+      setMsg('저장됨')
       setTimeout(() => setMsg(null), 2000)
     } catch {
-      setMsg('Failed')
+      setMsg('실패')
     }
   }
 
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Smart Routing"
-        description="Route simple queries to cheaper models."
+        title="스마트 라우팅"
+        description="간단한 질문을 저비용 모델로 라우팅합니다."
       />
       {msg && (
         <div
           className={cn(
             'rounded-lg px-3 py-1.5 text-xs font-medium',
-            msg === 'Saved'
+            msg === '저장됨'
               ? 'bg-green-500/15 text-green-400'
               : 'bg-red-500/15 text-red-400',
           )}
@@ -1558,21 +1557,21 @@ function SmartRoutingContent() {
       )}
       <div className={SETTINGS_CARD_CLASS}>
         <Row
-          label="Enable smart routing"
-          description="Auto-route simple queries"
+          label="스마트 라우팅 활성화"
+          description="간단한 질문 자동 라우팅"
         >
           <Switch
             checked={config.enabled !== false}
             onCheckedChange={(c) => save('enabled', c)}
           />
         </Row>
-        <Row label="Cheap model" description="Model for simple queries">
+        <Row label="저비용 모델" description="간단한 질문에 사용할 모델">
           <select
             value={String(config.cheap_model || '')}
             onChange={(e) => save('cheap_model', e.target.value)}
             className="h-8 max-w-[12rem] rounded-lg border border-primary-200 bg-primary-50 px-2 text-sm text-primary-900 outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
           >
-            <option value="">Auto</option>
+            <option value="">자동</option>
             {models.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name || m.id}
@@ -1580,7 +1579,7 @@ function SmartRoutingContent() {
             ))}
           </select>
         </Row>
-        <Row label="Max chars" description="Messages shorter use cheap model">
+        <Row label="최대 문자" description="이 길이보다 짧은 메시지는 저비용 모델 사용">
           <input
             type="number"
             min={10}
@@ -1591,8 +1590,8 @@ function SmartRoutingContent() {
           />
         </Row>
         <Row
-          label="Max words"
-          description="Messages with fewer words use cheap model"
+          label="최대 단어"
+          description="단어 수가 적은 메시지는 저비용 모델 사용"
         >
           <input
             type="number"
@@ -1634,10 +1633,10 @@ function VoiceContent() {
         body: JSON.stringify({ config: { tts: { [key]: value } } }),
       })
       setTts((prev) => ({ ...prev, [key]: value }))
-      setMsg('Saved')
+      setMsg('저장됨')
       setTimeout(() => setMsg(null), 2000)
     } catch {
-      setMsg('Failed')
+      setMsg('실패')
     }
   }
 
@@ -1650,10 +1649,10 @@ function VoiceContent() {
         body: JSON.stringify({ config: { stt: { [key]: value } } }),
       })
       setStt((prev) => ({ ...prev, [key]: value }))
-      setMsg('Saved')
+      setMsg('저장됨')
       setTimeout(() => setMsg(null), 2000)
     } catch {
-      setMsg('Failed')
+      setMsg('실패')
     }
   }
 
@@ -1662,14 +1661,14 @@ function VoiceContent() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Voice"
-        description="Text-to-speech and speech-to-text."
+        title="음성"
+        description="텍스트 음성 변환 및 음성 텍스트 변환."
       />
       {msg && (
         <div
           className={cn(
             'rounded-lg px-3 py-1.5 text-xs font-medium',
-            msg === 'Saved'
+            msg === '저장됨'
               ? 'bg-green-500/15 text-green-400'
               : 'bg-red-500/15 text-red-400',
           )}
@@ -1679,9 +1678,9 @@ function VoiceContent() {
       )}
       <div className={SETTINGS_CARD_CLASS}>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-500">
-          Text-to-Speech
+          텍스트 음성 변환
         </p>
-        <Row label="TTS Provider">
+        <Row label="TTS 제공자">
           <select
             value={ttsProvider}
             onChange={(e) => saveTts('provider', e.target.value)}
@@ -1694,7 +1693,7 @@ function VoiceContent() {
           </select>
         </Row>
         {ttsProvider === 'openai' && (
-          <Row label="Voice">
+          <Row label="음성">
             <select
               value={String(
                 (tts.openai as Record<string, unknown>)?.voice || 'nova',
@@ -1720,15 +1719,15 @@ function VoiceContent() {
       </div>
       <div className={SETTINGS_CARD_CLASS}>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-500">
-          Speech-to-Text
+          음성 텍스트 변환
         </p>
-        <Row label="Enable STT">
+        <Row label="STT 활성화">
           <Switch
             checked={stt.enabled !== false}
             onCheckedChange={(c) => saveStt('enabled', c)}
           />
         </Row>
-        <Row label="STT Provider">
+        <Row label="STT 제공자">
           <select
             value={String(stt.provider || 'local')}
             onChange={(e) => saveStt('provider', e.target.value)}
@@ -1767,24 +1766,24 @@ function DisplayContent() {
         body: JSON.stringify({ config: { display: { [key]: value } } }),
       })
       setConfig((prev) => ({ ...prev, [key]: value }))
-      setMsg('Saved')
+      setMsg('저장됨')
       setTimeout(() => setMsg(null), 2000)
     } catch {
-      setMsg('Failed')
+      setMsg('실패')
     }
   }
 
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Display"
-        description="Agent response style and output preferences."
+        title="표시"
+        description="에이전트 응답 스타일 및 출력 설정."
       />
       {msg && (
         <div
           className={cn(
             'rounded-lg px-3 py-1.5 text-xs font-medium',
-            msg === 'Saved'
+            msg === '저장됨'
               ? 'bg-green-500/15 text-green-400'
               : 'bg-red-500/15 text-red-400',
           )}
@@ -1793,40 +1792,40 @@ function DisplayContent() {
         </div>
       )}
       <div className={SETTINGS_CARD_CLASS}>
-        <Row label="Personality" description="Agent response style">
+        <Row label="성격" description="에이전트 응답 스타일">
           <select
             value={String(config.personality || 'default')}
             onChange={(e) => save('personality', e.target.value)}
             className="h-8 rounded-lg border border-primary-200 bg-primary-50 px-2 text-sm text-primary-900 outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
           >
-            <option value="default">Default</option>
-            <option value="concise">Concise</option>
-            <option value="verbose">Verbose</option>
-            <option value="creative">Creative</option>
+            <option value="default">기본</option>
+            <option value="concise">간결</option>
+            <option value="verbose">상세</option>
+            <option value="creative">창의적</option>
           </select>
         </Row>
-        <Row label="Streaming" description="Stream responses in real-time">
+        <Row label="스트리밍" description="실시간으로 응답 스트리밍">
           <Switch
             checked={config.streaming !== false}
             onCheckedChange={(c) => save('streaming', c)}
           />
         </Row>
         <Row
-          label="Show reasoning"
-          description="Display model thinking process"
+          label="추론 표시"
+          description="모델 사고 과정 표시"
         >
           <Switch
             checked={config.show_reasoning !== false}
             onCheckedChange={(c) => save('show_reasoning', c)}
           />
         </Row>
-        <Row label="Show cost" description="Display token cost per response">
+        <Row label="비용 표시" description="응답별 토큰 비용 표시">
           <Switch
             checked={config.show_cost === true}
             onCheckedChange={(c) => save('show_cost', c)}
           />
         </Row>
-        <Row label="Compact mode" description="Reduce spacing in responses">
+        <Row label="컴팩트 모드" description="응답 간격 축소">
           <Switch
             checked={config.compact === true}
             onCheckedChange={(c) => save('compact', c)}
@@ -1845,10 +1844,10 @@ function LanguageContent() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Language"
-        description="Choose the display language for the workspace UI."
+        title="언어"
+        description="워크스페이스 UI 표시 언어를 선택하세요."
       />
-      <Row label="Interface Language" description="Translates navigation, labels, and buttons.">
+      <Row label="인터페이스 언어" description="탐색, 레이블, 버튼의 언어를 변경합니다.">
         <select
           value={getLocale()}
           onChange={(e) => {
@@ -1914,10 +1913,10 @@ export function SettingsDialog({
           <div className="flex items-center justify-between border-b border-primary-200 bg-primary-50/80 px-4 py-4 md:rounded-t-2xl md:px-5">
             <div>
               <DialogTitle className="text-base font-semibold text-primary-900 dark:text-neutral-100">
-                Settings
+                설정
               </DialogTitle>
               <DialogDescription className="sr-only">
-                Configure Petasos
+                Petasos 설정
               </DialogDescription>
             </div>
             <DialogClose
@@ -1926,7 +1925,7 @@ export function SettingsDialog({
                   size="icon-sm"
                   variant="ghost"
                   className="rounded-full text-primary-500 hover:bg-primary-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
-                  aria-label="Close"
+                  aria-label="닫기"
                 >
                   <HugeiconsIcon
                     icon={Cancel01Icon}
@@ -1987,7 +1986,7 @@ export function SettingsDialog({
                       size={16}
                       strokeWidth={1.5}
                     />
-                    Back
+                    뒤로
                   </Button>
                 </div>
                 <ActiveContent />
@@ -1996,12 +1995,12 @@ export function SettingsDialog({
           </SettingsErrorBoundary>
 
           <div className="sticky bottom-0 z-10 border-t border-primary-200 bg-primary-50/60 px-4 py-3 text-xs text-primary-500 dark:text-neutral-400 md:rounded-b-2xl md:px-5">
-            Changes saved automatically.{' '}
+            변경사항이 자동으로 저장됩니다.{' '}
             <a
               href="/settings"
               className="ml-2 font-medium underline underline-offset-2 hover:text-primary-700 dark:hover:text-neutral-200"
             >
-              All settings →
+              전체 설정 →
             </a>
           </div>
         </div>

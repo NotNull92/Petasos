@@ -40,8 +40,9 @@ function loadFromDisk(): void {
         store = parsed
       }
     }
-  } catch {
+  } catch (err) {
     // ignore corrupt local cache
+    console.error('[local-session-store] Failed to load local sessions from disk:', err)
   }
 }
 
@@ -49,8 +50,9 @@ function saveToDisk(): void {
   try {
     if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true })
     writeFileSync(SESSIONS_FILE, JSON.stringify(store, null, 2))
-  } catch {
+  } catch (err) {
     // ignore cache write failures
+    console.error('[local-session-store] Failed to save local sessions to disk:', err)
   }
 }
 

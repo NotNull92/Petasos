@@ -44,7 +44,8 @@ function readHermesEnv(): Record<string, string> {
       if (key) result[key] = value
     }
     return result
-  } catch {
+  } catch (err) {
+    console.error('[hermes-agent] Failed to read Hermes env file:', err)
     return {}
   }
 }

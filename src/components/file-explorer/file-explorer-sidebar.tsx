@@ -57,7 +57,7 @@ type PromptState = {
   defaultValue?: string
 }
 
-const ROOT_LABEL = 'Workspace'
+const ROOT_LABEL = '워크스페이스'
 
 function isImageFile(fileName: string) {
   const ext = fileName.split('.').pop()?.toLowerCase() || ''
@@ -83,7 +83,7 @@ function getParentPath(pathValue: string) {
 
 function buildReference(pathValue: string) {
   const normalized = normalizePath(pathValue)
-  return `See file: workspace/${normalized}`
+  return `파일 참조: workspace/${normalized}`
 }
 
 async function fetchFileTree(): Promise<Array<FileEntry>> {
@@ -214,7 +214,7 @@ export function FileExplorerSidebar({
 
   const handleDelete = useCallback(
     async (entry: FileEntry) => {
-      if (!window.confirm(`Move ${entry.name} to trash?`)) return
+      if (!window.confirm(`"${entry.name}"을(를) 휴지통으로 이동할까요?`)) return
       await fetch('/api/files', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -387,7 +387,7 @@ export function FileExplorerSidebar({
             size="icon-sm"
             variant="ghost"
             onClick={refresh}
-            title="Refresh"
+            title="새로고침"
           >
             <HugeiconsIcon icon={RefreshIcon} size={18} />
           </Button>
@@ -395,7 +395,7 @@ export function FileExplorerSidebar({
             size="icon-sm"
             variant="ghost"
             onClick={() => handleUploadClick('')}
-            title="Upload"
+            title="업로드"
           >
             <HugeiconsIcon icon={Upload01Icon} size={18} />
           </Button>
@@ -403,7 +403,7 @@ export function FileExplorerSidebar({
             size="icon-sm"
             variant="ghost"
             onClick={() => openPrompt({ mode: 'new-file', targetPath: '' })}
-            title="New file"
+            title="새 파일"
           >
             <HugeiconsIcon icon={PlusSignIcon} size={18} />
           </Button>
@@ -414,7 +414,7 @@ export function FileExplorerSidebar({
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search files"
+          placeholder="파일 검색"
           className="w-full rounded-md border border-primary-200 bg-primary-50 px-2 py-1 text-sm text-primary-900 placeholder:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-300"
         />
       </div>
@@ -422,7 +422,7 @@ export function FileExplorerSidebar({
       <ScrollAreaRoot className="flex-1 min-h-0">
         <ScrollAreaViewport className="px-1">
           {loading ? (
-            <div className="px-3 py-2 text-xs text-primary-500">Loading…</div>
+            <div className="px-3 py-2 text-xs text-primary-500">로딩 중…</div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center gap-3 px-4 py-8 text-center">
               <div className="flex size-10 items-center justify-center rounded-xl border border-primary-200 bg-primary-100/60">
@@ -435,10 +435,10 @@ export function FileExplorerSidebar({
               </div>
               <div>
                 <p className="text-sm font-medium text-primary-800">
-                  No workspace selected
+                  워크스페이스가 선택되지 않았습니다
                 </p>
                 <p className="mt-1 text-xs text-primary-500 text-pretty">
-                  Select a folder to browse and edit files.
+                  폴더를 선택하여 파일을 탐색하고 편집하세요.
                 </p>
               </div>
               <Button
@@ -448,7 +448,7 @@ export function FileExplorerSidebar({
                 className="mt-1"
               >
                 <HugeiconsIcon icon={RefreshIcon} size={16} />
-                Retry
+                재시도
               </Button>
             </div>
           ) : entries.length === 0 ? (
@@ -463,10 +463,10 @@ export function FileExplorerSidebar({
               </div>
               <div>
                 <p className="text-sm font-medium text-primary-800">
-                  Workspace is empty
+                  워크스페이스가 비어 있습니다
                 </p>
                 <p className="mt-1 text-xs text-primary-500 text-pretty">
-                  Create files or upload content to get started.
+                  파일을 만들거나 콘텐츠를 업로드하여 시작하세요.
                 </p>
               </div>
               <div className="flex gap-2">
@@ -478,7 +478,7 @@ export function FileExplorerSidebar({
                   }
                 >
                   <HugeiconsIcon icon={PlusSignIcon} size={16} />
-                  New file
+                  새 파일
                 </Button>
                 <Button
                   size="sm"
@@ -486,7 +486,7 @@ export function FileExplorerSidebar({
                   onClick={() => handleUploadClick('')}
                 >
                   <HugeiconsIcon icon={Upload01Icon} size={16} />
-                  Upload
+                  업로드
                 </Button>
               </div>
             </div>

@@ -10,20 +10,20 @@ type SuggestionChip = {
 
 const SUGGESTIONS: Array<SuggestionChip> = [
   {
-    label: 'Analyze workspace',
+    label: '워크스페이스 분석',
     prompt:
-      'Analyze this workspace structure and give me 3 engineering risks. Use tools and keep it concise.',
+      '이 워크스페이스 구조를 분석하고 엔지니어링 리스크 3가지를 알려줘. 도구를 활용하고 간결하게 답변해.',
     icon: CodeIcon,
   },
   {
-    label: 'Save a preference',
+    label: '환경설정 저장',
     prompt:
-      'Save this to memory exactly: "For demos, respond in 3 bullets max and put risk first." Then confirm saved.',
+      '다음 내용을 메모리에 저장해줘: "데모에서는 글머리 3개 이하로, 리스크를 먼저 표시." 저장 후 확인해줘.',
     icon: BrainIcon,
   },
   {
-    label: 'Create a file',
-    prompt: 'Create demo-checklist.md with 5 launch checks for this app.',
+    label: '파일 만들기',
+    prompt: '이 앱을 위한 데모 체크리스트 항목 5개가 담긴 demo-checklist.md 파일을 만들어줘.',
     icon: PuzzleIcon,
   },
 ]
@@ -76,7 +76,7 @@ export function ChatEmptyState({
         {!compact && (
           <>
             <p className="mt-2 text-sm" style={{ color: 'var(--theme-muted)' }}>
-              Agent chat · live tools · memory · full observability
+              에이전트 채팅 · 실시간 도구 · 메모리 · 전체 관측 가능
             </p>
           </>
         )}

@@ -55,7 +55,7 @@ export function MobileTerminalInput() {
         onClick={() => void paste()}
         className="flex items-center justify-center size-8 rounded-lg shrink-0 active:opacity-60"
         style={{ background: '#2a2a2a', color: '#aaa' }}
-        aria-label="Paste"
+        aria-label="붙여넣기"
       >
         <HugeiconsIcon icon={Copy01Icon} size={16} strokeWidth={1.6} />
       </button>
@@ -73,7 +73,7 @@ export function MobileTerminalInput() {
             void sendToActiveTab('\t')
           }
         }}
-        placeholder="Type command…"
+        placeholder="명령어 입력…"
         autoCapitalize="none"
         autoCorrect="off"
         autoComplete="off"
@@ -83,7 +83,7 @@ export function MobileTerminalInput() {
           background: '#2a2a2a',
           color: '#e6e6e6',
           border: '1px solid #444',
-          fontFamily: 'JetBrains Mono, Menlo, monospace',
+          fontFamily: 'Victor Mono, Menlo, monospace',
         }}
       />
       <button
@@ -100,7 +100,7 @@ export function MobileTerminalInput() {
         onClick={send}
         className="flex items-center justify-center size-8 rounded-lg shrink-0 active:opacity-60"
         style={{ background: '#ea580c', color: '#fff' }}
-        aria-label="Send"
+        aria-label="전송"
       >
         <HugeiconsIcon icon={ArrowUp02Icon} size={16} strokeWidth={1.8} />
       </button>

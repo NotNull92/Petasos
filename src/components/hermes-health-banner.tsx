@@ -32,7 +32,7 @@ export function HermesHealthBanner({
       } catch (err) {
         if (!cancelled) {
           setStatus('error')
-          setLastError(err instanceof Error ? err.message : 'Connection failed')
+          setLastError(err instanceof Error ? err.message : '연결 실패')
         }
       }
     }
@@ -56,7 +56,7 @@ export function HermesHealthBanner({
       }}
     >
       <span className="inline-block h-2 w-2 rounded-full bg-white/60 animate-pulse" />
-      <span>Hermes Agent unreachable{lastError ? ` — ${lastError}` : ''}</span>
+      <span>Hermes 에이전트에 연결할 수 없습니다{lastError ? ` — ${lastError}` : ''}</span>
       <button
         type="button"
         onClick={() => {
@@ -69,14 +69,14 @@ export function HermesHealthBanner({
             .catch((err) => {
               setStatus('error')
               setLastError(
-                err instanceof Error ? err.message : 'Connection failed',
+                err instanceof Error ? err.message : '연결 실패',
               )
             })
         }}
         className="ml-2 rounded px-2 py-0.5 text-xs font-semibold transition-opacity hover:opacity-80"
         style={{ background: 'rgba(255,255,255,0.2)' }}
       >
-        Retry
+        재시도
       </button>
     </div>
   )

@@ -67,15 +67,15 @@ export function ChatPanel() {
   // Current session title
   const activeSession = sessions.find((s) => s.friendlyId === activeFriendlyId)
   const panelTitle = activeSession
-    ? activeSession.label ||
+    ?      activeSession.label ||
       activeSession.title ||
       activeSession.derivedTitle ||
-      'Chat'
+      '채팅'
     : activeFriendlyId === 'main'
-      ? 'Main Session'
+      ? '메인 세션'
       : isNewChat
-        ? 'New Chat'
-        : 'Chat'
+        ? '새 대화'
+        : '채팅'
 
   const handleSessionResolved = useCallback(
     (payload: { friendlyId: string; sessionKey: string }) => {
@@ -170,7 +170,7 @@ export function ChatPanel() {
                           size="icon-sm"
                           variant="ghost"
                           className="text-primary-600 hover:text-primary-900"
-                          aria-label="New chat"
+                          aria-label="새 대화"
                         >
                           <HugeiconsIcon
                             icon={PencilEdit02Icon}
@@ -180,7 +180,7 @@ export function ChatPanel() {
                         </Button>
                       }
                     />
-                    <TooltipContent side="bottom">New chat</TooltipContent>
+                    <TooltipContent side="bottom">새 대화</TooltipContent>
                   </TooltipRoot>
                   <TooltipRoot>
                     <TooltipTrigger
@@ -190,7 +190,7 @@ export function ChatPanel() {
                           size="icon-sm"
                           variant="ghost"
                           className="text-primary-600 hover:text-primary-900"
-                          aria-label="Expand to full chat"
+                          aria-label="전체 채팅으로 확장"
                         >
                           <HugeiconsIcon
                             icon={ArrowExpand01Icon}
@@ -200,7 +200,7 @@ export function ChatPanel() {
                         </Button>
                       }
                     />
-                    <TooltipContent side="bottom">Full view</TooltipContent>
+                    <TooltipContent side="bottom">전체 보기</TooltipContent>
                   </TooltipRoot>
                 </TooltipProvider>
                 <Button
@@ -208,7 +208,7 @@ export function ChatPanel() {
                   variant="ghost"
                   onClick={handleClose}
                   className="text-primary-600 hover:text-primary-900"
-                  aria-label="Close chat panel"
+                  aria-label="채팅 패널 닫기"
                 >
                   <HugeiconsIcon
                     icon={Cancel01Icon}

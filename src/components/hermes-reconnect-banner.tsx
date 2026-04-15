@@ -116,7 +116,7 @@ export function HermesReconnectBanner({
             wasDisconnectedRef.current = true
             setBannerState('disconnected')
             setMessage(
-              error instanceof Error ? error.message : 'Connection failed',
+              error instanceof Error ? error.message : '연결 실패',
             )
           }
           return false
@@ -170,17 +170,17 @@ export function HermesReconnectBanner({
       }
 
       if (!response.ok || !payload.ok) {
-        throw new Error(payload.error || 'Failed to start Hermes agent')
+        throw new Error(payload.error || 'Hermes 에이전트 시작 실패')
       }
 
       setMessage(
         payload.message === 'already running'
-          ? 'Hermes agent is already running'
-          : 'Starting Hermes agent…',
+          ? 'Hermes 에이전트가 이미 실행 중입니다'
+          : 'Hermes 에이전트 시작 중…',
       )
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : 'Failed to start Hermes agent',
+        error instanceof Error ? error.message : 'Hermes 에이전트 시작 실패',
       )
     } finally {
       setIsStarting(false)
@@ -220,7 +220,7 @@ export function HermesReconnectBanner({
           />
           <div className="min-w-0">
             <p className="text-sm font-semibold">
-              {isDisconnected ? 'Hermes agent not connected' : 'Connected'}
+              {isDisconnected ? 'Hermes 에이전트 연결 안 됨' : '연결됨'}
             </p>
             {message ? (
               <p className="truncate text-xs opacity-80">{message}</p>
@@ -241,7 +241,7 @@ export function HermesReconnectBanner({
                 color: 'inherit',
               }}
             >
-              {isChecking ? 'Retrying…' : 'Retry'}
+              {isChecking ? '재시도 중…' : '재시도'}
             </button>
             <button
               type="button"
@@ -252,7 +252,7 @@ export function HermesReconnectBanner({
                 background: 'var(--theme-danger)',
               }}
             >
-              {isStarting ? 'Starting…' : 'Start Agent'}
+              {isStarting ? '시작 중…' : '에이전트 시작'}
             </button>
           </div>
         ) : null}

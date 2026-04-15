@@ -83,9 +83,9 @@ function getSessionDisplayTitle(
   const derivedTitle = normalizeTitleValue(session.derivedTitle)
   if (derivedTitle) return derivedTitle
 
-  if (isGenerating) return 'Naming…'
+  if (isGenerating) return '이름 생성 중…'
   const shortId = getSessionShortId(session)
-  return shortId ? `Session ${shortId}` : 'Session'
+  return shortId ? `세션 ${shortId}` : '세션'
 }
 
 function getFriendlyIdLabel(friendlyId: string): string {
@@ -114,7 +114,7 @@ function SessionItemComponent({
 
   const subtitle = useMemo(() => {
     if (isError) {
-      return session.titleError || 'Could not generate a title'
+      return session.titleError || '제목을 생성하지 못했습니다'
     }
     const parts: Array<string> = []
     const formatted = formatSessionTimestamp(updatedAt)
@@ -174,7 +174,7 @@ function SessionItemComponent({
             'opacity-0 transition-opacity group-hover:opacity-100 hover:bg-primary-200 dark:hover:bg-primary-800',
             'aria-expanded:opacity-100 aria-expanded:bg-primary-200',
           )}
-          aria-label="Session options"
+          aria-label="세션 옵션"
         >
           <HugeiconsIcon
             icon={MoreHorizontalIcon}
@@ -192,7 +192,7 @@ function SessionItemComponent({
             className="gap-2"
           >
             <HugeiconsIcon icon={PinIcon} size={20} strokeWidth={1.5} />{' '}
-            {isPinned ? 'Unpin session' : 'Pin session'}
+            {isPinned ? '고정 해제' : '세션 고정'}
           </MenuItem>
           <MenuItem
             onClick={(event) => {
@@ -203,7 +203,7 @@ function SessionItemComponent({
             className="gap-2"
           >
             <HugeiconsIcon icon={Pen01Icon} size={20} strokeWidth={1.5} />{' '}
-            Rename
+            이름 변경
           </MenuItem>
           <MenuItem
             onClick={(event) => {
@@ -214,7 +214,7 @@ function SessionItemComponent({
             className="text-red-700 gap-2 hover:bg-red-50 dark:hover:bg-red-900/30/80 data-highlighted:bg-red-50/80"
           >
             <HugeiconsIcon icon={Delete01Icon} size={20} strokeWidth={1.5} />{' '}
-            Delete
+            삭제
           </MenuItem>
         </MenuContent>
       </MenuRoot>

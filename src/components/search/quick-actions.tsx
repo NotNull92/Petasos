@@ -23,7 +23,7 @@ export function QuickActions({
     <div className="space-y-4">
       <div>
         <div className="mb-2 text-xs font-medium text-muted-foreground">
-          Recent Searches
+          최근 검색
         </div>
         <div className="flex flex-wrap gap-2">
           {recentSearches.map((entry) => (
@@ -44,7 +44,7 @@ export function QuickActions({
 
       <div>
         <div className="mb-2 text-xs font-medium text-muted-foreground">
-          Quick Actions
+          빠른 작업
         </div>
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           {actions.map((action) => (

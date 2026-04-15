@@ -29,12 +29,12 @@ const TABS: Array<{
   label: string
   feature?: 'memory' | 'skills'
 }> = [
-  { id: 'activity', label: 'Activity' },
-  { id: 'artifacts', label: 'Artifacts' },
-  { id: 'files', label: 'Files' },
-  { id: 'memory', label: 'Memory', feature: 'memory' },
-  { id: 'skills', label: 'Skills', feature: 'skills' },
-  { id: 'logs', label: 'Logs' },
+  { id: 'activity', label: '활동' },
+  { id: 'artifacts', label: '아티팩트' },
+  { id: 'files', label: '파일' },
+  { id: 'memory', label: '메모리', feature: 'memory' },
+  { id: 'skills', label: '스킬', feature: 'skills' },
+  { id: 'logs', label: '로그' },
 ]
 
 // ── Shared loading / error ────────────────────────────────────────────────────
@@ -61,13 +61,13 @@ function ArtifactsTab() {
   const artifacts = events.filter((e) => e.type === 'artifact')
 
   if (artifacts.length === 0) {
-    return <EmptyState text="No agent-authored artifacts yet" />
+    return <EmptyState text="에이전트가 만든 아티팩트가 없습니다" />
   }
 
   return (
     <div className="space-y-2 p-3 overflow-auto max-h-[calc(100vh-140px)]">
       <p className="text-xs" style={{ color: 'var(--theme-muted)' }}>
-        {artifacts.length} artifacts emitted by the agent
+        에이전트가 생성한 아티팩트 {artifacts.length}개
       </p>
       {artifacts.map((artifact, index) => (
         <div
@@ -120,7 +120,7 @@ function ActivityTab() {
   }, [events.length])
 
   if (events.length === 0) {
-    return <EmptyState text="No activity yet — start a conversation" />
+    return <EmptyState text="아직 활동이 없습니다 — 대화를 시작하세요" />
   }
 
   return (
@@ -174,14 +174,14 @@ function FilesTab() {
 
   if (files.length === 0) {
     return (
-      <EmptyState text="No files touched yet — activity will appear during chat" />
+      <EmptyState text="아직 다룬 파일이 없습니다 — 채팅 중에 표시됩니다" />
     )
   }
 
   return (
     <div className="space-y-1 p-3">
       <p className="mb-2 text-xs" style={{ color: 'var(--theme-muted)' }}>
-        Files touched in session ({files.length})
+        세션에서 다룬 파일 ({files.length})
       </p>
       {files.map((file: string, i: number) => (
         <div
@@ -239,15 +239,15 @@ function MemoryTab() {
     }
   }, [])
 
-  if (loading) return <LoadingState text="Loading memory…" />
+  if (loading) return <LoadingState text="메모리 로딩 중…" />
   if (error) return <ErrorState text={`Memory: ${error}`} />
   if (!files || files.length === 0)
-    return <EmptyState text="No memory files available" />
+    return <EmptyState text="사용 가능한 메모리 파일이 없습니다" />
 
   return (
     <div className="space-y-2 p-3 overflow-auto max-h-[calc(100vh-140px)]">
       <p className="mb-1 text-xs" style={{ color: 'var(--theme-muted)' }}>
-        {files.length} memory files available
+        메모리 파일 {files.length}개 사용 가능
       </p>
       {files.map((file, index) => (
         <div
@@ -309,9 +309,9 @@ function SkillsTab() {
     }
   }, [])
 
-  if (loading) return <LoadingState text="Loading skills…" />
+  if (loading) return <LoadingState text="스킬 로딩 중…" />
   if (error) return <ErrorState text={`Skills: ${error}`} />
-  if (skills.length === 0) return <EmptyState text="No skills found" />
+  if (skills.length === 0) return <EmptyState text="스킬을 찾을 수 없습니다" />
 
   // Group by category
   const grouped: Record<string, Array<SkillItem>> = {}
@@ -324,7 +324,7 @@ function SkillsTab() {
   return (
     <div className="space-y-3 p-3 overflow-auto max-h-[calc(100vh-140px)]">
       <p className="text-xs" style={{ color: 'var(--theme-muted)' }}>
-        {skills.length} skills loaded
+        {skills.length}개 스킬 로드됨
       </p>
       {Object.entries(grouped).map(([category, items]) => (
         <div key={category}>
@@ -384,7 +384,7 @@ function LogsTab() {
     return (
       <div className="p-3">
         <p className="text-xs" style={{ color: 'var(--theme-muted)' }}>
-          Raw event stream — waiting for activity…
+          원시 이벤트 스트림 — 활동 대기 중…
         </p>
       </div>
     )
@@ -393,7 +393,7 @@ function LogsTab() {
   return (
     <div className="p-3">
       <p className="mb-2 text-xs" style={{ color: 'var(--theme-muted)' }}>
-        Raw events ({events.length})
+        원시 이벤트 ({events.length})
       </p>
       <pre
         ref={scrollRef}
@@ -449,14 +449,14 @@ export function InspectorPanel() {
               className="text-sm font-semibold"
               style={{ color: 'var(--theme-text)' }}
             >
-              Inspector
+              인스펙터
             </span>
             <button
               type="button"
               onClick={() => useInspectorStore.getState().setOpen(false)}
               className="rounded p-1 text-xs hover:opacity-70 transition-opacity"
               style={{ color: 'var(--theme-muted)' }}
-              aria-label="Close inspector"
+              aria-label="인스펙터 닫기"
             >
               ✕
             </button>

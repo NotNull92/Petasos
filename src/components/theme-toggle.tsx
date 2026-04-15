@@ -14,9 +14,9 @@ const MODES: Array<{
   icon: typeof ComputerIcon
   label: string
 }> = [
-  { value: 'system', icon: ComputerIcon, label: 'System' },
-  { value: 'light', icon: Sun01Icon, label: 'Light' },
-  { value: 'dark', icon: Moon01Icon, label: 'Dark' },
+  { value: 'system', icon: ComputerIcon, label: '시스템' },
+  { value: 'light', icon: Sun01Icon, label: '라이트' },
+  { value: 'dark', icon: Moon01Icon, label: '다크' },
 ]
 
 type ThemeToggleProps = {
@@ -31,7 +31,7 @@ export function ThemeToggle({ variant = 'pill' }: ThemeToggleProps) {
     settings.theme === 'dark' ||
     (settings.theme === 'system' && resolvedIsDark())
   const currentThemeLabel =
-    MODES.find((mode) => mode.value === settings.theme)?.label ?? 'System'
+    MODES.find((mode) => mode.value === settings.theme)?.label ?? '시스템'
 
   function setTheme(theme: SettingsThemeMode) {
     applyTheme(theme)
@@ -44,8 +44,8 @@ export function ThemeToggle({ variant = 'pill' }: ThemeToggleProps) {
         type="button"
         onClick={() => setTheme(isDark ? 'light' : 'dark')}
         className="inline-flex size-7 items-center justify-center rounded-md text-primary-400 transition-colors hover:text-primary-700 dark:hover:text-primary-300"
-        aria-label={`Theme is ${currentThemeLabel}. Switch to ${isDark ? 'light' : 'dark'} mode`}
-        title={isDark ? 'Light mode' : 'Dark mode'}
+        aria-label={`현재 테마: ${currentThemeLabel}. ${isDark ? '라이트' : '다크'} 모드로 전환`}
+        title={isDark ? '라이트 모드' : '다크 모드'}
       >
         <HugeiconsIcon
           icon={isDark ? Sun01Icon : Moon01Icon}
@@ -60,7 +60,7 @@ export function ThemeToggle({ variant = 'pill' }: ThemeToggleProps) {
     <div
       className="inline-flex items-center gap-0.5 rounded-full border border-primary-200 bg-primary-100/70 p-0.5 dark:border-primary-700 dark:bg-primary-800/80"
       role="group"
-      aria-label={`Theme mode. Current: ${currentThemeLabel}`}
+      aria-label={`테마 모드. 현재: ${currentThemeLabel}`}
     >
       {MODES.map((mode) => {
         const active = settings.theme === mode.value
@@ -76,7 +76,7 @@ export function ThemeToggle({ variant = 'pill' }: ThemeToggleProps) {
                 : 'text-primary-500 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-200',
             )}
             aria-label={
-              active ? `${mode.label} theme (current)` : `${mode.label} theme`
+              active ? `${mode.label} 테마 (현재)` : `${mode.label} 테마`
             }
             title={mode.label}
           >

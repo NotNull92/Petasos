@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process'
+import * as os from 'node:os'
 import path from 'node:path'
 import { promisify } from 'node:util'
 import { createFileRoute } from '@tanstack/react-router'
@@ -38,7 +39,7 @@ export const Route = createFileRoute('/api/skills/hub-search')({
           )
 
           const { stdout } = await execFileAsync(
-            'python3',
+            path.join(os.homedir(), '.hermes/hermes-agent/venv/bin/python3'),
             [scriptPath, query, String(limit), source],
             {
               timeout: 30_000,

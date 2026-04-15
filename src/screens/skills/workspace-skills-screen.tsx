@@ -468,7 +468,7 @@ export function WorkspaceSkillsScreen() {
                   <input
                     value={memorySearch}
                     onChange={(event) => setMemorySearch(event.target.value)}
-                    placeholder="Search memory..."
+                    placeholder="메모리 검색..."
                     className="w-full rounded-xl border border-primary-200 bg-white px-10 py-2.5 text-sm text-primary-900 outline-none transition-colors placeholder:text-primary-500 focus:border-accent-500/50"
                   />
                 </div>

@@ -174,14 +174,13 @@ export function MobilePromptTrigger() {
                     className="text-sm font-semibold"
                     style={{ color: 'var(--theme-text)' }}
                   >
-                    Set up mobile access
+                    모바일 접속 설정
                   </p>
                   <p
                     className="text-xs"
                     style={{ color: 'var(--theme-muted)' }}
                   >
-                    Connect your phone to this Petasos instance in a
-                    few steps.
+                    몇 단계만에 휴대폰을 이 Petasos 인스턴스에 연결하세요.
                   </p>
                 </div>
 
@@ -192,14 +191,14 @@ export function MobilePromptTrigger() {
                     className="rounded-lg px-3 py-1.5 text-xs font-semibold text-white"
                     style={{ background: 'var(--theme-accent)' }}
                   >
-                    Set up
+                    설정
                   </button>
                   <button
                     type="button"
                     onClick={dismissPrompt}
                     className="rounded-lg p-1.5 transition-colors hover:opacity-80"
                     style={{ color: 'var(--theme-muted)' }}
-                    aria-label="Dismiss mobile setup prompt"
+                    aria-label="모바일 설정 프롬프트 닫기"
                   >
                     <HugeiconsIcon
                       icon={Cancel01Icon}
@@ -224,7 +223,7 @@ export function MobilePromptTrigger() {
                     background: 'var(--theme-card2)',
                   }}
                 />
-                <span>Don&apos;t show this again</span>
+                <span>다시 표시하지 않기</span>
               </label>
             </div>
           </motion.div>

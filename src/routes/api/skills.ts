@@ -118,12 +118,42 @@ function normalizeSecurity(value: unknown): SecurityRisk {
   }
 }
 
+const CATEGORY_MAP: Record<string, string> = {
+  apple: 'Productivity',
+  'autonomous-ai-agents': 'Coding Agents',
+  creative: 'Image & Video',
+  'data-science': 'Data & Analytics',
+  devops: 'DevOps & Cloud',
+  email: 'Communication',
+  gamedev: 'Productivity',
+  gaming: 'Productivity',
+  github: 'Git & GitHub',
+  leisure: 'Productivity',
+  mcp: 'AI & LLMs',
+  media: 'Image & Video',
+  mlops: 'AI & LLMs',
+  'openclaw-imports': 'Productivity',
+  productivity: 'Productivity',
+  'red-teaming': 'AI & LLMs',
+  research: 'Search & Research',
+  'software-development': 'Coding Agents',
+  'browser & automation': 'Browser & Automation',
+}
+
 function guessCategory(record: Record<string, unknown>): string {
   const direct =
     readString(record.category) ||
     readString(record.group) ||
     readString(record.section)
-  if (direct) return direct
+
+  if (direct) {
+    // Try exact match in CATEGORY_MAP first
+    const lower = direct.toLowerCase().trim()
+    if (CATEGORY_MAP[lower]) return CATEGORY_MAP[lower]
+    // If already a valid KNOWN_CATEGORIES entry, return as-is
+    if ((KNOWN_CATEGORIES as readonly string[]).includes(direct)) return direct
+  }
+
   const tags = readStringArray(record.tags).map((tag) => tag.toLowerCase())
   if (tags.some((tag) => tag.includes('frontend') || tag.includes('react'))) {
     return 'Web & Frontend'
@@ -267,7 +297,8 @@ export const Route = createFileRoute('/api/skills')({
               ? tabParam
               : 'installed'
           const rawSearch = (url.searchParams.get('search') || '').trim()
-          const category = (url.searchParams.get('category') || 'All').trim()
+          const rawCategory = (url.searchParams.get('category') || 'All').trim()
+          const category = rawCategory === '전체' ? 'All' : rawCategory
           const sortParam = (url.searchParams.get('sort') || 'name').trim()
           const sort: SkillsSort =
             sortParam === 'category' || sortParam === 'name'
@@ -318,11 +349,20 @@ export const Route = createFileRoute('/api/skills')({
           const start = (page - 1) * limit
           const skills = filtered.slice(start, start + limit)
 
+          // Build dynamic categories list from actual skills present
+          const presentCategories = Array.from(
+            new Set(
+              sourceItems
+                .map((skill) => skill.category)
+                .filter(Boolean),
+            ),
+          ).sort()
+
           return json({
             skills,
             total,
             page,
-            categories: KNOWN_CATEGORIES,
+            categories: presentCategories,
           })
         } catch (err) {
           return json(

@@ -976,7 +976,7 @@ function ChatComposerComponent({
       if (isTimeoutErrorMessage(message)) {
         setModelNotice({
           tone: 'error',
-          message: 'Request timed out',
+          message: '요청 시간이 초과되었습니다',
           retryModel: variables.model,
           retryProvider: variables.provider,
         })
@@ -984,7 +984,7 @@ function ChatComposerComponent({
       }
       setModelNotice({
         tone: 'error',
-        message: message || 'Failed to switch model',
+        message: message || '모델 전환에 실패했습니다',
         retryModel: variables.model,
         retryProvider: variables.provider,
       })
@@ -1280,7 +1280,7 @@ function ChatComposerComponent({
 
             if (file.size > MAX_ATTACHMENT_FILE_SIZE) {
               toast(
-                `“${file.name || 'file'}” is ${formatFileSize(file.size)}. Max upload input size is ${formatFileSize(MAX_ATTACHMENT_FILE_SIZE)}.`,
+                `"${file.name || 'file'}" 크기: ${formatFileSize(file.size)}. 최대 업로드 크기: ${formatFileSize(MAX_ATTACHMENT_FILE_SIZE)}.`,
                 { type: 'warning' },
               )
               return null
@@ -1323,7 +1323,7 @@ function ChatComposerComponent({
             const transportBytes = estimateDataUrlBytes(dataUrl)
             if (transportBytes > MAX_TRANSPORT_IMAGE_SIZE) {
               toast(
-                `Image compressed to ${(transportBytes / (1024 * 1024)).toFixed(2)}mb — still over the 1mb limit. Try a smaller screenshot.`,
+                `이미지가 ${(transportBytes / (1024 * 1024)).toFixed(2)}MB로 압축되었으나 여전히 1MB 제한을 초과합니다. 더 작은 이미지를 사용하세요.`,
                 { type: 'warning' },
               )
               return null
@@ -1362,8 +1362,8 @@ function ChatComposerComponent({
       if (skippedCount > 0) {
         toast(
           skippedCount === 1
-            ? '1 file could not be attached.'
-            : `${skippedCount} files could not be attached.`,
+            ? '1개 파일을 첨부할 수 없습니다.'
+            : `${skippedCount}개 파일을 첨부할 수 없습니다.`,
           { type: 'warning' },
         )
       }
@@ -1523,8 +1523,8 @@ function ChatComposerComponent({
 
   const hasDraft = value.trim().length > 0 || attachments.length > 0
   const promptPlaceholder = isMobileViewport
-    ? 'Message...'
-    : 'Ask anything... (↵ to send · ⇧↵ new line · ⌘⇧M switch model)'
+    ? '안녕하세요 보스 당신의 충견 헤라입니다. 저를 사용해주세요.'
+    : '안녕하세요 보스 당신의 충견 헤라입니다. 저를 사용해주세요.'
   const slashCommandQuery = useMemo(() => readSlashCommandQuery(value), [value])
   const isSlashMenuOpen =
     slashCommandQuery !== null && !disabled && !isSlashMenuDismissed
@@ -1944,7 +1944,7 @@ function ChatComposerComponent({
                             name: attachment.name || 'Attached image',
                           })
                         }
-                        aria-label={`Preview ${attachment.name || 'image'}`}
+                        aria-label={`미리보기 ${attachment.name || '이미지'}`}
                       >
                         <img
                           src={attachment.previewUrl}
@@ -1960,7 +1960,7 @@ function ChatComposerComponent({
                     )}
                     <button
                       type="button"
-                      aria-label="Remove attachment"
+                      aria-label="첨부파일 제거"
                       onClick={(event) => {
                         event.preventDefault()
                         event.stopPropagation()
@@ -1994,7 +1994,7 @@ function ChatComposerComponent({
               {/* + button — opens bottom sheet actions menu */}
               <button
                 type="button"
-                aria-label="Actions"
+                aria-label="작업"
                 disabled={disabled}
                 onClick={(event) => {
                   event.stopPropagation()
@@ -2035,7 +2035,7 @@ function ChatComposerComponent({
                   <button
                     type="button"
                     onClick={handleAbort}
-                    aria-label="Stop generation"
+                    aria-label="생성 중단"
                     className="size-9 rounded-full bg-red-500 flex items-center justify-center text-white transition-all duration-150"
                   >
                     <HugeiconsIcon icon={StopIcon} size={18} strokeWidth={2} />
@@ -2047,7 +2047,7 @@ function ChatComposerComponent({
                     type="button"
                     onClick={handleSubmit}
                     disabled={submitDisabled}
-                    aria-label="Send message"
+                    aria-label="전송"
                     className="size-9 rounded-full bg-accent-500 flex items-center justify-center text-white transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                   >
                     <HugeiconsIcon
@@ -2073,10 +2073,10 @@ function ChatComposerComponent({
                     onPointerLeave={handleMicPointerUp}
                     aria-label={
                       voiceRecorder.isRecording
-                        ? 'Recording voice note'
+                        ? '음성 메모 녹음 중'
                         : voiceInput.isListening
-                          ? 'Stop listening'
-                          : 'Voice input'
+                          ? '듣기 중단'
+                          : '음성 입력'
                     }
                     disabled={disabled}
                     className={cn(
@@ -2105,7 +2105,7 @@ function ChatComposerComponent({
                     type="button"
                     onClick={handleSubmit}
                     disabled={submitDisabled}
-                    aria-label="Send message"
+                    aria-label="전송"
                     className="size-9 rounded-full bg-accent-500 flex items-center justify-center text-white transition-all duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     <HugeiconsIcon
@@ -2123,7 +2123,7 @@ function ChatComposerComponent({
                   <>
                     <button
                       type="button"
-                      aria-label="Close actions"
+                      aria-label="작업 닫기"
                       className="fixed inset-0 z-[199] bg-black/30"
                       onClick={() => {
                         setIsMobileActionsMenuOpen(false)
@@ -2133,12 +2133,12 @@ function ChatComposerComponent({
                     <div
                       className="fixed bottom-0 left-0 right-0 z-[200] rounded-t-2xl bg-white shadow-2xl pb-safe dark:bg-neutral-900 animate-in slide-in-from-bottom-10 duration-200"
                       role="dialog"
-                      aria-label="Actions"
+                      aria-label="작업"
                       onClick={(event) => event.stopPropagation()}
                     >
                       <div className="mx-auto mt-3 mb-4 h-1 w-10 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                       <div className="px-4 pb-2 text-sm font-semibold text-neutral-500 dark:text-neutral-400">
-                        Actions
+                        작업
                       </div>
                       <div className="grid grid-cols-2 gap-2 px-4 pb-4">
                         {/* Attach File — keep sheet open so iOS picker can layer on top */}
@@ -2159,7 +2159,7 @@ function ChatComposerComponent({
                             />
                           </span>
                           <span className="text-sm font-medium text-neutral-800 dark:text-neutral-100">
-                            Attach File
+                            파일 첨부
                           </span>
                         </button>
 
@@ -2205,7 +2205,7 @@ function ChatComposerComponent({
                               />
                             </span>
                             <span className="text-sm font-medium text-neutral-800 dark:text-neutral-100">
-                              Clear Draft
+                              임시보관함 비우기
                             </span>
                           </button>
                         ) : null}
@@ -2227,7 +2227,7 @@ function ChatComposerComponent({
                               />
                             </span>
                             <span className="text-sm font-medium text-neutral-800 dark:text-neutral-100">
-                              New Session
+                              새 세션
                             </span>
                           </button>
                         ) : null}
@@ -2244,19 +2244,19 @@ function ChatComposerComponent({
                   <>
                     <button
                       type="button"
-                      aria-label="Close model picker"
+                      aria-label="모델 선택기 닫기"
                       className="fixed inset-0 z-[209] bg-black/30"
                       onClick={() => setIsModelMenuOpen(false)}
                     />
                     <div
                       className="fixed bottom-0 left-0 right-0 z-[210] rounded-t-2xl bg-white shadow-2xl pb-safe dark:bg-neutral-900 animate-in slide-in-from-bottom-10 duration-200"
                       role="dialog"
-                      aria-label="Select model"
+                      aria-label="모델 선택"
                       onClick={(event) => event.stopPropagation()}
                     >
                       <div className="mx-auto mt-3 mb-4 h-1 w-10 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                       <div className="px-4 pb-2 text-sm font-semibold text-neutral-500 dark:text-neutral-400">
-                        Model
+                        모델
                       </div>
                       <div className="pb-4 max-h-[60dvh] overflow-y-auto overflow-x-hidden">
                         {(() => {
@@ -2267,10 +2267,10 @@ function ChatComposerComponent({
                             return (
                               <div className="p-4 text-center text-sm text-neutral-500">
                                 <p className="font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                  No models available
+                                  사용 가능한 모델이 없습니다
                                 </p>
                                 <p className="text-xs">
-                                  Check your Hermes provider configuration.
+                                  Hermes 프로바이더 설정을 확인하세요.
                                 </p>
                               </div>
                             )
@@ -2373,8 +2373,8 @@ function ChatComposerComponent({
                                   }`}
                                   aria-label={
                                     isPinned(entry.id)
-                                      ? `Unpin ${entry.name}`
-                                      : `Pin ${entry.name}`
+                                      ? `${entry.name} 고정 해제`
+                                      : `${entry.name} 고정`
                                   }
                                 >
                                   <svg
@@ -2411,7 +2411,7 @@ function ChatComposerComponent({
                                     >
                                       <path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" />
                                     </svg>
-                                    <span>Pinned</span>
+                                    <span>고정됨</span>
                                   </div>
                                   {pinnedEntries.map(renderEntry)}
                                 </div>
@@ -2463,12 +2463,12 @@ function ChatComposerComponent({
             />
             <PromptInputActions className="justify-between px-1.5 md:px-3 gap-0.5 md:gap-2">
               <div className="flex min-w-0 flex-1 items-center gap-0 md:gap-1">
-                <PromptInputAction tooltip="Add attachment">
+                <PromptInputAction tooltip="첨부파일 추가">
                   <Button
                     size="icon-sm"
                     variant="ghost"
                     className="rounded-lg text-primary-500 hover:bg-primary-100 dark:hover:bg-primary-800 hover:text-primary-500"
-                    aria-label="Add attachment"
+                    aria-label="첨부파일 추가"
                     disabled={disabled}
                     onClick={handleOpenAttachmentPicker}
                   >
@@ -2480,12 +2480,12 @@ function ChatComposerComponent({
                   </Button>
                 </PromptInputAction>
                 {hasDraft && !isLoading && (
-                  <PromptInputAction tooltip="Clear draft">
+                  <PromptInputAction tooltip="임시보관함 비우기">
                     <Button
                       size="icon-sm"
                       variant="ghost"
                       className="rounded-lg text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-800 hover:text-red-600"
-                      aria-label="Clear draft"
+                      aria-label="임시보관함 비우기"
                       onClick={handleClearDraft}
                     >
                       <HugeiconsIcon
@@ -2499,7 +2499,7 @@ function ChatComposerComponent({
                 {/* Token counter — bottom bar, mirrors Hermes style, triggers at ~25 tokens */}
                 {value.length >= 100 && (
                   <span className="ml-1 text-[10px] text-primary-400 tabular-nums select-none">
-                    ~{Math.ceil(value.length / 4)} tokens
+                    ~{Math.ceil(value.length / 4)} 토큰
                   </span>
                 )}
 
@@ -2533,7 +2533,7 @@ function ChatComposerComponent({
                             if (allModels.length === 0) {
                               return (
                                 <div className="p-4 text-center text-sm text-neutral-500">
-                                  No models available
+                                  사용 가능한 모델 없음
                                 </div>
                               )
                             }
@@ -2754,13 +2754,13 @@ function ChatComposerComponent({
                   </PromptInputAction>
                 ) : null}
                 {isLoading ? (
-                  <PromptInputAction tooltip="Stop generation">
+                  <PromptInputAction tooltip="생성 중지">
                     <Button
                       onClick={handleAbort}
                       size="icon-sm"
                       variant="destructive"
                       className="rounded-md"
-                      aria-label="Stop generation"
+                      aria-label="생성 중지"
                     >
                       <HugeiconsIcon
                         icon={StopIcon}
@@ -2771,14 +2771,14 @@ function ChatComposerComponent({
                   </PromptInputAction>
                 ) : (
                   <>
-                    <PromptInputAction tooltip="Send message">
+                    <PromptInputAction tooltip="메시지 보내기">
                       <Button
                         type="button"
                         onClick={handleSubmit}
                         disabled={submitDisabled}
                         size="icon-sm"
                         className="rounded-full"
-                        aria-label="Send message"
+                        aria-label="전송"
                       >
                         <HugeiconsIcon
                           icon={ArrowUp02Icon}
@@ -2802,7 +2802,7 @@ function ChatComposerComponent({
             className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 backdrop-blur-sm animate-in fade-in duration-200"
             onClick={() => setPreviewImage(null)}
             role="dialog"
-            aria-label="Image preview"
+            aria-label="이미지 미리보기"
           >
             <button
               type="button"
@@ -2811,7 +2811,7 @@ function ChatComposerComponent({
                 e.stopPropagation()
                 setPreviewImage(null)
               }}
-              aria-label="Close preview"
+              aria-label="미리보기 닫기"
             >
               <HugeiconsIcon icon={Cancel01Icon} size={24} strokeWidth={2} />
             </button>

@@ -27,12 +27,12 @@ import { filterResults, useSearchData } from '@/hooks/use-search-data'
 import { cn } from '@/lib/utils'
 
 const SCOPE_TABS: Array<{ value: SearchScope; label: string }> = [
-  { value: 'all', label: 'All' },
-  { value: 'chats', label: '💬 Chats' },
-  { value: 'files', label: '📁 Files' },
-  { value: 'agents', label: '🤖 Agents' },
-  { value: 'skills', label: '🛠️ Skills' },
-  { value: 'actions', label: '⚡ Actions' },
+  { value: 'all', label: '전체' },
+  { value: 'chats', label: '💬 대화' },
+  { value: 'files', label: '📁 파일' },
+  { value: 'agents', label: '🤖 에이전트' },
+  { value: 'skills', label: '🛠️ 스킬' },
+  { value: 'actions', label: '⚡ 작업' },
 ]
 
 const RECENT_SEARCHES = [
@@ -88,8 +88,8 @@ export function SearchModal() {
       {
         id: 'qa-new-chat',
         emoji: '💬',
-        label: 'New Chat',
-        description: 'Start a new conversation session',
+        label: '새 대화',
+        description: '새 대화 세션을 시작합니다',
         onSelect: () => {
           closeModal()
           navigate({ to: '/chat' })
@@ -98,8 +98,8 @@ export function SearchModal() {
       {
         id: 'qa-skills',
         emoji: '🛠️',
-        label: 'Skills',
-        description: 'Manage installed and available skills',
+        label: '스킬',
+        description: '설치된 스킬과 사용 가능한 스킬 관리',
         onSelect: () => {
           closeModal()
           navigate({ to: '/skills' })
@@ -108,8 +108,8 @@ export function SearchModal() {
       {
         id: 'qa-memory',
         emoji: '🧠',
-        label: 'Memory',
-        description: 'Browse durable memory entries',
+        label: '메모리',
+        description: '저장된 메모리 항목 탐색',
         onSelect: () => {
           closeModal()
           navigate({ to: '/memory' })
@@ -118,8 +118,8 @@ export function SearchModal() {
       {
         id: 'qa-files',
         emoji: '📁',
-        label: 'Files',
-        description: 'Toggle the file explorer sidebar',
+        label: '파일',
+        description: '파일 탐색기 사이드바 열기/닫기',
         onSelect: () => {
           closeModal()
           emitSearchModalEvent(SEARCH_MODAL_EVENTS.TOGGLE_FILE_EXPLORER)
@@ -128,8 +128,8 @@ export function SearchModal() {
       {
         id: 'qa-settings',
         emoji: '⚙️',
-        label: 'Settings',
-        description: 'Open the settings workspace',
+        label: '설정',
+        description: '설정 워크스페이스 열기',
         onSelect: () => {
           closeModal()
           navigate({ to: '/settings' })
@@ -138,8 +138,8 @@ export function SearchModal() {
       {
         id: 'qa-usage',
         emoji: '📊',
-        label: 'Usage',
-        description: 'Open usage meter details',
+        label: '사용량',
+        description: '사용량 상세 정보 열기',
         onSelect: () => {
           closeModal()
           emitSearchModalEvent(SEARCH_MODAL_EVENTS.OPEN_USAGE)
@@ -185,7 +185,7 @@ export function SearchModal() {
       scope: 'chats',
       icon: <HugeiconsIcon icon={Chat01Icon} size={20} strokeWidth={1.5} />,
       title: entry.title || entry.friendlyId,
-      snippet: entry.preview || `Session: ${entry.key}`,
+      snippet: entry.preview || `세션: ${entry.key}`,
       meta: entry.updatedAt
         ? new Date(entry.updatedAt).toLocaleTimeString()
         : '',
@@ -235,8 +235,8 @@ export function SearchModal() {
       ),
       title: entry.name,
       snippet: entry.description,
-      meta: entry.installed ? 'Installed' : 'Available',
-      badge: entry.installed ? 'Installed' : 'Not Installed',
+      meta: entry.installed ? '설치됨' : '사용 가능',
+      badge: entry.installed ? '설치됨' : '미설치',
       onSelect: () => {
         closeModal()
         navigate({ to: '/skills' })
@@ -259,7 +259,7 @@ export function SearchModal() {
         ),
         title: entry.label,
         snippet: entry.description,
-        meta: 'Action',
+        meta: '작업',
         onSelect: entry.onSelect,
       })
       if (actions.length >= RESULT_LIMITS.actions) break
@@ -465,13 +465,13 @@ export function SearchModal() {
             <div className="flex items-center justify-between border-t border-primary-200 bg-primary-50/80 px-3 py-2 text-[11px] text-primary-500">
               <div className="flex items-center gap-1.5">
                 <HugeiconsIcon icon={CommandIcon} size={20} strokeWidth={1.5} />
-                <span>Arrow keys to navigate</span>
+                <span>화살표 키로 이동</span>
               </div>
               <div className="flex items-center gap-2 tabular-nums">
-                <span>Tab scope</span>
-                <span>1-9 jump</span>
-                <span>↵ open</span>
-                <span>Esc close</span>
+                <span>Tab 범위</span>
+                <span>1-9 이동</span>
+                <span>↵ 열기</span>
+                <span>Esc 닫기</span>
               </div>
             </div>
           </motion.div>

@@ -21,9 +21,9 @@ export function ProvidersDialog({ open, onOpenChange }: ProvidersDialogProps) {
       <DialogContent className="flex h-[min(85dvh,680px)] w-[min(640px,92vw)] max-h-[calc(100dvh-3rem)] flex-col overflow-hidden p-0">
         <div className="flex items-start justify-between border-b border-primary-200 p-4 pb-3">
           <div>
-            <DialogTitle className="mb-1 text-balance">Providers</DialogTitle>
+            <DialogTitle className="mb-1">프로바이더</DialogTitle>
             <DialogDescription className="text-pretty">
-              Configure provider access without leaving your current page.
+              현재 페이지를 벗어나지 않고 프로바이더를 설정할 수 있습니다.
             </DialogDescription>
           </div>
           <DialogClose
@@ -32,7 +32,7 @@ export function ProvidersDialog({ open, onOpenChange }: ProvidersDialogProps) {
                 size="icon-sm"
                 variant="ghost"
                 className="text-primary-500 hover:bg-primary-100 dark:hover:bg-primary-800 hover:text-primary-700"
-                aria-label="Close providers dialog"
+                aria-label="프로바이더 대화상자 닫기"
               >
                 <HugeiconsIcon
                   icon={Cancel01Icon}

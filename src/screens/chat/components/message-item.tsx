@@ -190,7 +190,7 @@ function mapToolCallToToolPart(
   // Extract error text — check content first, then top-level text
   let errorText: string | undefined
   if (isError) {
-    errorText = extractToolResultText(resultMessage) || 'Unknown error'
+    errorText = extractToolResultText(resultMessage) || '알 수 없는 오류'
   }
 
   // Build output: prefer structured details, fall back to content text
@@ -346,38 +346,38 @@ function fileNameFromPath(value: string): string {
 }
 
 const TOOL_DISPLAY_LABELS: Record<string, string> = {
-  browser_click: '🖱 Click Element',
-  browser_type: '⌨ Type Text',
-  browser_press: '⏎ Press Key',
-  browser_scroll: '↕ Scroll',
-  browser_back: '← Back',
-  browser_get_images: '🖼 Get Images',
-  browser_vision: '👁 Vision Capture',
-  browser_close: '✕ Close Browser',
-  execute_code: '🐍 Execute Code',
-  process: '⚙ Process',
-  'multi_tool_use.parallel': '⚡ Parallel Tools',
-  todo: '☑ Todo',
-  cronjob: '⏰ Cron Job',
-  delegate_task: '👥 Delegate Task',
-  mixture_of_agents: '🧠 Mixture of Agents',
-  session_search: '🔍 Search Sessions',
-  clarify: '❓ Clarify',
-  skill_manage: '📦 Manage Skill',
-  vision_analyze: '👁 Analyze Image',
-  image_generate: '🎨 Generate Image',
-  send_message: '💬 Send Message',
-  text_to_speech: '🔊 Text to Speech',
-  honcho_profile: '👤 Honcho Profile',
-  honcho_search: '🔎 Honcho Search',
-  honcho_context: '📋 Honcho Context',
-  ha_list_entities: '🏠 HA Entities',
-  ha_get_state: '🏠 HA State',
-  ha_list_services: '🏠 HA Services',
-  web_search: '🌐 Web Search',
-  web_extract: '📄 Web Extract',
-  browser_navigate: '🌐 Open Page',
-  browser_snapshot: '📸 Snapshot',
+  browser_click: '🖱 요소 클릭',
+  browser_type: '⌨ 텍스트 입력',
+  browser_press: '⏎ 키 누름',
+  browser_scroll: '↕ 스크롤',
+  browser_back: '← 뒤로',
+  browser_get_images: '🖼 이미지 가져오기',
+  browser_vision: '👁 비전 캡처',
+  browser_close: '✕ 브라우저 닫기',
+  execute_code: '🐍 코드 실행',
+  process: '⚙ 프로세스',
+  'multi_tool_use.parallel': '⚡ 병렬 도구',
+  todo: '☑ 할 일',
+  cronjob: '⏰ 반복 작업',
+  delegate_task: '👥 태스크 위임',
+  mixture_of_agents: '🧠 에이전트 혼합',
+  session_search: '🔍 세션 검색',
+  clarify: '❓ 확인',
+  skill_manage: '📦 스킬 관리',
+  vision_analyze: '👁 이미지 분석',
+  image_generate: '🎨 이미지 생성',
+  send_message: '💬 메시지 전송',
+  text_to_speech: '🔊 음성 변환',
+  honcho_profile: '👤 Honcho 프로필',
+  honcho_search: '🔎 Honcho 검색',
+  honcho_context: '📋 Honcho 컨텍스트',
+  ha_list_entities: '🏠 HA 엔티티',
+  ha_get_state: '🏠 HA 상태',
+  ha_list_services: '🏠 HA 서비스',
+  web_search: '🌐 웹 검색',
+  web_extract: '📄 웹 추출',
+  browser_navigate: '🌐 페이지 열기',
+  browser_snapshot: '📸 스냅샷',
 }
 
 function formatToolDisplayLabel(
@@ -391,12 +391,12 @@ function formatToolDisplayLabel(
 
   if (lowerName === 'read' || lowerName === 'read_file') {
     const filePath = readStringArg(args, 'file_path', 'path', 'target_file')
-    return filePath ? `read ${fileNameFromPath(filePath)}` : 'read file'
+    return filePath ? `읽기 ${fileNameFromPath(filePath)}` : '파일 읽기'
   }
 
   if (lowerName === 'edit' || lowerName === 'patch_file') {
     const filePath = readStringArg(args, 'file_path', 'path', 'target_file')
-    return filePath ? `edit ${fileNameFromPath(filePath)}` : 'edit file'
+    return filePath ? `편집 ${fileNameFromPath(filePath)}` : '파일 편집'
   }
 
   if (
@@ -405,31 +405,31 @@ function formatToolDisplayLabel(
     lowerName === 'create_file'
   ) {
     const filePath = readStringArg(args, 'file_path', 'path', 'target_file')
-    return filePath ? `write ${fileNameFromPath(filePath)}` : 'write file'
+    return filePath ? `쓰기 ${fileNameFromPath(filePath)}` : '파일 쓰기'
   }
 
   if (lowerName === 'search_files') {
     const pattern = readStringArg(args, 'pattern', 'query', 'regex')
-    return pattern ? `search "${pattern}"` : 'search files'
+    return pattern ? `검색 "${pattern}"` : '파일 검색'
   }
 
   if (lowerName === 'browser' || lowerName === 'browser_navigate') {
     const action = readStringArg(args, 'action', 'url')
-    return action ? `browser ${action}` : 'browser'
+    return action ? `브라우저 ${action}` : '브라우저'
   }
 
   if (lowerName === 'terminal' || lowerName === 'exec') {
     const cmd = readStringArg(args, 'command', 'cmd')
     return cmd
-      ? `exec ${cmd.length > 30 ? cmd.slice(0, 27) + '…' : cmd}`
-      : 'exec'
+      ? `실행 ${cmd.length > 30 ? cmd.slice(0, 27) + '…' : cmd}`
+      : '실행'
   }
 
-  if (lowerName === 'memory_search') return 'memory search'
-  if (lowerName === 'save_memory') return 'save memory'
-  if (lowerName === 'memory_get') return 'memory get'
-  if (lowerName === 'web_fetch') return 'web fetch'
-  if (lowerName === 'skill_view') return 'view skill'
+  if (lowerName === 'memory_search') return '메모리 검색'
+  if (lowerName === 'save_memory') return '메모리 저장'
+  if (lowerName === 'memory_get') return '메모리 조회'
+  if (lowerName === 'web_fetch') return '웹 가져오기'
+  if (lowerName === 'skill_view') return '스킬 보기'
 
   return lowerName.replace(/_/g, ' ')
 }
@@ -735,36 +735,36 @@ const TOOL_EMOJI_ICONS: Record<string, string> = {
 }
 
 const TOOL_VERBS: Record<string, string> = {
-  web_search: 'Searching',
-  search: 'Searching',
-  search_files: 'Searching',
-  terminal: 'Executing',
-  exec: 'Executing',
-  shell: 'Executing',
-  bash: 'Executing',
-  Read: 'Reading',
-  read: 'Reading',
-  read_file: 'Reading',
-  file_read: 'Reading',
-  Write: 'Writing',
-  write: 'Writing',
-  write_file: 'Writing',
-  file_write: 'Writing',
-  Edit: 'Writing',
-  edit: 'Writing',
-  memory: 'Remembering',
-  memory_search: 'Remembering',
-  memory_get: 'Remembering',
-  save_memory: 'Remembering',
-  browser: 'Browsing',
-  browser_navigate: 'Browsing',
-  navigate: 'Browsing',
-  image: 'Analyzing',
-  vision: 'Analyzing',
-  delegate: 'Delegating',
-  spawn: 'Delegating',
-  tts: 'Speaking',
-  speak: 'Speaking',
+  web_search: '검색',
+  search: '검색',
+  search_files: '검색',
+  terminal: '실행',
+  exec: '실행',
+  shell: '실행',
+  bash: '실행',
+  Read: '읽기',
+  read: '읽기',
+  read_file: '읽기',
+  file_read: '읽기',
+  Write: '쓰기',
+  write: '쓰기',
+  write_file: '쓰기',
+  file_write: '쓰기',
+  Edit: '쓰기',
+  edit: '쓰기',
+  memory: '기억',
+  memory_search: '기억',
+  memory_get: '기억',
+  save_memory: '기억',
+  browser: '탐색',
+  browser_navigate: '탐색',
+  navigate: '탐색',
+  image: '분석',
+  vision: '분석',
+  delegate: '위임',
+  spawn: '위임',
+  tts: '말하기',
+  speak: '말하기',
 }
 
 function useElapsedTime(active: boolean): string {
@@ -841,21 +841,21 @@ function ToolCallPill({ toolCall }: { toolCall: StreamToolCall }) {
   const verb =
     TOOL_VERBS[toolCall.name] ??
     (toolCall.name.includes('search')
-      ? 'Searching'
+      ? '검색'
       : toolCall.name.includes('read') || toolCall.name.includes('Read')
-        ? 'Reading'
+        ? '읽기'
         : toolCall.name.includes('write') ||
             toolCall.name.includes('Write') ||
             toolCall.name.includes('edit') ||
             toolCall.name.includes('Edit')
-          ? 'Writing'
+          ? '쓰기'
           : toolCall.name.includes('exec') || toolCall.name.includes('terminal')
-            ? 'Executing'
+            ? '실행'
             : toolCall.name.includes('memory')
-              ? 'Remembering'
+              ? '기억'
               : toolCall.name.includes('browser')
-                ? 'Browsing'
-                : 'Working')
+                ? '탐색'
+                : '작업 중')
   const displayName = formatToolDisplayLabel(
     toolCall.name,
     toolCall.args as Record<string, unknown> | undefined,
@@ -948,7 +948,7 @@ function ToolCallPill({ toolCall }: { toolCall: StreamToolCall }) {
               0 && (
               <div className="px-2.5 py-1.5">
                 <div className="text-[9px] uppercase tracking-widest opacity-40 mb-0.5">
-                  Input
+                  입력
                 </div>
                 <pre className="text-[10px] font-mono whitespace-pre-wrap break-words max-h-[200px] overflow-y-auto text-ink opacity-70">
                   {JSON.stringify(toolCall.args, null, 2)}
@@ -962,7 +962,7 @@ function ToolCallPill({ toolCall }: { toolCall: StreamToolCall }) {
               style={{ borderColor: 'var(--theme-border)' }}
             >
               <div className="text-[9px] uppercase tracking-widest opacity-40 mb-0.5">
-                Output
+                  출력
               </div>
               <pre className="text-[10px] font-mono whitespace-pre-wrap break-words max-h-48 overflow-y-auto text-ink opacity-80">
                 {showMore ? result : detail}
@@ -975,7 +975,7 @@ function ToolCallPill({ toolCall }: { toolCall: StreamToolCall }) {
                       setShowMore(true)
                     }}
                   >
-                    Show more
+                    더 보기
                   </button>
                 )}
               </pre>
@@ -985,7 +985,7 @@ function ToolCallPill({ toolCall }: { toolCall: StreamToolCall }) {
           {isError && result && (
             <div className="px-2.5 py-1.5">
               <div className="text-[9px] uppercase tracking-widest text-red-500 mb-0.5">
-                Error
+                오류
               </div>
               <pre className="text-[10px] font-mono whitespace-pre-wrap break-words max-h-48 overflow-y-auto text-red-500">
                 {result}
@@ -1235,7 +1235,7 @@ function extractStandaloneMarkdownFence(text: string): string | null {
 function MarkdownMessageCard({ content }: { content: string }) {
   return (
     <MarkdownDocumentCard
-      title="Markdown preview"
+      title="마크다운 미리보기"
       content={content}
       className="max-w-full"
     />

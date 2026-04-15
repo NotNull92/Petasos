@@ -1,7 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { isAuthenticated } from '../../server/auth-middleware'
 import { deleteTask, getTask, moveTask, updateTask } from '../../server/tasks-store'
-import type { TaskColumn } from '../../server/tasks-store'
+import type { TaskColumn, TaskPriority } from '../../server/tasks-store'
+
+const TASK_COLUMNS: readonly string[] = ['backlog', 'todo', 'in_progress', 'review', 'done']
+const TASK_PRIORITIES: readonly string[] = ['high', 'medium', 'low']
+function isValidColumn(value: string): value is TaskColumn {
+  return TASK_COLUMNS.includes(value)
+}
+function isValidPriority(value: string): value is TaskPriority {
+  return TASK_PRIORITIES.includes(value)
+}
 
 function jsonResponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -33,8 +42,8 @@ export const Route = createFileRoute('/api/hermes-tasks/$taskId')({
           const task = updateTask(params.taskId, {
             title: typeof body.title === 'string' ? body.title : undefined,
             description: typeof body.description === 'string' ? body.description : undefined,
-            column: typeof body.column === 'string' ? body.column : undefined,
-            priority: typeof body.priority === 'string' ? body.priority : undefined,
+            column: typeof body.column === 'string' && isValidColumn(body.column) ? body.column : undefined,
+            priority: typeof body.priority === 'string' && isValidPriority(body.priority) ? body.priority : undefined,
             assignee: body.assignee === null || typeof body.assignee === 'string' ? body.assignee : undefined,
             tags: Array.isArray(body.tags) ? body.tags.filter((tag): tag is string => typeof tag === 'string') : undefined,
             due_date: body.due_date === null || typeof body.due_date === 'string' ? body.due_date : undefined,

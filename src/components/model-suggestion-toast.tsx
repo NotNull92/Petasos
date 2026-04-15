@@ -40,7 +40,7 @@ export function ModelSuggestionToast({
             <span className="text-lg">💡</span>
             <div>
               <p className="text-sm font-medium text-primary-900">
-                Try {getModelDisplayName(suggestedModel)}?
+                {getModelDisplayName(suggestedModel)} 모델을 사용해 볼까요?
               </p>
               <p className="mt-0.5 text-xs text-primary-600">{reason}</p>
               {costImpact && (
@@ -54,7 +54,7 @@ export function ModelSuggestionToast({
             type="button"
             onClick={onDismiss}
             className="shrink-0 rounded-md p-1 text-primary-500 hover:bg-primary-200 hover:text-primary-900"
-            aria-label="Dismiss"
+            aria-label="닫기"
           >
             <HugeiconsIcon icon={Cancel01Icon} size={16} strokeWidth={1.5} />
           </button>
@@ -62,7 +62,7 @@ export function ModelSuggestionToast({
 
         <div className="flex gap-2">
           <Button size="sm" onClick={onSwitch} className="flex-1">
-            Switch
+            전환
           </Button>
           <Button
             size="sm"
@@ -70,7 +70,7 @@ export function ModelSuggestionToast({
             onClick={onDismissForSession}
             className="flex-1"
           >
-            Not for this session
+            이 세션에서는 제외
           </Button>
         </div>
       </div>

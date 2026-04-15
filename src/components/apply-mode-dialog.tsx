@@ -77,13 +77,12 @@ export function ApplyModeDialog({
           id="apply-mode-title"
           className="mb-2 text-lg font-semibold text-primary-900"
         >
-          Switch Model?
+          모델을 전환할까요?
         </h2>
 
         <p className="mb-6 text-sm text-primary-600">
-          Mode "{mode.name}" uses{' '}
-          <span className="font-medium">{mode.preferredModel}</span>. Would you
-          like to switch to this model now?
+          "{mode.name}" 모드는{' '}
+          <span className="font-medium">{mode.preferredModel}</span> 모델을 사용합니다. 지금 이 모델로 전환할까요?
         </p>
 
         <div className="flex justify-end gap-2">
@@ -92,14 +91,14 @@ export function ApplyModeDialog({
             onClick={handleSkip}
             className="rounded-lg border border-primary-200 bg-surface px-4 py-2 text-sm font-medium text-primary-700 transition-colors hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-400"
           >
-            Skip
+            건너뛰기
           </button>
           <button
             type="button"
             onClick={handleSwitchNow}
             className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400"
           >
-            Switch Now
+            지금 전환
           </button>
         </div>
       </div>

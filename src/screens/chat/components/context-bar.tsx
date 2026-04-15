@@ -123,7 +123,7 @@ function ContextBarComponent({
           type="button"
           className="absolute inset-x-0 -top-2 -bottom-2 z-10"
           onClick={() => setShowLabel((prev) => !prev)}
-          aria-label={`Context: ${Math.round(clampedPct)}% used`}
+          aria-label={`컨텍스트: ${Math.round(clampedPct)}% 사용`}
         />
         {/* Bar — always 3px, never moves */}
         <div className={cn('w-full h-[3px]', barBg)}>
@@ -178,7 +178,7 @@ function ContextBarComponent({
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-medium text-primary-900">
-              Context Window
+              컨텍스트 윈도우
             </span>
             <span
               className={cn(
@@ -201,7 +201,7 @@ function ContextBarComponent({
           <div className="flex items-center justify-between">
             <span className="text-[10px] text-primary-500 tabular-nums">
               {formatTokens(ctx.usedTokens)} / {formatTokens(ctx.maxTokens)}{' '}
-              tokens
+              토큰
             </span>
             {ctx.model && (
               <span className="text-[10px] text-primary-400 truncate max-w-[100px]">
@@ -211,7 +211,7 @@ function ContextBarComponent({
           </div>
           {isCritical && (
             <p className="text-[10px] text-red-600 font-medium">
-              Context almost full — consider starting a new chat
+              컨텍스트가 거의 찼습니다 — 새 대화를 시작하는 것을 권장합니다
             </p>
           )}
         </div>

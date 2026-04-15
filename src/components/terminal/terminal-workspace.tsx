@@ -503,7 +503,7 @@ export function TerminalWorkspace({
       const terminal = new TerminalCtor({
         cursorBlink: true,
         fontSize: isMobile ? 11 : 13,
-        fontFamily: 'JetBrains Mono, Menlo, Monaco, Consolas, monospace',
+        fontFamily: 'Victor Mono, Menlo, Monaco, Consolas, monospace',
         theme: {
           background: TERMINAL_BG,
           foreground: '#e6e6e6',
@@ -770,8 +770,8 @@ export function TerminalWorkspace({
             variant="ghost"
             onClick={handleAnalyzeDebug}
             disabled={debugLoading}
-            aria-label="AI Debug analysis"
-            title="AI Debug — analyze terminal output"
+            aria-label="AI 디버그 분석"
+            title="AI 디버그 — 터미널 출력 분석"
           >
             🔍
           </Button>
@@ -779,8 +779,8 @@ export function TerminalWorkspace({
             size="icon-sm"
             variant="ghost"
             onClick={handleCreateTab}
-            aria-label="New terminal tab"
-            title="New tab"
+            aria-label="새 터미널 탭"
+            title="새 탭"
           >
             <HugeiconsIcon icon={Add01Icon} size={20} strokeWidth={1.5} />
           </Button>
@@ -790,7 +790,7 @@ export function TerminalWorkspace({
                 size="icon-sm"
                 variant="ghost"
                 onClick={onMinimizePanel}
-                aria-label="Minimize"
+                aria-label="최소화"
               >
                 <HugeiconsIcon
                   icon={SidebarLeft01Icon}
@@ -802,7 +802,7 @@ export function TerminalWorkspace({
                 size="icon-sm"
                 variant="ghost"
                 onClick={onMaximizePanel}
-                aria-label="Maximize"
+                aria-label="최대화"
               >
                 <HugeiconsIcon
                   icon={ArrowRight01Icon}
@@ -814,7 +814,7 @@ export function TerminalWorkspace({
                 size="icon-sm"
                 variant="ghost"
                 onClick={handleClosePanel}
-                aria-label="Close"
+                aria-label="닫기"
               >
                 <HugeiconsIcon
                   icon={Cancel01Icon}

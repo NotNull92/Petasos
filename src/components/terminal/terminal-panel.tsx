@@ -420,7 +420,7 @@ export function TerminalPanel({ isMobile }: TerminalPanelProps) {
                 <HugeiconsIcon icon={Search01Icon} size={14} />
                 <input
                   className="rounded border border-primary-200 bg-transparent px-2 py-1 text-xs focus:outline-none"
-                  placeholder="Search output"
+                  placeholder="출력 검색"
                   onKeyDown={(event) => {
                     if (event.key === 'Enter') {
                       handleSearch(

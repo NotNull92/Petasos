@@ -53,7 +53,7 @@ export function ExportMenu({ onExport, disabled }: ExportMenuProps) {
                 className={cn(
                   buttonVariants({ size: 'icon-sm', variant: 'ghost' }),
                 )}
-                aria-label="Download conversation"
+                aria-label="대화 내역 다운로드"
                 aria-disabled={disabled ? true : undefined}
               >
                 <HugeiconsIcon
@@ -64,7 +64,7 @@ export function ExportMenu({ onExport, disabled }: ExportMenuProps) {
               </MenuTrigger>
             }
           />
-          <TooltipContent side="top">Download</TooltipContent>
+          <TooltipContent side="top">다운로드</TooltipContent>
         </TooltipRoot>
       </TooltipProvider>
       <MenuContent side="bottom" align="end">

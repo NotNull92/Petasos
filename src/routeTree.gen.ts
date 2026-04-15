@@ -60,6 +60,8 @@ import { Route as ApiSkillsUninstallRouteImport } from './routes/api/skills/unin
 import { Route as ApiSkillsToggleRouteImport } from './routes/api/skills/toggle'
 import { Route as ApiSkillsInstallRouteImport } from './routes/api/skills/install'
 import { Route as ApiSkillsHubSearchRouteImport } from './routes/api/skills/hub-search'
+import { Route as ApiSkillsDetailRouteImport } from './routes/api/skills/detail'
+import { Route as ApiSkillsCategoriesRouteImport } from './routes/api/skills/categories'
 import { Route as ApiSessionsSendRouteImport } from './routes/api/sessions/send'
 import { Route as ApiProfilesRenameRouteImport } from './routes/api/profiles/rename'
 import { Route as ApiProfilesReadRouteImport } from './routes/api/profiles/read'
@@ -71,8 +73,11 @@ import { Route as ApiOauthPollTokenRouteImport } from './routes/api/oauth.poll-t
 import { Route as ApiOauthDeviceCodeRouteImport } from './routes/api/oauth.device-code'
 import { Route as ApiMemoryWriteRouteImport } from './routes/api/memory/write'
 import { Route as ApiMemorySearchRouteImport } from './routes/api/memory/search'
+import { Route as ApiMemoryReplaceRouteImport } from './routes/api/memory/replace'
+import { Route as ApiMemoryRemoveRouteImport } from './routes/api/memory/remove'
 import { Route as ApiMemoryReadRouteImport } from './routes/api/memory/read'
 import { Route as ApiMemoryListRouteImport } from './routes/api/memory/list'
+import { Route as ApiMemoryAddRouteImport } from './routes/api/memory/add'
 import { Route as ApiMcpServersRouteImport } from './routes/api/mcp/servers'
 import { Route as ApiMcpReloadRouteImport } from './routes/api/mcp/reload'
 import { Route as ApiKnowledgeSyncRouteImport } from './routes/api/knowledge/sync'
@@ -342,6 +347,16 @@ const ApiSkillsHubSearchRoute = ApiSkillsHubSearchRouteImport.update({
   path: '/hub-search',
   getParentRoute: () => ApiSkillsRoute,
 } as any)
+const ApiSkillsDetailRoute = ApiSkillsDetailRouteImport.update({
+  id: '/detail',
+  path: '/detail',
+  getParentRoute: () => ApiSkillsRoute,
+} as any)
+const ApiSkillsCategoriesRoute = ApiSkillsCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => ApiSkillsRoute,
+} as any)
 const ApiSessionsSendRoute = ApiSessionsSendRouteImport.update({
   id: '/send',
   path: '/send',
@@ -397,6 +412,16 @@ const ApiMemorySearchRoute = ApiMemorySearchRouteImport.update({
   path: '/search',
   getParentRoute: () => ApiMemoryRoute,
 } as any)
+const ApiMemoryReplaceRoute = ApiMemoryReplaceRouteImport.update({
+  id: '/replace',
+  path: '/replace',
+  getParentRoute: () => ApiMemoryRoute,
+} as any)
+const ApiMemoryRemoveRoute = ApiMemoryRemoveRouteImport.update({
+  id: '/remove',
+  path: '/remove',
+  getParentRoute: () => ApiMemoryRoute,
+} as any)
 const ApiMemoryReadRoute = ApiMemoryReadRouteImport.update({
   id: '/read',
   path: '/read',
@@ -405,6 +430,11 @@ const ApiMemoryReadRoute = ApiMemoryReadRouteImport.update({
 const ApiMemoryListRoute = ApiMemoryListRouteImport.update({
   id: '/list',
   path: '/list',
+  getParentRoute: () => ApiMemoryRoute,
+} as any)
+const ApiMemoryAddRoute = ApiMemoryAddRouteImport.update({
+  id: '/add',
+  path: '/add',
   getParentRoute: () => ApiMemoryRoute,
 } as any)
 const ApiMcpServersRoute = ApiMcpServersRouteImport.update({
@@ -534,8 +564,11 @@ export interface FileRoutesByFullPath {
   '/api/knowledge/sync': typeof ApiKnowledgeSyncRoute
   '/api/mcp/reload': typeof ApiMcpReloadRoute
   '/api/mcp/servers': typeof ApiMcpServersRoute
+  '/api/memory/add': typeof ApiMemoryAddRoute
   '/api/memory/list': typeof ApiMemoryListRoute
   '/api/memory/read': typeof ApiMemoryReadRoute
+  '/api/memory/remove': typeof ApiMemoryRemoveRoute
+  '/api/memory/replace': typeof ApiMemoryReplaceRoute
   '/api/memory/search': typeof ApiMemorySearchRoute
   '/api/memory/write': typeof ApiMemoryWriteRoute
   '/api/oauth/device-code': typeof ApiOauthDeviceCodeRoute
@@ -547,6 +580,8 @@ export interface FileRoutesByFullPath {
   '/api/profiles/read': typeof ApiProfilesReadRoute
   '/api/profiles/rename': typeof ApiProfilesRenameRoute
   '/api/sessions/send': typeof ApiSessionsSendRoute
+  '/api/skills/categories': typeof ApiSkillsCategoriesRoute
+  '/api/skills/detail': typeof ApiSkillsDetailRoute
   '/api/skills/hub-search': typeof ApiSkillsHubSearchRoute
   '/api/skills/install': typeof ApiSkillsInstallRoute
   '/api/skills/toggle': typeof ApiSkillsToggleRoute
@@ -612,8 +647,11 @@ export interface FileRoutesByTo {
   '/api/knowledge/sync': typeof ApiKnowledgeSyncRoute
   '/api/mcp/reload': typeof ApiMcpReloadRoute
   '/api/mcp/servers': typeof ApiMcpServersRoute
+  '/api/memory/add': typeof ApiMemoryAddRoute
   '/api/memory/list': typeof ApiMemoryListRoute
   '/api/memory/read': typeof ApiMemoryReadRoute
+  '/api/memory/remove': typeof ApiMemoryRemoveRoute
+  '/api/memory/replace': typeof ApiMemoryReplaceRoute
   '/api/memory/search': typeof ApiMemorySearchRoute
   '/api/memory/write': typeof ApiMemoryWriteRoute
   '/api/oauth/device-code': typeof ApiOauthDeviceCodeRoute
@@ -625,6 +663,8 @@ export interface FileRoutesByTo {
   '/api/profiles/read': typeof ApiProfilesReadRoute
   '/api/profiles/rename': typeof ApiProfilesRenameRoute
   '/api/sessions/send': typeof ApiSessionsSendRoute
+  '/api/skills/categories': typeof ApiSkillsCategoriesRoute
+  '/api/skills/detail': typeof ApiSkillsDetailRoute
   '/api/skills/hub-search': typeof ApiSkillsHubSearchRoute
   '/api/skills/install': typeof ApiSkillsInstallRoute
   '/api/skills/toggle': typeof ApiSkillsToggleRoute
@@ -692,8 +732,11 @@ export interface FileRoutesById {
   '/api/knowledge/sync': typeof ApiKnowledgeSyncRoute
   '/api/mcp/reload': typeof ApiMcpReloadRoute
   '/api/mcp/servers': typeof ApiMcpServersRoute
+  '/api/memory/add': typeof ApiMemoryAddRoute
   '/api/memory/list': typeof ApiMemoryListRoute
   '/api/memory/read': typeof ApiMemoryReadRoute
+  '/api/memory/remove': typeof ApiMemoryRemoveRoute
+  '/api/memory/replace': typeof ApiMemoryReplaceRoute
   '/api/memory/search': typeof ApiMemorySearchRoute
   '/api/memory/write': typeof ApiMemoryWriteRoute
   '/api/oauth/device-code': typeof ApiOauthDeviceCodeRoute
@@ -705,6 +748,8 @@ export interface FileRoutesById {
   '/api/profiles/read': typeof ApiProfilesReadRoute
   '/api/profiles/rename': typeof ApiProfilesRenameRoute
   '/api/sessions/send': typeof ApiSessionsSendRoute
+  '/api/skills/categories': typeof ApiSkillsCategoriesRoute
+  '/api/skills/detail': typeof ApiSkillsDetailRoute
   '/api/skills/hub-search': typeof ApiSkillsHubSearchRoute
   '/api/skills/install': typeof ApiSkillsInstallRoute
   '/api/skills/toggle': typeof ApiSkillsToggleRoute
@@ -773,8 +818,11 @@ export interface FileRouteTypes {
     | '/api/knowledge/sync'
     | '/api/mcp/reload'
     | '/api/mcp/servers'
+    | '/api/memory/add'
     | '/api/memory/list'
     | '/api/memory/read'
+    | '/api/memory/remove'
+    | '/api/memory/replace'
     | '/api/memory/search'
     | '/api/memory/write'
     | '/api/oauth/device-code'
@@ -786,6 +834,8 @@ export interface FileRouteTypes {
     | '/api/profiles/read'
     | '/api/profiles/rename'
     | '/api/sessions/send'
+    | '/api/skills/categories'
+    | '/api/skills/detail'
     | '/api/skills/hub-search'
     | '/api/skills/install'
     | '/api/skills/toggle'
@@ -851,8 +901,11 @@ export interface FileRouteTypes {
     | '/api/knowledge/sync'
     | '/api/mcp/reload'
     | '/api/mcp/servers'
+    | '/api/memory/add'
     | '/api/memory/list'
     | '/api/memory/read'
+    | '/api/memory/remove'
+    | '/api/memory/replace'
     | '/api/memory/search'
     | '/api/memory/write'
     | '/api/oauth/device-code'
@@ -864,6 +917,8 @@ export interface FileRouteTypes {
     | '/api/profiles/read'
     | '/api/profiles/rename'
     | '/api/sessions/send'
+    | '/api/skills/categories'
+    | '/api/skills/detail'
     | '/api/skills/hub-search'
     | '/api/skills/install'
     | '/api/skills/toggle'
@@ -930,8 +985,11 @@ export interface FileRouteTypes {
     | '/api/knowledge/sync'
     | '/api/mcp/reload'
     | '/api/mcp/servers'
+    | '/api/memory/add'
     | '/api/memory/list'
     | '/api/memory/read'
+    | '/api/memory/remove'
+    | '/api/memory/replace'
     | '/api/memory/search'
     | '/api/memory/write'
     | '/api/oauth/device-code'
@@ -943,6 +1001,8 @@ export interface FileRouteTypes {
     | '/api/profiles/read'
     | '/api/profiles/rename'
     | '/api/sessions/send'
+    | '/api/skills/categories'
+    | '/api/skills/detail'
     | '/api/skills/hub-search'
     | '/api/skills/install'
     | '/api/skills/toggle'
@@ -1374,6 +1434,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSkillsHubSearchRouteImport
       parentRoute: typeof ApiSkillsRoute
     }
+    '/api/skills/detail': {
+      id: '/api/skills/detail'
+      path: '/detail'
+      fullPath: '/api/skills/detail'
+      preLoaderRoute: typeof ApiSkillsDetailRouteImport
+      parentRoute: typeof ApiSkillsRoute
+    }
+    '/api/skills/categories': {
+      id: '/api/skills/categories'
+      path: '/categories'
+      fullPath: '/api/skills/categories'
+      preLoaderRoute: typeof ApiSkillsCategoriesRouteImport
+      parentRoute: typeof ApiSkillsRoute
+    }
     '/api/sessions/send': {
       id: '/api/sessions/send'
       path: '/send'
@@ -1451,6 +1525,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMemorySearchRouteImport
       parentRoute: typeof ApiMemoryRoute
     }
+    '/api/memory/replace': {
+      id: '/api/memory/replace'
+      path: '/replace'
+      fullPath: '/api/memory/replace'
+      preLoaderRoute: typeof ApiMemoryReplaceRouteImport
+      parentRoute: typeof ApiMemoryRoute
+    }
+    '/api/memory/remove': {
+      id: '/api/memory/remove'
+      path: '/remove'
+      fullPath: '/api/memory/remove'
+      preLoaderRoute: typeof ApiMemoryRemoveRouteImport
+      parentRoute: typeof ApiMemoryRoute
+    }
     '/api/memory/read': {
       id: '/api/memory/read'
       path: '/read'
@@ -1463,6 +1551,13 @@ declare module '@tanstack/react-router' {
       path: '/list'
       fullPath: '/api/memory/list'
       preLoaderRoute: typeof ApiMemoryListRouteImport
+      parentRoute: typeof ApiMemoryRoute
+    }
+    '/api/memory/add': {
+      id: '/api/memory/add'
+      path: '/add'
+      fullPath: '/api/memory/add'
+      preLoaderRoute: typeof ApiMemoryAddRouteImport
       parentRoute: typeof ApiMemoryRoute
     }
     '/api/mcp/servers': {
@@ -1600,15 +1695,21 @@ const ApiHermesTasksRouteWithChildren = ApiHermesTasksRoute._addFileChildren(
 )
 
 interface ApiMemoryRouteChildren {
+  ApiMemoryAddRoute: typeof ApiMemoryAddRoute
   ApiMemoryListRoute: typeof ApiMemoryListRoute
   ApiMemoryReadRoute: typeof ApiMemoryReadRoute
+  ApiMemoryRemoveRoute: typeof ApiMemoryRemoveRoute
+  ApiMemoryReplaceRoute: typeof ApiMemoryReplaceRoute
   ApiMemorySearchRoute: typeof ApiMemorySearchRoute
   ApiMemoryWriteRoute: typeof ApiMemoryWriteRoute
 }
 
 const ApiMemoryRouteChildren: ApiMemoryRouteChildren = {
+  ApiMemoryAddRoute: ApiMemoryAddRoute,
   ApiMemoryListRoute: ApiMemoryListRoute,
   ApiMemoryReadRoute: ApiMemoryReadRoute,
+  ApiMemoryRemoveRoute: ApiMemoryRemoveRoute,
+  ApiMemoryReplaceRoute: ApiMemoryReplaceRoute,
   ApiMemorySearchRoute: ApiMemorySearchRoute,
   ApiMemoryWriteRoute: ApiMemoryWriteRoute,
 }
@@ -1634,6 +1735,8 @@ const ApiSessionsRouteWithChildren = ApiSessionsRoute._addFileChildren(
 )
 
 interface ApiSkillsRouteChildren {
+  ApiSkillsCategoriesRoute: typeof ApiSkillsCategoriesRoute
+  ApiSkillsDetailRoute: typeof ApiSkillsDetailRoute
   ApiSkillsHubSearchRoute: typeof ApiSkillsHubSearchRoute
   ApiSkillsInstallRoute: typeof ApiSkillsInstallRoute
   ApiSkillsToggleRoute: typeof ApiSkillsToggleRoute
@@ -1641,6 +1744,8 @@ interface ApiSkillsRouteChildren {
 }
 
 const ApiSkillsRouteChildren: ApiSkillsRouteChildren = {
+  ApiSkillsCategoriesRoute: ApiSkillsCategoriesRoute,
+  ApiSkillsDetailRoute: ApiSkillsDetailRoute,
   ApiSkillsHubSearchRoute: ApiSkillsHubSearchRoute,
   ApiSkillsInstallRoute: ApiSkillsInstallRoute,
   ApiSkillsToggleRoute: ApiSkillsToggleRoute,

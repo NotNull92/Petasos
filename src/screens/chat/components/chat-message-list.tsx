@@ -34,34 +34,34 @@ const THINKING_GRACE_PERIOD_MS = 300
 
 /** Map tool names to human-readable status strings */
 const TOOL_STATUS_MAP: Record<string, string> = {
-  memory_search: 'Searching memory…',
-  memory_get: 'Searching memory…',
-  web_search: 'Searching the web…',
-  web_fetch: 'Reading page…',
-  cron: 'Managing schedules…',
-  message: 'Sending message…',
-  gateway: 'Managing gateway…',
-  canvas: 'Rendering canvas…',
-  voice_call: 'Making call…',
-  pdf: 'Reading PDF…',
-  todo: 'Managing tasks…',
-  Read: 'Reading file…',
-  read: 'Reading file…',
-  Write: 'Writing file…',
-  write: 'Writing file…',
-  Edit: 'Writing file…',
-  edit: 'Writing file…',
-  exec: 'Running code…',
-  sessions_spawn: 'Spawning agent…',
-  sessions_history: 'Checking sessions…',
-  sessions_list: 'Checking sessions…',
-  browser: 'Browsing web…',
-  image: 'Analyzing image…',
-  tts: 'Generating audio…',
+  memory_search: '메모리 검색 중…',
+  memory_get: '메모리 검색 중…',
+  web_search: '웹 검색 중…',
+  web_fetch: '페이지 읽는 중…',
+  cron: '스케줄 관리 중…',
+  message: '메시지 전송 중…',
+  gateway: '게이트웨이 관리 중…',
+  canvas: '캔버스 렌더링 중…',
+  voice_call: '전화 거는 중…',
+  pdf: 'PDF 읽는 중…',
+  todo: '작업 관리 중…',
+  Read: '파일 읽는 중…',
+  read: '파일 읽는 중…',
+  Write: '파일 쓰는 중…',
+  write: '파일 쓰는 중…',
+  Edit: '파일 편집 중…',
+  edit: '파일 편집 중…',
+  exec: '코드 실행 중…',
+  sessions_spawn: '에이전트 생성 중…',
+  sessions_history: '세션 확인 중…',
+  sessions_list: '세션 확인 중…',
+  browser: '웹 탐색 중…',
+  image: '이미지 분석 중…',
+  tts: '음성 생성 중…',
 }
 
 function getToolStatusLabel(toolName: string): string {
-  return TOOL_STATUS_MAP[toolName] ?? 'Working…'
+  return TOOL_STATUS_MAP[toolName] ?? '작업 중…'
 }
 
 const TOOL_EMOJIS: Record<string, string> = {
@@ -131,15 +131,15 @@ function getToolEmoji(name: string): string {
 }
 
 function getToolVerb(name: string): string {
-  if (name.includes('search')) return 'Searching'
-  if (name.includes('read') || name.includes('Read')) return 'Reading'
+  if (name.includes('search')) return '검색 중'
+  if (name.includes('read') || name.includes('Read')) return '읽는 중'
   if (name.includes('write') || name.includes('Write') || name.includes('edit'))
-    return 'Writing'
-  if (name.includes('exec') || name.includes('terminal')) return 'Executing'
-  if (name.includes('memory')) return 'Remembering'
-  if (name.includes('browser')) return 'Browsing'
-  if (name.includes('skill')) return 'Loading skill'
-  return 'Working'
+    return '쓰는 중'
+  if (name.includes('exec') || name.includes('terminal')) return '실행 중'
+  if (name.includes('memory')) return '기억 중'
+  if (name.includes('browser')) return '탐색 중'
+  if (name.includes('skill')) return '스킬 로드 중'
+  return '작업 중'
 }
 
 function ToolCallCard({ name, phase }: { name: string; phase: string }) {
@@ -249,10 +249,10 @@ function ThinkingBubble({
   }, [activeToolCalls, liveToolActivity])
 
   const statusLabel = isCompacting
-    ? 'Compacting context...'
+    ? '컨텍스트 압축 중...'
     : activeToolName
       ? getToolStatusLabel(activeToolName)
-      : 'Thinking…'
+      : '생각 중…'
 
   // Elapsed time counter — resets when the status label changes (new tool)
   const [elapsed, setElapsed] = useState(0)
@@ -350,15 +350,15 @@ function ThinkingBubble({
                 <div className="mt-1 flex items-center gap-2 text-[11px] text-primary-500 dark:text-primary-400">
                   <span>
                     {completedResearchSteps}/
-                    {expandedResearchCard?.steps.length ?? 0} tools
+                    {expandedResearchCard?.steps.length ?? 0} 도구
                   </span>
                   <span aria-hidden="true" className="opacity-40">
                     •
                   </span>
                   <span>
                     {expandedResearchCard?.isActive
-                      ? 'Live timeline'
-                      : 'Timeline ready'}
+                      ? '실시간 타임라인'
+                      : '타임라인 준비됨'}
                   </span>
                 </div>
               ) : null}
@@ -374,13 +374,13 @@ function ThinkingBubble({
                 className="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border border-primary-200/80 bg-primary-50/90 text-primary-500 transition-colors hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-900/80 dark:text-primary-300 dark:hover:bg-primary-800"
                 aria-label={
                   expandedResearchCard?.collapsed
-                    ? 'Expand research timeline'
-                    : 'Collapse research timeline'
+                    ? '리서치 타임라인 펼치기'
+                    : '리서치 타임라인 접기'
                 }
                 title={
                   expandedResearchCard?.collapsed
-                    ? 'Expand research timeline'
-                    : 'Collapse research timeline'
+                    ? '리서치 타임라인 펼치기'
+                    : '리서치 타임라인 접기'
                 }
               >
                 <HugeiconsIcon
@@ -399,8 +399,8 @@ function ThinkingBubble({
           {isStale ? (
             <span className="text-[11px] text-amber-500 dark:text-amber-400 animate-pulse">
               {isVeryStale
-                ? 'Still working… this is taking a while'
-                : 'Taking longer than usual…'}
+                ? '아직 작업 중… 시간이 조금 걸리고 있습니다'
+                : '평소보다 오래 걸리고 있습니다…'}
             </span>
           ) : null}
 
@@ -414,7 +414,7 @@ function ThinkingBubble({
             >
               {allTools.slice(0, 4).map((tool) => (
                 <span
-                  key={tool.id}
+                  key={tool.name}
                   className="inline-flex items-center rounded-full bg-primary-200/60 dark:bg-primary-800/30 px-2 py-0.5 text-[10px] font-mono text-primary-500 dark:text-primary-400 select-none"
                 >
                   {tool.name}
@@ -422,7 +422,7 @@ function ThinkingBubble({
               ))}
               {allTools.length > 4 ? (
                 <span className="inline-flex items-center rounded-full bg-primary-200/40 dark:bg-primary-800/20 px-2 py-0.5 text-[10px] text-primary-400 dark:text-primary-500 select-none">
-                  +{allTools.length - 4} more
+                  +{allTools.length - 4}개 더
                 </span>
               ) : null}
             </div>

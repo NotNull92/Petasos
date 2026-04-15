@@ -26,7 +26,7 @@ function ScrollToBottomButton({
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label="Scroll to bottom"
+          aria-label="맨 아래로 스크롤"
           className={cn(
             'pointer-events-auto relative rounded-full text-white shadow-lg transition-colors hover:opacity-90',
             className,

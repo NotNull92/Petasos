@@ -25,28 +25,28 @@ function getSetupSteps(
 
   return [
     {
-      title: 'Use any OpenAI-compatible backend',
-      command: 'Set HERMES_API_URL to your backend base URL',
-      note: 'Portable chat works with any backend that exposes /v1/chat/completions (Ollama, LiteLLM, vLLM, etc.)',
+      title: 'OpenAI 호환 백엔드를 사용하세요',
+      command: 'HERMES_API_URL을 백엔드 기본 URL로 설정',
+      note: '/v1/chat/completions을 제공하는 모든 백엔드와 호환됩니다 (Ollama, LiteLLM, vLLM 등)',
     },
     {
-      title: 'Optional: run a Hermes gateway locally',
+      title: '선택: Hermes 게이트웨이 로컬 실행',
       command: 'git clone https://github.com/outsourc-e/hermes-agent.git',
-      note: 'Hermes gateway APIs unlock sessions, skills, memory, and other workspace extras automatically',
+      note: 'Hermes 게이트웨이 API를 통해 세션, 스킬, 메모리 등 워크스페이스 추가 기능을 사용할 수 있습니다',
     },
     {
-      title: 'Install the gateway',
-      command: `cd hermes-agent && ${python} -m venv .venv && ${platform === 'windows' ? '.venv\\Scripts\\activate' : 'source .venv/bin/activate'} && ${pip} install -e .`,
+      title: '게이트웨이 설치',
+      command: `cd hermes-agent && ${python} -m venv .venv && ${platform === 'windows' ? '.venv\\\\Scripts\\\\activate' : 'source .venv/bin/activate'} && ${pip} install -e .`,
     },
     {
-      title: 'Enable the HTTP API server',
+      title: 'HTTP API 서버 활성화',
       command: 'echo "API_SERVER_ENABLED=true" >> ~/.hermes/.env',
-      note: 'The gateway HTTP API is opt-in. Without this, the gateway serves messaging platforms but does not expose port 8642 for the workspace.',
+      note: '게이트웨이 HTTP API는 선택 사항입니다. 활성화하지 않으면 메시징 플랫폼만 지원하고 워크스페이스용 포트 8642가 열리지 않습니다.',
     },
     {
-      title: 'Start the gateway',
-      command: `cd hermes-agent && ${platform === 'windows' ? '.venv\\Scripts\\activate' : 'source .venv/bin/activate'} && hermes --gateway`,
-      note: 'Or use Auto-Start below if hermes-agent is already installed locally',
+      title: '게이트웨이 시작',
+      command: `cd hermes-agent && ${platform === 'windows' ? '.venv\\\\Scripts\\\\activate' : 'source .venv/bin/activate'} && hermes --gateway`,
+      note: '또는 hermes-agent가 이미 설치된 경우 아래 자동 시작을 사용하세요',
     },
   ]
 }
@@ -136,7 +136,7 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
   const handleAutoStart = async () => {
     setServerStarting(true)
     setServerError(null)
-    setServerLog(['Looking for hermes-agent...'])
+    setServerLog(['hermes-agent 찾는 중...'])
     try {
       const res = await fetch('/api/start-hermes', {
         method: 'POST',
@@ -154,13 +154,13 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
       const data = (await res.json()) as Record<string, unknown>
       if (res.ok && data.ok) {
         setServerLog([
-          String(data.message || 'Started — waiting for connection...'),
+          String(data.message || '시작됨 — 연결 대기 중...'),
         ])
         setServerStarting(false)
         return
       }
 
-      const msg = String(data.error || 'Could not find hermes-agent')
+      const msg = String(data.error || 'hermes-agent를 찾을 수 없습니다')
       const hint = data.hint ? String(data.hint) : ''
       setServerLog([`Error: ${msg}`])
       if (hint) setServerLog((prev) => [...prev, `Hint: ${hint}`])
@@ -205,7 +205,7 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
           aria-hidden={showFailureState}
         >
           <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/80" />
-          <span>Connecting to your backend...</span>
+          <span>백엔드에 연결 중...</span>
         </div>
 
         {/* Failure state — setup guide */}
@@ -219,12 +219,11 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
         >
           <div className="w-full rounded-3xl border border-white/10 bg-white/5 p-5 text-left shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-sm">
             <p className="text-base font-medium text-white">
-              Welcome! Let&apos;s connect your backend
+              환영합니다! 백엔드를 연결하세요
             </p>
             <p className="mt-2 text-sm leading-6 text-white/60">
-              Petasos works with any OpenAI-compatible backend. Hermes
-              gateway APIs unlock enhanced features automatically when they are
-              available.
+              Petasos는 모든 OpenAI 호환 백엔드에서 작동합니다. Hermes
+              게이트웨이 API가 감지되면 고급 기능이 자동으로 활성화됩니다.
             </p>
 
             {/* Auto-start section */}
@@ -243,10 +242,10 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
                 {serverStarting ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white/90" />
-                    Detecting...
+                    감지 중...
                   </span>
                 ) : (
-                  'Auto-Start Hermes Gateway'
+                  'Hermes 게이트웨이 자동 시작'
                 )}
               </button>
 
@@ -275,7 +274,7 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
                 onClick={() => setShowManual(!showManual)}
                 className="text-xs font-medium text-white/50 transition hover:text-white/70"
               >
-                {showManual ? 'Hide' : 'Show'} manual setup
+                {showManual ? '숨기기' : '보기'} 수동 설정
               </button>
               <div className="h-px flex-1 bg-white/10" />
             </div>
@@ -307,7 +306,7 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
                         onClick={() => handleCopy(step.command, idx)}
                         className="shrink-0 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/60 transition hover:bg-white/10 hover:text-white/80"
                       >
-                        {copiedIdx === idx ? '✓ Copied' : 'Copy'}
+                        {copiedIdx === idx ? '✓ 복사됨' : '복사'}
                       </button>
                     </div>
                     <pre className="mt-2 overflow-x-auto rounded-lg bg-black/40 p-3 font-mono text-xs leading-5 text-white/80">
@@ -323,11 +322,10 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
               {/* Env var hint */}
               <div className="mt-4 rounded-xl border border-white/6 bg-white/3 p-3">
                 <p className="text-xs font-medium text-white/50">
-                  Point{' '}
                   <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-white/70">
                     HERMES_API_URL
                   </code>{' '}
-                  at any OpenAI-compatible backend:
+                  을 OpenAI 호환 백엔드에 설정하세요:
                 </p>
                 <pre className="mt-2 overflow-x-auto font-mono text-xs text-white/60">
                   HERMES_API_URL=http://your-server:8642 pnpm dev
@@ -339,7 +337,7 @@ export function ConnectionStartupScreen({ onConnected }: Props) {
 
         {!showFailureState ? (
           <p className="mt-6 text-xs text-white/45">
-            This page auto-refreshes when a compatible backend is detected
+            호환되는 백엔드가 감지되면 자동으로 새로고침됩니다
           </p>
         ) : null}
       </div>

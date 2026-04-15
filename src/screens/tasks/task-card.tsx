@@ -66,7 +66,7 @@ export function TaskCard({ task, assigneeLabels = {}, onClick, onDragStart, isDr
           ))}
           {extraTagCount > 0 && (
             <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-[var(--theme-hover)] text-[var(--theme-muted)]">
-              +{extraTagCount} more
+              +{extraTagCount}개 더
             </span>
           )}
         </div>
@@ -76,7 +76,7 @@ export function TaskCard({ task, assigneeLabels = {}, onClick, onDragStart, isDr
             {overdue && (
               <>
                 <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
-                <span className="text-red-400 font-semibold">Overdue</span>
+                <span className="text-red-400 font-semibold">지연</span>
                 <span className="text-[var(--theme-muted)] mx-0.5">·</span>
               </>
             )}

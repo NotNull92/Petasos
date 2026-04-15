@@ -18,7 +18,7 @@ function classifyError(raw: string): string {
     lower.includes('rate limit') ||
     lower.includes('too many')
   ) {
-    return 'Rate limited — try again in a moment'
+    return '요청 제한 — 잠시 후 다시 시도하세요'
   }
   if (
     lower.includes('401') ||
@@ -27,14 +27,14 @@ function classifyError(raw: string): string {
     lower.includes('invalid api key') ||
     lower.includes('api key')
   ) {
-    return 'Authentication error — check your API key in Settings'
+    return '인증 오류 — 설정에서 API 키를 확인하세요'
   }
   if (
     lower.includes('500') ||
     lower.includes('server error') ||
     lower.includes('model error')
   ) {
-    return 'Model error — the provider is having issues'
+    return '모델 오류 — 제공자에 문제가 있습니다'
   }
   if (
     lower.includes('network') ||
@@ -42,7 +42,7 @@ function classifyError(raw: string): string {
     lower.includes('failed to fetch') ||
     lower.includes('connection')
   ) {
-    return 'Connection lost — retrying…'
+    return '연결 끊김 — 재시도 중…'
   }
   // Return original message if no pattern matched
   return raw
@@ -88,7 +88,7 @@ function ToastItem({ entry, onDismiss }: ToastItemProps) {
         type="button"
         onClick={() => onDismiss(entry.id)}
         className="shrink-0 text-primary-400 hover:text-primary-600 transition-colors text-lg leading-none"
-        aria-label="Dismiss"
+        aria-label="닫기"
       >
         ×
       </button>
