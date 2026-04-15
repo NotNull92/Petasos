@@ -146,7 +146,7 @@ export function OnboardingWizard() {
                       >
                         {step.id === 'welcome' ? (
                           <img
-                            src="/hermes-avatar.webp"
+                            src="/petasos-avatar.webp"
                             alt="Hermes"
                             className="size-16 rounded-2xl"
                           />

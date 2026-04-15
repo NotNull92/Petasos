@@ -865,8 +865,8 @@ function ChatSidebarComponent({
                   'w-full pl-1.5 justify-start gap-2',
                 )}
               >
-                <img src="/hermes-avatar.webp" alt="Hermes" className="size-6 rounded-lg" />
-                <span className="text-sm font-semibold tracking-tight" style={{ color: 'var(--theme-text)' }}>Hermes Workspace</span>
+                <img src="/petasos-avatar.webp" alt="Hermes" className="size-6 rounded-lg" />
+                <span className="text-sm font-semibold tracking-tight" style={{ color: 'var(--theme-text)' }}>Petasos</span>
               </Link>
             </motion.div>
           ) : null}

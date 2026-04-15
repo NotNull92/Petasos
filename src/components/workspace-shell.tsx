@@ -35,7 +35,7 @@ import { MobileTerminalInput } from '@/components/terminal/mobile-terminal-input
 import { HermesReconnectBanner } from '@/components/hermes-reconnect-banner'
 import { useMobileKeyboard } from '@/hooks/use-mobile-keyboard'
 import { ErrorBoundary } from '@/components/error-boundary'
-// System metrics footer removed — not used in Hermes Workspace
+// System metrics footer removed — not used in Petasos
 import { CommandPalette } from '@/components/command-palette'
 import { useSettings } from '@/hooks/use-settings'
 // ActivityTicker moved to dashboard-only (too noisy for global header)

@@ -1917,7 +1917,7 @@ export function SettingsDialog({
                 Settings
               </DialogTitle>
               <DialogDescription className="sr-only">
-                Configure Hermes Workspace
+                Configure Petasos
               </DialogDescription>
             </div>
             <DialogClose

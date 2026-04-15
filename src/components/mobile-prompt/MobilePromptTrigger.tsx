@@ -101,7 +101,7 @@ export function MobilePromptTrigger() {
               <div className="flex items-center gap-3">
                 <div className="flex shrink-0 items-center gap-1.5">
                   <img
-                    src="/hermes-avatar.webp"
+                    src="/petasos-avatar.webp"
                     alt="Hermes"
                     className="size-8 rounded-lg"
                   />
@@ -180,7 +180,7 @@ export function MobilePromptTrigger() {
                     className="text-xs"
                     style={{ color: 'var(--theme-muted)' }}
                   >
-                    Connect your phone to this Hermes Workspace instance in a
+                    Connect your phone to this Petasos instance in a
                     few steps.
                   </p>
                 </div>

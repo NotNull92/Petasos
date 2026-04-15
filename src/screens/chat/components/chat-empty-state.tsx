@@ -55,7 +55,7 @@ export function ChatEmptyState({
             }}
           />
           <img
-            src="/hermes-avatar.webp"
+            src="/petasos-avatar.webp"
             alt="Hermes"
             className="relative size-20 rounded-2xl"
             style={{
@@ -70,7 +70,7 @@ export function ChatEmptyState({
           className="text-xl font-semibold tracking-tight"
           style={{ color: 'var(--theme-text)' }}
         >
-          Hermes Workspace
+          Petasos
         </h2>
 
         {!compact && (

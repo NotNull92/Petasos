@@ -142,7 +142,7 @@ function AgentAvatar({
             </span>
           ) : (
             <img
-              src="/hermes-avatar.webp"
+              src="/petasos-avatar.webp"
               alt="Hermes"
               className={cn(
                 getLogoSizeClassName(size),
