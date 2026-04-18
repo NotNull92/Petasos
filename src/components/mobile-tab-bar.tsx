@@ -7,6 +7,7 @@ import {
   CommandLineIcon,
   DashboardSquare01Icon,
   File01Icon,
+  GitCommitIcon,
   PuzzleIcon,
   Settings01Icon,
   UserGroupIcon,
@@ -77,6 +78,13 @@ const TABS: Array<TabItem> = [
     icon: Clock01Icon,
     to: '/jobs',
     match: (p) => p.startsWith('/jobs'),
+  },
+  {
+    id: 'checkpoints',
+    label: '레포 관리',
+    icon: GitCommitIcon,
+    to: '/checkpoints',
+    match: (p) => p.startsWith('/checkpoints'),
   },
   {
     id: 'memory',

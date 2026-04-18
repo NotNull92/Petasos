@@ -1,6 +1,7 @@
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
+  Bookmark01Icon,
   BrainIcon,
   Cancel01Icon,
   Chat01Icon,
@@ -64,6 +65,13 @@ const NAV_ITEMS = [
     icon: PuzzleIcon,
     to: '/skills',
     match: (p: string) => p.startsWith('/skills'),
+  },
+  {
+    id: 'checkpoints',
+    label: '레포 관리',
+    icon: Bookmark01Icon,
+    to: '/checkpoints',
+    match: (p: string) => p.startsWith('/checkpoints'),
   },
   {
     id: 'profiles',

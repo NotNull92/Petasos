@@ -653,6 +653,21 @@ export function TerminalWorkspace({
     [resizeSession],
   )
 
+  useEffect(function refitOnTabSwitch() {
+    if (!activeTabId) return
+    // Delay to let DOM update (hidden → visible)
+    const timer = window.setTimeout(function refit() {
+      const terminal = terminalMapRef.current.get(activeTabId)
+      const fitAddon = fitMapRef.current.get(activeTabId)
+      if (terminal && fitAddon) {
+        try { fitAddon.fit() } catch { /* */ }
+        void resizeSession(activeTabId, terminal)
+        terminal.focus()
+      }
+    }, 50)
+    return function cleanup() { window.clearTimeout(timer) }
+  }, [activeTabId, resizeSession])
+
   useEffect(function disposeOnUnmount() {
     return function cleanup() {
       for (const reader of readerMapRef.current.values()) {
@@ -836,25 +851,21 @@ export function TerminalWorkspace({
           const isActive = tab.id === activeTab?.id
           return (
             <div
-              key={tab.id}
-              className={cn('absolute inset-0', isActive ? 'block' : 'hidden')}
-            >
-              <div
-                ref={function assignContainer(node) {
-                  if (node) {
-                    containerMapRef.current.set(tab.id, node)
-                    ensureTerminalForTab(tab)
-                    return
-                  }
-                  containerMapRef.current.delete(tab.id)
-                }}
-                onClick={function tapToFocus() {
-                  terminalMapRef.current.get(tab.id)?.focus()
-                }}
-                className="h-full w-full bg-primary-50 font-mono text-primary-900"
-                style={{ backgroundColor: TERMINAL_BG }}
-              />
-            </div>
+            key={tab.id}
+            ref={function assignContainer(node) {
+              if (node) {
+                containerMapRef.current.set(tab.id, node)
+                ensureTerminalForTab(tab)
+                return
+              }
+              containerMapRef.current.delete(tab.id)
+            }}
+            onClick={function tapToFocus() {
+              terminalMapRef.current.get(tab.id)?.focus()
+            }}
+            className={cn('h-full w-full bg-primary-50 font-mono text-primary-900', !isActive && 'hidden')}
+            style={{ backgroundColor: TERMINAL_BG }}
+          />
           )
         })}
       </div>

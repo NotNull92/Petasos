@@ -10,6 +10,7 @@ import {
   ComputerTerminal01Icon,
   DashboardSquare01Icon,
   File01Icon,
+  GitCommitIcon,
   MessageMultiple01Icon,
   Moon02Icon,
   PencilEdit02Icon,
@@ -558,6 +559,7 @@ function ChatSidebarComponent({
   const isJobsActive = pathname === '/jobs'
   const isMemoryActive = pathname === '/memory'
   const isTasksActive = pathname === '/tasks'
+  const isCheckpointsActive = pathname === '/checkpoints'
   const mainRoutes = ['/chat', '/new', '/files', '/terminal']
   const knowledgeRoutes = ['/memory', '/skills']
   const systemRoutes = ['/settings', '/logs']
@@ -792,6 +794,13 @@ function ChatSidebarComponent({
       icon: CheckListIcon,
       label: t('nav.tasks'),
       active: isTasksActive,
+    },
+    {
+      kind: 'link',
+      to: '/checkpoints',
+      icon: GitCommitIcon,
+      label: t('nav.checkpoints'),
+      active: isCheckpointsActive,
     },
   ]
 

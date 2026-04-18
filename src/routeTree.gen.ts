@@ -18,6 +18,7 @@ import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as FilesRouteImport } from './routes/files'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CheckpointsRouteImport } from './routes/checkpoints'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
@@ -89,6 +90,13 @@ import { Route as ApiKnowledgeConfigRouteImport } from './routes/api/knowledge/c
 import { Route as ApiHermesTasksTaskIdRouteImport } from './routes/api/hermes-tasks.$taskId'
 import { Route as ApiHermesProxySplatRouteImport } from './routes/api/hermes-proxy/$'
 import { Route as ApiHermesJobsJobIdRouteImport } from './routes/api/hermes-jobs.$jobId'
+import { Route as ApiCheckpointsUnpinRouteImport } from './routes/api/checkpoints/unpin'
+import { Route as ApiCheckpointsSmartcommitRouteImport } from './routes/api/checkpoints/smartcommit'
+import { Route as ApiCheckpointsReposRouteImport } from './routes/api/checkpoints/repos'
+import { Route as ApiCheckpointsPinRouteImport } from './routes/api/checkpoints/pin'
+import { Route as ApiCheckpointsListRouteImport } from './routes/api/checkpoints/list'
+import { Route as ApiCheckpointsDiffRouteImport } from './routes/api/checkpoints/diff'
+import { Route as ApiCheckpointsDetailRouteImport } from './routes/api/checkpoints/detail'
 import { Route as ApiSessionsSessionKeyStatusRouteImport } from './routes/api/sessions/$sessionKey.status'
 import { Route as ApiSessionsSessionKeyActiveRunRouteImport } from './routes/api/sessions/$sessionKey.active-run'
 
@@ -135,6 +143,11 @@ const FilesRoute = FilesRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckpointsRoute = CheckpointsRouteImport.update({
+  id: '/checkpoints',
+  path: '/checkpoints',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SplatRoute = SplatRouteImport.update({
@@ -492,6 +505,42 @@ const ApiHermesJobsJobIdRoute = ApiHermesJobsJobIdRouteImport.update({
   path: '/$jobId',
   getParentRoute: () => ApiHermesJobsRoute,
 } as any)
+const ApiCheckpointsUnpinRoute = ApiCheckpointsUnpinRouteImport.update({
+  id: '/api/checkpoints/unpin',
+  path: '/api/checkpoints/unpin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckpointsSmartcommitRoute =
+  ApiCheckpointsSmartcommitRouteImport.update({
+    id: '/api/checkpoints/smartcommit',
+    path: '/api/checkpoints/smartcommit',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiCheckpointsReposRoute = ApiCheckpointsReposRouteImport.update({
+  id: '/api/checkpoints/repos',
+  path: '/api/checkpoints/repos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckpointsPinRoute = ApiCheckpointsPinRouteImport.update({
+  id: '/api/checkpoints/pin',
+  path: '/api/checkpoints/pin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckpointsListRoute = ApiCheckpointsListRouteImport.update({
+  id: '/api/checkpoints/list',
+  path: '/api/checkpoints/list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckpointsDiffRoute = ApiCheckpointsDiffRouteImport.update({
+  id: '/api/checkpoints/diff',
+  path: '/api/checkpoints/diff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckpointsDetailRoute = ApiCheckpointsDetailRouteImport.update({
+  id: '/api/checkpoints/detail',
+  path: '/api/checkpoints/detail',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSessionsSessionKeyStatusRoute =
   ApiSessionsSessionKeyStatusRouteImport.update({
     id: '/$sessionKey/status',
@@ -508,6 +557,7 @@ const ApiSessionsSessionKeyActiveRunRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/checkpoints': typeof CheckpointsRoute
   '/dashboard': typeof DashboardRoute
   '/files': typeof FilesRoute
   '/jobs': typeof JobsRoute
@@ -553,6 +603,13 @@ export interface FileRoutesByFullPath {
   '/settings/providers': typeof SettingsProvidersRoute
   '/chat/': typeof ChatIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/api/checkpoints/detail': typeof ApiCheckpointsDetailRoute
+  '/api/checkpoints/diff': typeof ApiCheckpointsDiffRoute
+  '/api/checkpoints/list': typeof ApiCheckpointsListRoute
+  '/api/checkpoints/pin': typeof ApiCheckpointsPinRoute
+  '/api/checkpoints/repos': typeof ApiCheckpointsReposRoute
+  '/api/checkpoints/smartcommit': typeof ApiCheckpointsSmartcommitRoute
+  '/api/checkpoints/unpin': typeof ApiCheckpointsUnpinRoute
   '/api/hermes-jobs/$jobId': typeof ApiHermesJobsJobIdRoute
   '/api/hermes-proxy/$': typeof ApiHermesProxySplatRoute
   '/api/hermes-tasks/$taskId': typeof ApiHermesTasksTaskIdRoute
@@ -592,6 +649,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/checkpoints': typeof CheckpointsRoute
   '/dashboard': typeof DashboardRoute
   '/files': typeof FilesRoute
   '/jobs': typeof JobsRoute
@@ -636,6 +694,13 @@ export interface FileRoutesByTo {
   '/settings/providers': typeof SettingsProvidersRoute
   '/chat': typeof ChatIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/api/checkpoints/detail': typeof ApiCheckpointsDetailRoute
+  '/api/checkpoints/diff': typeof ApiCheckpointsDiffRoute
+  '/api/checkpoints/list': typeof ApiCheckpointsListRoute
+  '/api/checkpoints/pin': typeof ApiCheckpointsPinRoute
+  '/api/checkpoints/repos': typeof ApiCheckpointsReposRoute
+  '/api/checkpoints/smartcommit': typeof ApiCheckpointsSmartcommitRoute
+  '/api/checkpoints/unpin': typeof ApiCheckpointsUnpinRoute
   '/api/hermes-jobs/$jobId': typeof ApiHermesJobsJobIdRoute
   '/api/hermes-proxy/$': typeof ApiHermesProxySplatRoute
   '/api/hermes-tasks/$taskId': typeof ApiHermesTasksTaskIdRoute
@@ -676,6 +741,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/checkpoints': typeof CheckpointsRoute
   '/dashboard': typeof DashboardRoute
   '/files': typeof FilesRoute
   '/jobs': typeof JobsRoute
@@ -721,6 +787,13 @@ export interface FileRoutesById {
   '/settings/providers': typeof SettingsProvidersRoute
   '/chat/': typeof ChatIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/api/checkpoints/detail': typeof ApiCheckpointsDetailRoute
+  '/api/checkpoints/diff': typeof ApiCheckpointsDiffRoute
+  '/api/checkpoints/list': typeof ApiCheckpointsListRoute
+  '/api/checkpoints/pin': typeof ApiCheckpointsPinRoute
+  '/api/checkpoints/repos': typeof ApiCheckpointsReposRoute
+  '/api/checkpoints/smartcommit': typeof ApiCheckpointsSmartcommitRoute
+  '/api/checkpoints/unpin': typeof ApiCheckpointsUnpinRoute
   '/api/hermes-jobs/$jobId': typeof ApiHermesJobsJobIdRoute
   '/api/hermes-proxy/$': typeof ApiHermesProxySplatRoute
   '/api/hermes-tasks/$taskId': typeof ApiHermesTasksTaskIdRoute
@@ -762,6 +835,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$'
+    | '/checkpoints'
     | '/dashboard'
     | '/files'
     | '/jobs'
@@ -807,6 +881,13 @@ export interface FileRouteTypes {
     | '/settings/providers'
     | '/chat/'
     | '/settings/'
+    | '/api/checkpoints/detail'
+    | '/api/checkpoints/diff'
+    | '/api/checkpoints/list'
+    | '/api/checkpoints/pin'
+    | '/api/checkpoints/repos'
+    | '/api/checkpoints/smartcommit'
+    | '/api/checkpoints/unpin'
     | '/api/hermes-jobs/$jobId'
     | '/api/hermes-proxy/$'
     | '/api/hermes-tasks/$taskId'
@@ -846,6 +927,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$'
+    | '/checkpoints'
     | '/dashboard'
     | '/files'
     | '/jobs'
@@ -890,6 +972,13 @@ export interface FileRouteTypes {
     | '/settings/providers'
     | '/chat'
     | '/settings'
+    | '/api/checkpoints/detail'
+    | '/api/checkpoints/diff'
+    | '/api/checkpoints/list'
+    | '/api/checkpoints/pin'
+    | '/api/checkpoints/repos'
+    | '/api/checkpoints/smartcommit'
+    | '/api/checkpoints/unpin'
     | '/api/hermes-jobs/$jobId'
     | '/api/hermes-proxy/$'
     | '/api/hermes-tasks/$taskId'
@@ -929,6 +1018,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$'
+    | '/checkpoints'
     | '/dashboard'
     | '/files'
     | '/jobs'
@@ -974,6 +1064,13 @@ export interface FileRouteTypes {
     | '/settings/providers'
     | '/chat/'
     | '/settings/'
+    | '/api/checkpoints/detail'
+    | '/api/checkpoints/diff'
+    | '/api/checkpoints/list'
+    | '/api/checkpoints/pin'
+    | '/api/checkpoints/repos'
+    | '/api/checkpoints/smartcommit'
+    | '/api/checkpoints/unpin'
     | '/api/hermes-jobs/$jobId'
     | '/api/hermes-proxy/$'
     | '/api/hermes-tasks/$taskId'
@@ -1014,6 +1111,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
+  CheckpointsRoute: typeof CheckpointsRoute
   DashboardRoute: typeof DashboardRoute
   FilesRoute: typeof FilesRoute
   JobsRoute: typeof JobsRoute
@@ -1056,6 +1154,13 @@ export interface RootRouteChildren {
   ApiWorkspaceRoute: typeof ApiWorkspaceRoute
   ChatSessionKeyRoute: typeof ChatSessionKeyRoute
   ChatIndexRoute: typeof ChatIndexRoute
+  ApiCheckpointsDetailRoute: typeof ApiCheckpointsDetailRoute
+  ApiCheckpointsDiffRoute: typeof ApiCheckpointsDiffRoute
+  ApiCheckpointsListRoute: typeof ApiCheckpointsListRoute
+  ApiCheckpointsPinRoute: typeof ApiCheckpointsPinRoute
+  ApiCheckpointsReposRoute: typeof ApiCheckpointsReposRoute
+  ApiCheckpointsSmartcommitRoute: typeof ApiCheckpointsSmartcommitRoute
+  ApiCheckpointsUnpinRoute: typeof ApiCheckpointsUnpinRoute
   ApiHermesProxySplatRoute: typeof ApiHermesProxySplatRoute
   ApiKnowledgeConfigRoute: typeof ApiKnowledgeConfigRoute
   ApiKnowledgeGraphRoute: typeof ApiKnowledgeGraphRoute
@@ -1138,6 +1243,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkpoints': {
+      id: '/checkpoints'
+      path: '/checkpoints'
+      fullPath: '/checkpoints'
+      preLoaderRoute: typeof CheckpointsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$': {
@@ -1637,6 +1749,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHermesJobsJobIdRouteImport
       parentRoute: typeof ApiHermesJobsRoute
     }
+    '/api/checkpoints/unpin': {
+      id: '/api/checkpoints/unpin'
+      path: '/api/checkpoints/unpin'
+      fullPath: '/api/checkpoints/unpin'
+      preLoaderRoute: typeof ApiCheckpointsUnpinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkpoints/smartcommit': {
+      id: '/api/checkpoints/smartcommit'
+      path: '/api/checkpoints/smartcommit'
+      fullPath: '/api/checkpoints/smartcommit'
+      preLoaderRoute: typeof ApiCheckpointsSmartcommitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkpoints/repos': {
+      id: '/api/checkpoints/repos'
+      path: '/api/checkpoints/repos'
+      fullPath: '/api/checkpoints/repos'
+      preLoaderRoute: typeof ApiCheckpointsReposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkpoints/pin': {
+      id: '/api/checkpoints/pin'
+      path: '/api/checkpoints/pin'
+      fullPath: '/api/checkpoints/pin'
+      preLoaderRoute: typeof ApiCheckpointsPinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkpoints/list': {
+      id: '/api/checkpoints/list'
+      path: '/api/checkpoints/list'
+      fullPath: '/api/checkpoints/list'
+      preLoaderRoute: typeof ApiCheckpointsListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkpoints/diff': {
+      id: '/api/checkpoints/diff'
+      path: '/api/checkpoints/diff'
+      fullPath: '/api/checkpoints/diff'
+      preLoaderRoute: typeof ApiCheckpointsDiffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkpoints/detail': {
+      id: '/api/checkpoints/detail'
+      path: '/api/checkpoints/detail'
+      fullPath: '/api/checkpoints/detail'
+      preLoaderRoute: typeof ApiCheckpointsDetailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sessions/$sessionKey/status': {
       id: '/api/sessions/$sessionKey/status'
       path: '/$sessionKey/status'
@@ -1759,6 +1920,7 @@ const ApiSkillsRouteWithChildren = ApiSkillsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
+  CheckpointsRoute: CheckpointsRoute,
   DashboardRoute: DashboardRoute,
   FilesRoute: FilesRoute,
   JobsRoute: JobsRoute,
@@ -1801,6 +1963,13 @@ const rootRouteChildren: RootRouteChildren = {
   ApiWorkspaceRoute: ApiWorkspaceRoute,
   ChatSessionKeyRoute: ChatSessionKeyRoute,
   ChatIndexRoute: ChatIndexRoute,
+  ApiCheckpointsDetailRoute: ApiCheckpointsDetailRoute,
+  ApiCheckpointsDiffRoute: ApiCheckpointsDiffRoute,
+  ApiCheckpointsListRoute: ApiCheckpointsListRoute,
+  ApiCheckpointsPinRoute: ApiCheckpointsPinRoute,
+  ApiCheckpointsReposRoute: ApiCheckpointsReposRoute,
+  ApiCheckpointsSmartcommitRoute: ApiCheckpointsSmartcommitRoute,
+  ApiCheckpointsUnpinRoute: ApiCheckpointsUnpinRoute,
   ApiHermesProxySplatRoute: ApiHermesProxySplatRoute,
   ApiKnowledgeConfigRoute: ApiKnowledgeConfigRoute,
   ApiKnowledgeGraphRoute: ApiKnowledgeGraphRoute,
