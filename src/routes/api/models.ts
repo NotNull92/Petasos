@@ -53,6 +53,44 @@ const AUTH_STORE_MODELS: Record<string, Array<ModelEntry>> = {
   xai: [{ id: 'grok-3', name: 'Grok 3', provider: 'xai' }],
 }
 
+/**
+ * Read custom_providers from ~/.hermes/config.yaml and extract model IDs.
+ * Avoids adding a YAML dependency — uses simple regex parsing.
+ */
+function getCustomProviderModels(): Array<ModelEntry> {
+  const extra: Array<ModelEntry> = []
+  try {
+    const raw = fs.readFileSync(
+      path.join(os.homedir(), '.hermes', 'config.yaml'),
+      'utf-8',
+    )
+    const cpMatch = raw.match(
+      /custom_providers:\s*\n((?:\s+-[\s\S]*?)*?)(?=\n\S|\n*$)/,
+    )
+    if (!cpMatch) return extra
+    // Each provider entry starts with "  - name:"
+    const entries = cpMatch[1].split(/(?=\n\s+-\s+name:)/)
+    for (const entry of entries) {
+      const nameMatch = entry.match(/name:\s*(.+)/)
+      const modelMatch = entry.match(/model:\s*(.+)/)
+      const model = (modelMatch?.[1] || '').trim()
+      const name = (nameMatch?.[1] || '').trim()
+      if (!model) continue
+      // Derive provider slug from name (e.g. "Z.ai Coding Plan glm-5.1" → "zai")
+      const provider = name.split(/\s+/)[0].toLowerCase().replace(/[^a-z0-9]/g, '') || 'custom'
+      extra.push({
+        id: model,
+        name: model,
+        provider,
+        source: 'custom_provider',
+      })
+    }
+  } catch (err) {
+    console.error('[models] Failed to read custom_providers from config:', err)
+  }
+  return extra
+}
+
 function getAuthStoreModels(): Array<ModelEntry> {
   const extra: Array<ModelEntry> = []
   for (const storePath of [
@@ -173,9 +211,17 @@ export const Route = createFileRoute('/api/models')({
         }
         try {
           const models = await fetchHermesModels()
+          // Add models from custom_providers in config.yaml (Z.ai, etc.)
+          const customModels = getCustomProviderModels()
+          const existingIds = new Set(models.map((m) => m.id))
+          for (const m of customModels) {
+            if (!existingIds.has(m.id)) {
+              models.push(m)
+              existingIds.add(m.id)
+            }
+          }
           // Add models from auth store providers (Anthropic, OpenAI, etc.)
           const authModels = getAuthStoreModels()
-          const existingIds = new Set(models.map((m) => m.id))
           for (const m of authModels) {
             if (!existingIds.has(m.id)) {
               models.push(m)

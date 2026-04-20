@@ -1555,12 +1555,36 @@ function HermesConfigSection({
         description="Model to use for simple queries."
       >
         <select
-          value={(smartRouting.cheap_model as string) || ''}
-          onChange={(e) =>
-            void saveConfig({
-              config: { smart_model_routing: { cheap_model: e.target.value } },
-            })
+          value={
+            typeof smartRouting.cheap_model === 'object' && smartRouting.cheap_model !== null
+              ? String((smartRouting.cheap_model as Record<string, unknown>).model || '')
+              : String(smartRouting.cheap_model || '')
           }
+          onChange={(e) => {
+            const selectedId = e.target.value
+            if (!selectedId) {
+              void saveConfig({ config: { smart_model_routing: { cheap_model: '' } } })
+              return
+            }
+            // Look up matching custom_provider for provider/base_url/api_key
+            const cp = customProviders.find(
+              (p) => (p.model as string) === selectedId,
+            )
+            void saveConfig({
+              config: {
+                smart_model_routing: {
+                  cheap_model: cp
+                    ? {
+                        provider: cp.name,
+                        model: selectedId,
+                        base_url: cp.base_url,
+                        api_key: cp.api_key,
+                      }
+                    : { model: selectedId },
+                },
+              },
+            })
+          }}
           className={selectClassName}
         >
           <option value="">Select model</option>

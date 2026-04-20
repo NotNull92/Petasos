@@ -93,6 +93,7 @@ import { Route as ApiHermesJobsJobIdRouteImport } from './routes/api/hermes-jobs
 import { Route as ApiCheckpointsUnpinRouteImport } from './routes/api/checkpoints/unpin'
 import { Route as ApiCheckpointsSmartcommitRouteImport } from './routes/api/checkpoints/smartcommit'
 import { Route as ApiCheckpointsReposRouteImport } from './routes/api/checkpoints/repos'
+import { Route as ApiCheckpointsPullRouteImport } from './routes/api/checkpoints/pull'
 import { Route as ApiCheckpointsPinRouteImport } from './routes/api/checkpoints/pin'
 import { Route as ApiCheckpointsListRouteImport } from './routes/api/checkpoints/list'
 import { Route as ApiCheckpointsDiffRouteImport } from './routes/api/checkpoints/diff'
@@ -521,6 +522,11 @@ const ApiCheckpointsReposRoute = ApiCheckpointsReposRouteImport.update({
   path: '/api/checkpoints/repos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCheckpointsPullRoute = ApiCheckpointsPullRouteImport.update({
+  id: '/api/checkpoints/pull',
+  path: '/api/checkpoints/pull',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCheckpointsPinRoute = ApiCheckpointsPinRouteImport.update({
   id: '/api/checkpoints/pin',
   path: '/api/checkpoints/pin',
@@ -607,6 +613,7 @@ export interface FileRoutesByFullPath {
   '/api/checkpoints/diff': typeof ApiCheckpointsDiffRoute
   '/api/checkpoints/list': typeof ApiCheckpointsListRoute
   '/api/checkpoints/pin': typeof ApiCheckpointsPinRoute
+  '/api/checkpoints/pull': typeof ApiCheckpointsPullRoute
   '/api/checkpoints/repos': typeof ApiCheckpointsReposRoute
   '/api/checkpoints/smartcommit': typeof ApiCheckpointsSmartcommitRoute
   '/api/checkpoints/unpin': typeof ApiCheckpointsUnpinRoute
@@ -698,6 +705,7 @@ export interface FileRoutesByTo {
   '/api/checkpoints/diff': typeof ApiCheckpointsDiffRoute
   '/api/checkpoints/list': typeof ApiCheckpointsListRoute
   '/api/checkpoints/pin': typeof ApiCheckpointsPinRoute
+  '/api/checkpoints/pull': typeof ApiCheckpointsPullRoute
   '/api/checkpoints/repos': typeof ApiCheckpointsReposRoute
   '/api/checkpoints/smartcommit': typeof ApiCheckpointsSmartcommitRoute
   '/api/checkpoints/unpin': typeof ApiCheckpointsUnpinRoute
@@ -791,6 +799,7 @@ export interface FileRoutesById {
   '/api/checkpoints/diff': typeof ApiCheckpointsDiffRoute
   '/api/checkpoints/list': typeof ApiCheckpointsListRoute
   '/api/checkpoints/pin': typeof ApiCheckpointsPinRoute
+  '/api/checkpoints/pull': typeof ApiCheckpointsPullRoute
   '/api/checkpoints/repos': typeof ApiCheckpointsReposRoute
   '/api/checkpoints/smartcommit': typeof ApiCheckpointsSmartcommitRoute
   '/api/checkpoints/unpin': typeof ApiCheckpointsUnpinRoute
@@ -885,6 +894,7 @@ export interface FileRouteTypes {
     | '/api/checkpoints/diff'
     | '/api/checkpoints/list'
     | '/api/checkpoints/pin'
+    | '/api/checkpoints/pull'
     | '/api/checkpoints/repos'
     | '/api/checkpoints/smartcommit'
     | '/api/checkpoints/unpin'
@@ -976,6 +986,7 @@ export interface FileRouteTypes {
     | '/api/checkpoints/diff'
     | '/api/checkpoints/list'
     | '/api/checkpoints/pin'
+    | '/api/checkpoints/pull'
     | '/api/checkpoints/repos'
     | '/api/checkpoints/smartcommit'
     | '/api/checkpoints/unpin'
@@ -1068,6 +1079,7 @@ export interface FileRouteTypes {
     | '/api/checkpoints/diff'
     | '/api/checkpoints/list'
     | '/api/checkpoints/pin'
+    | '/api/checkpoints/pull'
     | '/api/checkpoints/repos'
     | '/api/checkpoints/smartcommit'
     | '/api/checkpoints/unpin'
@@ -1158,6 +1170,7 @@ export interface RootRouteChildren {
   ApiCheckpointsDiffRoute: typeof ApiCheckpointsDiffRoute
   ApiCheckpointsListRoute: typeof ApiCheckpointsListRoute
   ApiCheckpointsPinRoute: typeof ApiCheckpointsPinRoute
+  ApiCheckpointsPullRoute: typeof ApiCheckpointsPullRoute
   ApiCheckpointsReposRoute: typeof ApiCheckpointsReposRoute
   ApiCheckpointsSmartcommitRoute: typeof ApiCheckpointsSmartcommitRoute
   ApiCheckpointsUnpinRoute: typeof ApiCheckpointsUnpinRoute
@@ -1770,6 +1783,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCheckpointsReposRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/checkpoints/pull': {
+      id: '/api/checkpoints/pull'
+      path: '/api/checkpoints/pull'
+      fullPath: '/api/checkpoints/pull'
+      preLoaderRoute: typeof ApiCheckpointsPullRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/checkpoints/pin': {
       id: '/api/checkpoints/pin'
       path: '/api/checkpoints/pin'
@@ -1967,6 +1987,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiCheckpointsDiffRoute: ApiCheckpointsDiffRoute,
   ApiCheckpointsListRoute: ApiCheckpointsListRoute,
   ApiCheckpointsPinRoute: ApiCheckpointsPinRoute,
+  ApiCheckpointsPullRoute: ApiCheckpointsPullRoute,
   ApiCheckpointsReposRoute: ApiCheckpointsReposRoute,
   ApiCheckpointsSmartcommitRoute: ApiCheckpointsSmartcommitRoute,
   ApiCheckpointsUnpinRoute: ApiCheckpointsUnpinRoute,

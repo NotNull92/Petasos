@@ -13,6 +13,7 @@ import {
   PinIcon,
   FolderIcon,
   Delete02Icon,
+  Download02Icon,
   Upload03Icon,
 } from '@hugeicons/core-free-icons'
 import { AnimatePresence, motion } from 'motion/react'
@@ -137,6 +138,20 @@ async function smartCommit(repoPath: string) {
     pushed?: boolean
     pushError?: string
     files?: number
+    error?: string
+  }>
+}
+
+async function gitPull(repoPath: string) {
+  const res = await fetch('/api/checkpoints/pull', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path: repoPath }),
+  })
+  return res.json() as Promise<{
+    ok: boolean
+    message?: string
+    updated?: boolean
     error?: string
   }>
 }
@@ -486,6 +501,27 @@ export function CheckpointsScreen() {
     },
   })
 
+  // ── Git pull ──
+  const pullMutation = useMutation({
+    mutationFn: (repoPath: string) => gitPull(repoPath),
+    onSuccess: (data) => {
+      if (data.ok) {
+        if (data.updated) {
+          toast('git pull 완료 — 업데이트 적용됨', { type: 'success' })
+        } else {
+          toast('이미 최신 상태입니다', { type: 'info' })
+        }
+        void queryClient.invalidateQueries({ queryKey: commitsQueryKey })
+        void queryClient.invalidateQueries({ queryKey: ['checkpoints', 'repos'] })
+      } else {
+        toast(data.error || 'git pull 실패', { type: 'error' })
+      }
+    },
+    onError: (err) => {
+      toast(`오류: ${err.message}`, { type: 'error' })
+    },
+  })
+
   // ── Delete repo ──
   const [deleteTarget, setDeleteTarget] = useState<RepoInfo | null>(null)
 
@@ -626,6 +662,24 @@ export function CheckpointsScreen() {
                     {repo.checkpointCount}
                   </span>
                 )}
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    pullMutation.mutate(repo.path)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.stopPropagation()
+                      pullMutation.mutate(repo.path)
+                    }
+                  }}
+                  className="p-0.5 rounded hover:bg-sky-500/20 text-primary-600 hover:text-sky-400 transition-colors"
+                  title="git pull"
+                >
+                  <HugeiconsIcon icon={Download02Icon} size={10} />
+                </span>
                 {repo.hasChanges && (
                   <span
                     role="button"
